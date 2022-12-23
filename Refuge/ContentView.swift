@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var presentSheet = false
+    @Environment(\.managedObjectContext) var moc
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        Button("Add") {
+            
         }
-        .padding()
     }
 }
 

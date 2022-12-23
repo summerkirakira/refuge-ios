@@ -17,6 +17,7 @@ target 'Refuge' do
   end
 
   pod 'Alamofire', '~> 5.6.4'
-  pod 'SQLite.swift', '~> 0.14.0'
+  pod 'NukeUI', '~> 0.8.0'
+  pod 'SwiftSoup'
 
 end

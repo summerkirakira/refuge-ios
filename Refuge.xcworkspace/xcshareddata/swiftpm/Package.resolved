@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "legacyscrollview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/perimeter-inc/LegacyScrollView",
+      "state" : {
+        "revision" : "8622c91bc5b8578adcca91ea3ebbb63ec132e9cf",
+        "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "swiftui-drawer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bwide/SwiftUI-Drawer",
+      "state" : {
+        "revision" : "a3d14d295c7639e4ed1756ce2b238b828ca3a092",
+        "version" : "1.3.0"
+      }
+    }
+  ],
+  "version" : 2
+}

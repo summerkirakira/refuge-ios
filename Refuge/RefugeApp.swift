@@ -11,7 +11,22 @@ import SwiftUI
 struct RefugeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ShipInfoTabView()
+                .task {
+                    do {
+//                        repository.items.append(HangarItem.sampleData)
+//                        try await repository.save()
+                        try await repository.load()
+                    } catch {
+                        repository.items = []
+                        do {
+                            try await repository.save()
+                        } catch {
+                            fatalError("Error loading hangar items.")
+                        }
+                    }
+                }
         }
     }
 }
+
