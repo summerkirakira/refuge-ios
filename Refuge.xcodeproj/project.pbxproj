@@ -13,6 +13,7 @@
 		9F0BCFBA29565BB000FD536C /* HangarParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BCFB929565BB000FD536C /* HangarParser.swift */; };
 		9F0BCFBC29565C0700FD536C /* DefaultApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BCFBB29565C0700FD536C /* DefaultApi.swift */; };
 		9F0BCFC029565C8A00FD536C /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BCFBF29565C8A00FD536C /* Version.swift */; };
+		9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F43BCC82B11D58A00135755 /* HangarDetailBottomSheet.swift */; };
 		9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A8C8E2954625C00C566C1 /* RefugeApp.swift */; };
 		9F4A8C912954625C00C566C1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A8C902954625C00C566C1 /* ContentView.swift */; };
 		9F4A8C932954625D00C566C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F4A8C922954625D00C566C1 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		9F0BCFB929565BB000FD536C /* HangarParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarParser.swift; sourceTree = "<group>"; };
 		9F0BCFBB29565C0700FD536C /* DefaultApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultApi.swift; sourceTree = "<group>"; };
 		9F0BCFBF29565C8A00FD536C /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		9F43BCC82B11D58A00135755 /* HangarDetailBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarDetailBottomSheet.swift; sourceTree = "<group>"; };
 		9F4A8C8B2954625C00C566C1 /* Refuge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Refuge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F4A8C8E2954625C00C566C1 /* RefugeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefugeApp.swift; sourceTree = "<group>"; };
 		9F4A8C902954625C00C566C1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 			children = (
 				9F4A8CBE2954688B00C566C1 /* HangarListItemView.swift */,
 				9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */,
+				9F43BCC82B11D58A00135755 /* HangarDetailBottomSheet.swift */,
 			);
 			path = Hangar;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				9F4A8CBF2954688B00C566C1 /* HangarListItemView.swift in Sources */,
 				9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */,
 				9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */,
+				9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */,
 				9F0BCFC029565C8A00FD536C /* Version.swift in Sources */,
 				9F0BCFB629565B8B00FD536C /* RSIApi.swift in Sources */,
 			);

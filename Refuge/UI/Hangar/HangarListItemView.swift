@@ -2,7 +2,7 @@
 //  HangarListViewItem.swift
 //  Refuge
 //
-//  Created by 弘培郑 on 22/12/2022.
+//  Created by Summerkirakira on 22/12/2022.
 //
 
 import SwiftUI
@@ -23,10 +23,9 @@ struct HangarListItemView: View {
                 HStack {
                     VStack {
                         Text(data.name)
-                            .font(.system(size: 18))
+                            .font(.system(size: 16))
                             .bold()
                             .lineLimit(2)
-                        Spacer()
                     }
                     Spacer()
                 }
@@ -49,18 +48,21 @@ struct HangarListItemView: View {
                 }
                 Spacer()
                 HStack {
-                    Text("$\(data.price/100)")
-                        .font(.system(size: 30))
-                        .bold()
+                    HStack {
+                        Text("$\(data.price/100)")
+                            .font(.system(size: 20))
+                            .bold()
+                    }
                     Spacer()
                     VStack {
-                        Spacer()
                         Text(data.date)
+                        .font(.system(size: 12))
                     }
                 }
             }
         }
         .frame(height: 100)
+        .padding(.all, 0)
     }
     
     private let pipeline = ImagePipeline()

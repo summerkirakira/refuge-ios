@@ -2,19 +2,27 @@
 //  HangarListView.swift
 //  Refuge
 //
-//  Created by 弘培郑 on 22/12/2022.
+//  Created by Summerkirakira on 22/12/2022.
 //
 
 import SwiftUI
+import NukeUI
 
+@available(iOS 14.0, *)
 struct HangarListView: View {
     @ObservedObject var hangarItemRepository: HangarItemRepository = repository
     @State var currentSelected: HangarItem? = nil
     @State var searchString: String = ""
+    @State var currentDisplayHangarItem: HangarItem?
+    private let pipeline = ImagePipeline()
     
     var body: some View {
         List(hangarItemRepository.items.indices, id:\.self) {index in
             HangarListItemView(data: $hangarItemRepository.items[index])
+                .onTapGesture {
+                    currentDisplayHangarItem = $hangarItemRepository.items[index].wrappedValue
+                    print(currentDisplayHangarItem)
+                }
         }
         .refreshable {
             await refreshHangar()
@@ -22,6 +30,83 @@ struct HangarListView: View {
         .searchable(text: $searchString) {
             
         }
+        .sheet(isPresented: currentDisplayHangarItem != nil ? .constant(true) : .constant(false)) {
+            ScrollView {
+                VStack {
+                    HStack {
+                        makeImage(url: URL(string: currentDisplayHangarItem!.image))
+                        VStack(alignment: .leading) {
+                            if currentDisplayHangarItem!.chineseName != nil {
+                                Text(currentDisplayHangarItem!.chineseName!)
+                                    .bold()
+                                    .lineLimit(2)
+                                    .font(.system(size: 20))
+                                    .padding(.all, 0)
+                            }
+                            Text(currentDisplayHangarItem!.name)
+                                .font(.system(size: 14))
+                                .lineLimit(3)
+                                .padding(.all, 0)
+                                .padding(.top, 5)
+                        }
+                    }
+                    Divider()
+                    HStack() {
+                        Text("内容")
+                            .bold()
+                            .font(.system(size: 24))
+                        Spacer()
+                        Text("详情>")
+                            .opacity(0.7)
+                    }
+                    
+                    ForEach(currentDisplayHangarItem!.items.indices, id:\.self) {index in
+                        HStack {
+                            makeImage(url: URL(string: currentDisplayHangarItem!.items[index].image))
+                                .padding(0)
+                            Spacer()
+                            VStack(alignment: .leading) {
+                                Text(currentDisplayHangarItem!.items[index].title)
+                                    .font(.system(size: 16))
+                                    .padding(0)
+                                Text(currentDisplayHangarItem!.items[index].kind)
+                                    .font(.system(size: 16))
+                                    .padding(0)
+                                Text(currentDisplayHangarItem!.items[index].subtitle)
+                                    .font(.system(size: 16))
+                                    .padding(0)
+                            }
+                            .padding(0)
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    HStack() {
+                        Text("包含")
+                            .bold()
+                            .font(.system(size: 24))
+                        Spacer()
+                    }
+                    VStack(alignment: .leading) {
+                        ForEach(currentDisplayHangarItem!.chineseAlsoContains!.split(separator: "#"), id:\.self) {item in
+                            HStack {
+                                Text(item)
+                                    .font(.system(size: 16))
+                                Spacer()
+                            }
+                        }
+                    }
+                    
+                    Spacer()
+                    Button("关闭") {
+                        currentDisplayHangarItem = nil
+                    }
+                }.padding(.all, 20)
+            }
+            .padding(.all, 0)
+            }
+            
         
     }
     
@@ -33,6 +118,15 @@ struct HangarListView: View {
             
         }
         
+    }
+    
+    func makeImage(url: URL?) -> some View {
+        LazyImage(source: url)
+            .animation(.default)
+            .pipeline(pipeline)
+            .frame(height: 100)
+            .frame(width: 150)
+            .cornerRadius(4)
     }
     
 }

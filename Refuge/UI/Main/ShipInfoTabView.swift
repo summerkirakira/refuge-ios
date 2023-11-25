@@ -2,7 +2,7 @@
 //  ShipInfoTabView.swift
 //  Refuge
 //
-//  Created by 弘培郑 on 23/12/2022.
+//  Created by Summerkirakira on 23/12/2022.
 //
 
 import SwiftUI
@@ -13,7 +13,7 @@ struct ShipInfoTabView: View {
               Text("First tab")
                 .tabItem {
                   Image(systemName: "1.circle")
-                  Text("Second")
+                  Text("First")
                 }
                 HangarListView()
                 .tabItem {
