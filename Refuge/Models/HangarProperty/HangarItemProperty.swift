@@ -57,7 +57,7 @@ extension HangarSubItem {
 }
 
 extension HangarItem {
-    static let sampleData: HangarItem = HangarItem(id: 23123, name: "UPGRADE - PROWLER TO HULL D STANDARD EDITION", chineseName: "光灯节第12天奖励光灯节第12天奖励", image: "https://media.robertsspaceindustries.com/lh1i6amg77crm/heap_infobox.jpg", number: 3, status: "库存中", tags: [Tag(name: "可回收", color: ""), Tag(name: "可礼物", color: ""), Tag(name: "可升级", color: "")], date: "2022年12月19日", contains: "", price: 2000, insurance: "LTI", alsoContains: "", items: [HangarSubItem.sampleData, HangarSubItem.sampleData, HangarSubItem.sampleData], chineseAlsoContains: "Hello#world")
+    static let sampleData: HangarItem = HangarItem(id: 23123, name: "UPGRADE - PROWLER TO HULL D STANDARD EDITION", chineseName: "光灯节第12天奖励光灯节第12天奖励", image: "https://media.robertsspaceindustries.com/lh1i6amg77crm/heap_infobox.jpg", number: 3, status: "库存中", tags: [Tag(name: "可回收", color: ""), Tag(name: "可礼物", color: ""), Tag(name: "可升级", color: "")], date: "2022年12月19日", contains: "", price: 2000, insurance: "LTI", alsoContains: "", items: [HangarSubItem.sampleData, HangarSubItem.sampleData, HangarSubItem.sampleData], chineseAlsoContains: "Hello#world#Razor - Foundation Fest Paint")
 }
 
 #endif

@@ -21,7 +21,19 @@ struct HangarListView: View {
             HangarListItemView(data: $hangarItemRepository.items[index])
                 .onTapGesture {
                     currentDisplayHangarItem = $hangarItemRepository.items[index].wrappedValue
-                    print(currentDisplayHangarItem)
+                    RsiApi.setToken(token: "ff832cea3eb400200a3f156bd71c0af4")
+                    RsiApi.setDevice(device: "ninv6pihctq8lnzkwaqimafsdf")
+                    Task {
+                        do {
+                            let data = try await RsiApi.getPage(endPoint: "account/pledges")
+                            let items = try getHangarItems(content: data)
+                            currentDisplayHangarItem = items[9]
+                            print(items)
+                        } catch {
+                            print(error)
+                        }
+                        
+                    }
                 }
         }
         .refreshable {
@@ -35,6 +47,9 @@ struct HangarListView: View {
                 VStack {
                     HStack {
                         makeImage(url: URL(string: currentDisplayHangarItem!.image))
+                            .frame(height: 130)
+                            .frame(width: 130)
+                            .padding(.all, 0)
                         VStack(alignment: .leading) {
                             if currentDisplayHangarItem!.chineseName != nil {
                                 Text(currentDisplayHangarItem!.chineseName!)
@@ -49,8 +64,10 @@ struct HangarListView: View {
                                 .padding(.all, 0)
                                 .padding(.top, 5)
                         }
+                        Spacer()
                     }
                     Divider()
+                        .padding(.top, 5)
                     HStack() {
                         Text("内容")
                             .bold()
@@ -64,7 +81,8 @@ struct HangarListView: View {
                         HStack {
                             makeImage(url: URL(string: currentDisplayHangarItem!.items[index].image))
                                 .padding(0)
-                            Spacer()
+                                .frame(height: 100)
+                                .frame(width: 150)
                             VStack(alignment: .leading) {
                                 Text(currentDisplayHangarItem!.items[index].title)
                                     .font(.system(size: 16))
@@ -77,10 +95,12 @@ struct HangarListView: View {
                                     .padding(0)
                             }
                             .padding(0)
+                            Spacer()
                         }
                     }
                     
                     Divider()
+                        .padding(.top, 20)
                     
                     HStack() {
                         Text("包含")
@@ -92,7 +112,7 @@ struct HangarListView: View {
                         ForEach(currentDisplayHangarItem!.chineseAlsoContains!.split(separator: "#"), id:\.self) {item in
                             HStack {
                                 Text(item)
-                                    .font(.system(size: 16))
+                                    .font(.system(size: 18))
                                 Spacer()
                             }
                         }
@@ -124,8 +144,6 @@ struct HangarListView: View {
         LazyImage(source: url)
             .animation(.default)
             .pipeline(pipeline)
-            .frame(height: 100)
-            .frame(width: 150)
             .cornerRadius(4)
     }
     

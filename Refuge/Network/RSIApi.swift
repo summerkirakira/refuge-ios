@@ -6,6 +6,12 @@
 //
 
 import Foundation
+import Alamofire
+
+
+let RsiApi = RSIApi()
+
+
 public class RSIApi: DefaultApi{
     
     let referer = "https://robertsspaceindustries.com/"
@@ -20,7 +26,7 @@ public class RSIApi: DefaultApi{
     func setRSICookie(rsiToken: String, rsiDevice: String) {
         rsi_device = rsiDevice
         rsi_token = rsiToken
-        rsi_cookie = "CookieConsent=$RSI_COOKIE_CONSTENT;_rsi_device=\(rsi_device);Rsi-Token=\(rsi_token)"
+        // rsi_cookie = "CookieConsent=$RSI_COOKIE_CONSTENT;_rsi_device=\(rsi_device);Rsi-Token=\(rsi_token)"
     }
     
     func setRSIAccountAuth(token: String) {
@@ -35,9 +41,108 @@ public class RSIApi: DefaultApi{
         return "Rsi-Ship-Upgrades-Context=\(rsi_ship_upgrades_context);Rsi-Account-Auth=\(rsi_account_auth); \(rsi_cookie)"
     }
 
-    init() {
-        super.init(serverAdress: "https://robertsspaceindustries.com")
+    func getRsiBasicCookie() -> [HTTPCookie] {
+        let cookie = [
+            HTTPCookie(
+                properties: [
+                .domain: "robertsspaceindustries.com",
+                .path: "/",
+                .name: "Rsi-Token",
+                .value: rsi_token,
+                .secure: "TRUE",
+                .expires: NSDate(timeIntervalSinceNow: 31536000)
+                ]
+            )!,
+            HTTPCookie(
+                properties: [
+                .domain: "robertsspaceindustries.com",
+                .path: "/",
+                .name: "_rsi_device",
+                .value: rsi_device,
+                .secure: "TRUE",
+                .expires: NSDate(timeIntervalSinceNow: 31536000)
+                ]
+            )!,
+            HTTPCookie(
+                properties: [
+                .domain: "robertsspaceindustries.com",
+                .path: "/",
+                .name: "x-rsi-device",
+                .value: rsi_device,
+                .secure: "TRUE",
+                .expires: NSDate(timeIntervalSinceNow: 31536000)
+                ]
+            )!,
+            HTTPCookie(
+                properties: [
+                .domain: "robertsspaceindustries.com",
+                .path: "/",
+                .name: "x-rsi-token",
+                .value: rsi_token,
+                .secure: "TRUE",
+                .expires: NSDate(timeIntervalSinceNow: 31536000)
+                ]
+            )!
+        ]
+        return cookie
     }
+
+    func getHeaders() -> HTTPHeaders {
+        let cookies = getRsiBasicCookie()
+        for cookie in cookies {
+            HTTPCookieStorage.shared.setCookie(cookie)
+        }
+        
+        var headers: HTTPHeaders = HTTPCookieStorage.shared.cookies?.reduce(into: [:]) { dict, cookie in
+                dict[cookie.name] = cookie.value
+            } ?? [:]
+
+        headers["Referer"] = referer
+        headers["User-Agent"] = defaultUserAgent
+
+        return headers
+    }
+
+
+    func setToken(token: String) {
+        rsi_token = token
+    }
+
+    func setDevice(device: String) {
+        rsi_device = device
+    }
+
+
+    init() {
+        super.init(serverAdress: "https://robertsspaceindustries.com/")
+    }
+    
+    override func getRequest(endPoint: String) -> DataRequest {
+        var request = URLRequest(url: URL(string: serverAdress + endPoint)!)
+        request.method = .get
+        request.headers = getHeaders()
+        return AF.request(request)
+    }
+
+    func getPage(endPoint: String) async throws -> String {
+//        do {
+            try await withUnsafeThrowingContinuation{ continuation in
+                getRequest(endPoint: endPoint).responseString { response in
+                    switch response.result {
+                    case .success(let value):
+                        continuation.resume(returning: value)
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+//        }
+//        catch {
+//            print(error)
+//        }
+    }
+    
+    
     
     func getVersion() async -> Version? {
         do {
