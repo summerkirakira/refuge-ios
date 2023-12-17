@@ -30,7 +30,7 @@ struct Tag: Identifiable, Codable {
 
 struct HangarItem: Identifiable, Codable {
     let id: Int
-    var idList: String = ""
+    var idList: [Int] = []
     let name: String
     var chineseName: String? = nil
     let image: String
@@ -44,10 +44,9 @@ struct HangarItem: Identifiable, Codable {
     let alsoContains: String
     let items: [HangarSubItem]
     var isUpgrade: Bool = false
-    var formShipId: Int = 0
-    var toShipId: Int = 0
-    var toSkuId: Int = 0
     var chineseAlsoContains: String? = nil
+    var rawData: [HangarItem] = []
+    var ownedBy: String = "Default"
 }
 
 #if DEBUG

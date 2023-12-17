@@ -20,11 +20,16 @@ func priceStringToInt(priceString: String) -> Int {
         let ad = priceString.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: " USD", with: "").replacingOccurrences(of: ",", with: "")
         price = Int(Float(priceString.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: " USD", with: "").replacingOccurrences(of: ",", with: ""))!)
     }
-    return price
+    return price * 100
 }
 
 func imageStringToUrl(imageString: String) -> String {
-    return imageString.replacingOccurrences(of: "background-image:url('", with: "").replacingOccurrences(of: "');", with: "")
+    var imageUrl: String = imageString.replacingOccurrences(of: "background-image:url('", with: "").replacingOccurrences(of: "');", with: "")
+    if imageUrl.starts(with: "/") {
+        imageUrl = "https://robertsspaceindustries.com" + imageUrl
+    }
+    debugPrint(imageUrl)
+    return imageUrl
 }
 
 func convertDate(date: String) -> String {
@@ -44,7 +49,7 @@ func getHangarItems(content: String) throws -> [HangarItem] {
         throw ParserError.customErrot("解析错误")
     }
     
-    let pledgeList: Elements? = try? doc!.select(".list-items").first()!.select(".row")
+    let pledgeList: Elements? = try? doc?.select(".list-items").first()?.select(".row")
     if pledgeList == nil {
         throw ParserError.customErrot("未找到机库内容")
     }
@@ -69,45 +74,49 @@ func getHangarItems(content: String) throws -> [HangarItem] {
             let alsoContainsItemString = try pledge.select(".title").map({ element in
                 try element.text()
             }).joined(separator: "#")
-            let items: [HangarSubItem] = try pledge.select(".with-images").first()!.select(".item").map{ item in
-                let id: String = String(pledgeId!)
-                let title = try item.select(".title").first()!.text()
-                let image = imageStringToUrl(imageString: try item.select(".image").first()!.attr("style"))
-                var kind = try? item.select(".kind").first()
-                var kindString = try? kind == nil ? "" : kind!.text()
-                var subtitle = try? item.select(".liner").first()
-                var subtitleString = try? subtitle == nil ? "" : subtitle!.text()
-                return HangarSubItem(
-                    id: id,
-                    image: image,
-                    package_id: pledgeId!,
-                    title: title,
-                    kind: kindString!,
-                    subtitle: subtitleString!,
-                    insert_time: 777,
-                    chineseSubtitle: "Test123",
-                    chineseTitle: "Test2332x"
-                )
+            let itemsArea = try? pledge.select(".with-images").first()
+            var items: [HangarSubItem] = []
+            if itemsArea != nil {
+                items = try itemsArea!.select(".item").map{ item in
+                    let id: String = String(pledgeId!)
+                    let title = try item.select(".title").first()!.text()
+                    let image = imageStringToUrl(imageString: try item.select(".image").first()!.attr("style"))
+                    var kind = try? item.select(".kind").first()
+                    var kindString = try? kind == nil ? "" : kind!.text()
+                    var subtitle = try? item.select(".liner").first()
+                    var subtitleString = try? subtitle == nil ? "" : subtitle!.text()
+                    return HangarSubItem(
+                        id: id,
+                        image: image,
+                        package_id: pledgeId!,
+                        title: title,
+                        kind: kindString!,
+                        subtitle: subtitleString!,
+                        insert_time: 777,
+                        chineseSubtitle: "Test123",
+                        chineseTitle: "Test2332x"
+                    )
+                }
             }
-            hangarItems.append(
-                HangarItem(
-                    id: pledgeId!,
-                    name: pledgeTitle,
-                    chineseName: pledgeTitle,
-                    image: pledgeImage,
-                    number: 1,
-                    status: pledgeStatus,
-                    tags: [],
-                    date: pledgeDate,
-                    contains: alsoContainsItemString,
-                    price: pledgeValue,
-                    insurance: "12M",
-                    alsoContains: alsoContainsItemString,
-                    items: items,
-                    isUpgrade: isUpgrade,
-                    chineseAlsoContains: alsoContainsItemString
-                )
+            var hangarItem = HangarItem(
+                id: pledgeId!,
+                name: pledgeTitle,
+                chineseName: pledgeTitle,
+                image: pledgeImage,
+                number: 1,
+                status: pledgeStatus,
+                tags: [],
+                date: pledgeDate,
+                contains: alsoContainsItemString,
+                price: pledgeValue,
+                insurance: "12M",
+                alsoContains: alsoContainsItemString,
+                items: items,
+                isUpgrade: isUpgrade,
+                chineseAlsoContains: alsoContainsItemString
             )
+            hangarItem.idList.append(pledgeId!)
+            hangarItems.append(hangarItem)
         }
     } catch {
         throw ParserError.customErrot("机库解析错误")

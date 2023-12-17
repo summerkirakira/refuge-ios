@@ -141,15 +141,4 @@ public class RSIApi: DefaultApi{
 //            print(error)
 //        }
     }
-    
-    
-    
-    func getVersion() async -> Version? {
-        do {
-            let value = try await getRequest(endPoint: "version/latest").serializingDecodable(Version.self).value
-            return value
-        } catch {
-            return nil
-        }
-    }
 }

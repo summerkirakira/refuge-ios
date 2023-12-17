@@ -1,33 +1,33 @@
 //
-//  HangarItemRepository.swift
+//  UserRepository.swift
 //  Refuge
 //
-//  Created by Summerkirakira on 23/12/2022.
+//  Created by SummerKirakira on 27/11/2023.
 //
 
 import CoreData
 import Foundation
 
-public class HangarItemRepository: ObservableObject{
-    @Published var items: [HangarItem] = []
+public class UserRepository: ObservableObject{
+    @Published var users: [User] = []
     
     static func fileURL() throws -> URL {
         try FileManager.default.url(for: .documentDirectory,
                                        in: .userDomainMask,
                                        appropriateFor: nil,
                                        create: false)
-            .appendingPathComponent("hangar_item.data")
+            .appendingPathComponent("users.data")
     }
     
     @discardableResult
-    func load() async throws -> [HangarItem] {
+    func load() async throws -> [User] {
         try await withCheckedThrowingContinuation { continuation in
             load { result in
                 switch result {
                 case .failure(let error):
                     continuation.resume(throwing: error)
-                case .success(let hangarItems):
-                    continuation.resume(returning: hangarItems)
+                case .success(let users):
+                    continuation.resume(returning: users)
                 }
             }
         }
@@ -36,7 +36,7 @@ public class HangarItemRepository: ObservableObject{
     @discardableResult
     func save() async throws -> Int? {
         try await withCheckedThrowingContinuation { continuation in
-            save(scrums: self.items) { result in
+            save(scrums: self.users) { result in
                 switch result {
                 case .failure(let error):
                     continuation.resume(throwing: error)
@@ -48,20 +48,20 @@ public class HangarItemRepository: ObservableObject{
     }
     
     
-    func load(completion: @escaping (Result<[HangarItem], Error>)->Void) {
+    func load(completion: @escaping (Result<[User], Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
             do {
-                let fileURL = try HangarItemRepository.fileURL()
+                let fileURL = try UserRepository.fileURL()
                 guard let file = try? FileHandle(forReadingFrom: fileURL) else {
                     DispatchQueue.main.async {
                         completion(.success([]))
                     }
                     return
                 }
-                let hangarItems = try JSONDecoder().decode([HangarItem].self, from: file.availableData)
+                let users = try JSONDecoder().decode([User].self, from: file.availableData)
                 DispatchQueue.main.async {
-                    self.items = hangarItems
-                    completion(.success(hangarItems))
+                    self.users = users
+                    completion(.success(users))
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -71,14 +71,14 @@ public class HangarItemRepository: ObservableObject{
         }
     }
     
-    func save(scrums: [HangarItem], completion: @escaping (Result<Int, Error>)->Void) {
+    func save(scrums: [User], completion: @escaping (Result<Int, Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
             do {
                 let data = try JSONEncoder().encode(scrums)
-                let outfile = try HangarItemRepository.fileURL()
+                let outfile = try UserRepository.fileURL()
                 try data.write(to: outfile)
                 DispatchQueue.main.async {
-                    self.items = scrums
+                    self.users = scrums
                     completion(.success(scrums.count))
                 }
             } catch {
@@ -88,32 +88,44 @@ public class HangarItemRepository: ObservableObject{
             }
         }
     }
-    func refreshHangar() async {
-        var page = 1
-        var totalItems: [HangarItem] = []
-        RsiApi.setToken(token: "ff832cea3eb400200a3f156bd71c0af4")
-        RsiApi.setDevice(device: "ninv6pihctq8lnzkwaqimafsdf")
-        while(true) {
-            do {
-                let data = try await RsiApi.getPage(endPoint: "account/pledges?page=\(page)&pagesize=10")
-                let items = try getHangarItems(content: data)
-                if items.count == 0 {
-                    break
-                }
-//                debugPrint(items)
-                totalItems += items
-                page += 1
-            } catch {
-                break
+    
+    func getUser(handle: String) -> User? {
+        for user in self.users {
+            if user.handle == handle {
+                return user
             }
-            
         }
-        totalItems = concatSamePakage(hangarItems: totalItems)
-        if (totalItems.count > 0) {
-            self.items = totalItems
-            try! await self.save()
-        }
+        return nil
     }
+    
+    func addUser(user: User) {
+        var newUsers: [User] = []
+        for currentUser in self.users {
+            if currentUser.handle != user.handle {
+                newUsers.append(currentUser)
+            }
+        }
+        newUsers.append(user)
+        self.users = newUsers
+    }
+    
+    func setCurrentUser(user: User) {
+        self.addUser(user: user)
+        UserDefaults.standard.set(user.handle, forKey: "current_user")
+    }
+    
+    func getCurrentUser(handle: String) -> User? {
+        let currentUserName = UserDefaults.standard.string(forKey: "current_user")
+        if currentUserName == nil {
+            return nil
+        }
+        return getUser(handle: currentUserName!)
+    }
+    
+    func getUsers() -> [User] {
+        return self.users
+    }
+    
 }
 
-public let repository = HangarItemRepository()
+public let userRepo = UserRepository()

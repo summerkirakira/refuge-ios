@@ -21,6 +21,7 @@ struct ShipInfoTabView: View {
                   Text("机库")
                 }
                 HangarListView()
+                .padding(0)
                 .tabItem {
                   Image(systemName: "3.circle")
                   Text("Third")

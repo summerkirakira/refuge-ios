@@ -12,3 +12,9 @@ struct Version: Identifiable, Codable {
     public var version: String
     public var url: String
 }
+
+struct Translation: Identifiable, Codable {
+    public var id: Int
+    public var english_title: String
+    public var title: String
+}
