@@ -98,4 +98,3 @@ class RecaptchaV3 {
         return await getSecondStageToken(firstStageToken: firstStageToken)
     }
 }
-``

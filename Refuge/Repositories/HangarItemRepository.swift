@@ -88,10 +88,11 @@ public class HangarItemRepository: ObservableObject{
             }
         }
     }
+    
     func refreshHangar() async {
         var page = 1
         var totalItems: [HangarItem] = []
-        RsiApi.setToken(token: "ff832cea3eb400200a3f156bd71c0af4")
+        RsiApi.setToken(token: "f28f2f29020fe3852694d6210ee81214")
         RsiApi.setDevice(device: "ninv6pihctq8lnzkwaqimafsdf")
         while(true) {
             do {
@@ -108,7 +109,10 @@ public class HangarItemRepository: ObservableObject{
             }
             
         }
+        totalItems = getHangarItemsPrice(hangarItems: totalItems)
         totalItems = concatSamePakage(hangarItems: totalItems)
+        totalItems = translateHangarItems(hangarItems: totalItems)
+        totalItems = addTagsToHangarItems(hangarItems: totalItems)
         if (totalItems.count > 0) {
             self.items = totalItems
             try! await self.save()

@@ -20,12 +20,8 @@ struct HangarSubItem: Codable {
     var chineseTitle: String? = nil
 }
 
-struct Tag: Identifiable, Codable {
+struct Tag: Codable {
     let name: String
-    let color: String
-    var id: String {
-        name
-    }
 }
 
 struct HangarItem: Identifiable, Codable {
@@ -36,17 +32,21 @@ struct HangarItem: Identifiable, Codable {
     let image: String
     var number: Int
     var status: String
-    let tags: [Tag]
+    var tags: [String]
     let date: String
     let contains: String
     let price: Int
     var insurance: String
     let alsoContains: String
-    let items: [HangarSubItem]
+    var items: [HangarSubItem]
     var isUpgrade: Bool = false
     var chineseAlsoContains: String? = nil
     var rawData: [HangarItem] = []
     var ownedBy: String = "Default"
+    var currentPrice: Int = 0
+    var canGit: Bool = false
+    var canReclaim: Bool = false
+    var canUpgrade: Bool = false
 }
 
 #if DEBUG
@@ -56,7 +56,7 @@ extension HangarSubItem {
 }
 
 extension HangarItem {
-    static let sampleData: HangarItem = HangarItem(id: 23123, name: "UPGRADE - PROWLER TO HULL D STANDARD EDITION", chineseName: "光灯节第12天奖励光灯节第12天奖励", image: "https://media.robertsspaceindustries.com/lh1i6amg77crm/heap_infobox.jpg", number: 3, status: "库存中", tags: [Tag(name: "可回收", color: ""), Tag(name: "可礼物", color: ""), Tag(name: "可升级", color: "")], date: "2022年12月19日", contains: "", price: 2000, insurance: "LTI", alsoContains: "", items: [HangarSubItem.sampleData, HangarSubItem.sampleData, HangarSubItem.sampleData], chineseAlsoContains: "Hello#world#Razor - Foundation Fest Paint")
+    static let sampleData: HangarItem = HangarItem(id: 23123, name: "UPGRADE - PROWLER TO HULL D STANDARD EDITION", chineseName: "光灯节第12天奖励光灯节第12天奖励", image: "https://media.robertsspaceindustries.com/lh1i6amg77crm/heap_infobox.jpg", number: 3, status: "库存中", tags: ["可回收","可礼物", "可升级"], date: "2022年12月19日", contains: "", price: 2000, insurance: "LTI", alsoContains: "", items: [HangarSubItem.sampleData, HangarSubItem.sampleData, HangarSubItem.sampleData], chineseAlsoContains: "Hello#world#Razor - Foundation Fest Paint")
 }
 
 #endif

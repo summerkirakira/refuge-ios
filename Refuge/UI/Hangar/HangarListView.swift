@@ -47,6 +47,9 @@ struct HangarListView: View {
 //                SearchBar(searchText: $searchString)
                 ForEach(hangarItemRepository.items.indices, id:\.self) {index in
                     HangarListItemView(data: $hangarItemRepository.items[index])
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.gray.opacity(0.01))
                         .onTapGesture {
                             currentDisplayHangarItem = $hangarItemRepository.items[index].wrappedValue
                             Task {
@@ -57,7 +60,8 @@ struct HangarListView: View {
                     }
                 }
             }
-            .listRowInsets(EdgeInsets())
+            .listStyle(PlainListStyle())
+            .padding(.all, 0)
             .refreshable {
                 await hangarItemRepository.refreshHangar()
             }
@@ -87,15 +91,17 @@ struct HangarListView: View {
                             }
                             Spacer()
                         }
-                        Divider()
-                            .padding(.top, 5)
-                        HStack() {
-                            Text("内容")
-                                .bold()
-                                .font(.system(size: 24))
-                            Spacer()
-                            Text("详情>")
-                                .opacity(0.7)
+                        if currentDisplayHangarItem!.items.count > 0 {
+                            Divider()
+                                .padding(.top, 5)
+                            HStack() {
+                                Text("内容")
+                                    .bold()
+                                    .font(.system(size: 24))
+                                Spacer()
+                                Text("详情>")
+                                    .opacity(0.7)
+                            }
                         }
                         
                         ForEach(currentDisplayHangarItem!.items.indices, id:\.self) {index in
@@ -105,9 +111,16 @@ struct HangarListView: View {
                                     .frame(height: 100)
                                     .frame(width: 150)
                                 VStack(alignment: .leading) {
-                                    Text(currentDisplayHangarItem!.items[index].title)
-                                        .font(.system(size: 16))
-                                        .padding(0)
+                                    if currentDisplayHangarItem!.items[index].chineseTitle != nil {
+                                        Text(currentDisplayHangarItem!.items[index].chineseTitle!)
+                                            .font(.system(size: 16))
+                                            .padding(0)
+                                    } else {
+                                        Text(currentDisplayHangarItem!.items[index].title)
+                                            .font(.system(size: 16))
+                                            .padding(0)
+                                    }
+                                    
                                     Text(currentDisplayHangarItem!.items[index].kind)
                                         .font(.system(size: 16))
                                         .padding(0)
@@ -166,7 +179,9 @@ struct HangarListView: View {
             .padding(.all, 0)
             Spacer()
         }
+        .background(Color.gray.opacity(0.04))
         .padding(.all, 0)
+        .ignoresSafeArea()
     }
     
     func refreshHangar() async {

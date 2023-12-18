@@ -22,48 +22,85 @@ struct HangarListItemView: View {
             VStack(spacing: 0) {
                 HStack {
                     VStack {
-                        Text(data.name)
-                            .font(.system(size: 16))
-                            .bold()
-                            .lineLimit(2)
+                        if data.chineseName != nil {
+                            Text(data.chineseName!)
+                                .font(.system(size: 16))
+                                .bold()
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        } else {
+                            Text(data.name)
+                                .font(.system(size: 16))
+                                .bold()
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        
                     }
                     Spacer()
                 }
+
                 HStack {
-                    if (data.status=="库存中") {
-                        makeTag(color: Color("InHangarGreen"), text: data.status)
+                    if data.tags.contains("库存中") {
+                        makeTag(color: Color("InHangarGreen"), text: "库存中")
                     }
-                    ForEach(data.tags) { tag in
-                        if (tag.name == "可回收") {
-                            makeTag(color: Color("ReclaimableGrey"), text: tag.name)
-                        }
-                        if (tag.name == "可升级") {
-                            makeTag(color: Color("CanUpgradeBlue"), text: tag.name)
-                        }
-                        if (tag.name == "可礼物") {
-                            makeTag(color: Color("GiftablePink"), text: tag.name)
-                        }
+                    if data.tags.contains("已礼物") {
+                        makeTag(color: Color("GiftablePink"), text: "已礼物")
                     }
+                    if data.tags.contains("可回收") {
+                        makeTag(color: Color("ReclaimableGrey"), text: "可回收")
+                    }
+                    if data.tags.contains("可升级") {
+                        makeTag(color: Color("CanUpgradeBlue"), text: "可升级")
+                    }
+                    if data.tags.contains("可礼物") {
+                        makeTag(color: Color("GiftablePink"), text: "可礼物")
+                    }
+                    
+//                    ForEach(data.tags) { tag in
+//                        if (tag == "可回收") {
+//                            makeTag(color: Color("ReclaimableGrey"), text: tag)
+//                        }
+//                        if (tag == "可升级") {
+//                            makeTag(color: Color("CanUpgradeBlue"), text: tag)
+//                        }
+//                        if (tag == "可礼物") {
+//                            makeTag(color: Color("GiftablePink"), text: tag)
+//                        }
+//                    }
                     Spacer()
                 }
-                .padding(.leading, 20)
+                .padding(.top, 5)
+                .padding(.bottom, 10)
                 Spacer()
                 HStack {
                     HStack {
-                        Text("$\(data.price/100)")
+                        Text("$\(data.price / 100)")
                             .font(.system(size: 20))
                             .bold()
+                            .minimumScaleFactor(0.5)
+                            
+                        if (data.currentPrice > 0) {
+                            Text("$\(data.currentPrice / 100)")
+                                .font(.system(size: 20))
+                                .bold()
+                                .minimumScaleFactor(0.5)
+                                .foregroundColor(.green)
+                                
+                        }
                     }
                     Spacer()
                     VStack {
                         Text(data.date)
                         .font(.system(size: 12))
                     }
-                }
+                }.padding(.all, 0)
             }
         }
+//        .background(Color.gray.opacity(0.01))
         .frame(height: 100)
-        .padding(.all, 0)
+        .padding(.vertical, 5)
+        .padding(.horizontal, 8)
     }
     
     private let pipeline = ImagePipeline()
@@ -87,6 +124,7 @@ struct HangarListItemView: View {
                     .font(.system(size: 12))
                     .foregroundColor(color)
             )
+            .padding(0)
     }
     
     func makeDial(num: Int) -> some View {

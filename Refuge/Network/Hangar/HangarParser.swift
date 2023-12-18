@@ -113,7 +113,10 @@ func getHangarItems(content: String) throws -> [HangarItem] {
                 alsoContains: alsoContainsItemString,
                 items: items,
                 isUpgrade: isUpgrade,
-                chineseAlsoContains: alsoContainsItemString
+                chineseAlsoContains: alsoContainsItemString,
+                canGit: canGift,
+                canReclaim: canExchange,
+                canUpgrade: canUpgrade
             )
             hangarItem.idList.append(pledgeId!)
             hangarItems.append(hangarItem)

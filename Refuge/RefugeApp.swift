@@ -14,9 +14,10 @@ struct RefugeApp: App {
             ShipInfoTabView()
                 .task {
                     do {
-//                        repository.items.append(HangarItem.sampleData)
-//                        try await repository.save()
+                        //                        repository.items.append(HangarItem.sampleData)
+                        //                        try await repository.save()
                         try await repository.load()
+                        await appInit()
                     } catch {
                         repository.items = []
                         do {

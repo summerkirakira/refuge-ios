@@ -32,9 +32,28 @@ public class CIRNOApi: DefaultApi{
             return nil
         }
     }
-    func getTranslation() async -> [Translation] {
+
+    func getTranslationVersion() async -> TranslationVersion? {
+        do {
+            let value = try await getRequest(endPoint: "translation/version").serializingDecodable(TranslationVersion.self).value
+            return value
+        } catch {
+            return nil
+        }
+    }
+    
+    func getTranslation() async -> [Translation]{
         do {
             let value = try await getRequest(endPoint: "translation/all").serializingDecodable([Translation].self).value
+            return value
+        } catch {
+            return []
+        }
+    }
+
+    func getShipAlias(url: URL) async -> [ShipAlias] {
+        do {
+            let value = try await AF.request(url).serializingDecodable([ShipAlias].self).value
             return value
         } catch {
             return []
