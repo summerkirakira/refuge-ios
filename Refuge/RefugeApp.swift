@@ -16,7 +16,11 @@ struct RefugeApp: App {
                     do {
                         //                        repository.items.append(HangarItem.sampleData)
                         //                        try await repository.save()
-                        try await repository.load()
+//                        let user = try await parseNewUser(email: "", password: "", rsi_device: "ninv6pihctq8lnzkwaqimafsdf", rsi_token: "f28f2f29020fe3852694d6210ee81214")
+//                        if user != nil {
+//                            userRepo.setCurrentUser(user: user!)
+//                            try await userRepo.save()
+//                        }
                         await appInit()
                     } catch {
                         repository.items = []

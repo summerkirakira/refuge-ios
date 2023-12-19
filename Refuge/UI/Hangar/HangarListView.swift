@@ -35,26 +35,29 @@ struct SearchBar: View {
 
 @available(iOS 14.0, *)
 struct HangarListView: View {
-    @ObservedObject var hangarItemRepository: HangarItemRepository = repository
+    @ObservedObject var mainPageViewModel: MainPageViewModel
     @State var currentSelected: HangarItem? = nil
     @State var searchString: String = ""
-    @State var currentDisplayHangarItem: HangarItem?
+    @State var isBottomSheetPresented = false
     private let pipeline = ImagePipeline()
     
     var body: some View {
         VStack {
             List{
 //                SearchBar(searchText: $searchString)
-                ForEach(hangarItemRepository.items.indices, id:\.self) {index in
-                    HangarListItemView(data: $hangarItemRepository.items[index])
+                ForEach(mainPageViewModel.hangarItems.indices, id:\.self) {index in
+                    HangarListItemView(data: $mainPageViewModel.hangarItems[index])
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.gray.opacity(0.01))
                         .onTapGesture {
-                            currentDisplayHangarItem = $hangarItemRepository.items[index].wrappedValue
+                            mainPageViewModel.selectedItem = mainPageViewModel.hangarItems[index]
+                            
+                            isBottomSheetPresented = true
                             Task {
 //                                let token = await recaptchaV3.getRecaptchaToken()
 //                                debugPrint(token)
+
                             }
 
                     }
@@ -63,27 +66,28 @@ struct HangarListView: View {
             .listStyle(PlainListStyle())
             .padding(.all, 0)
             .refreshable {
-                await hangarItemRepository.refreshHangar()
+                await repository.refreshHangar()
+                mainPageViewModel.hangarItems = repository.items
             }
             .searchable(text: $searchString) {
                 
             }
-            .sheet(isPresented: currentDisplayHangarItem != nil ? .constant(true) : .constant(false)) {
+            .sheet(isPresented: $isBottomSheetPresented) {
                 ScrollView {
                     VStack {
                         HStack {
-                            makeImage(url: URL(string: currentDisplayHangarItem!.image))
+                            makeImage(url: URL(string: mainPageViewModel.selectedItem!.image))
                                 .frame(height: 130)
                                 .frame(width: 130)
                             VStack(alignment: .leading) {
-                                if currentDisplayHangarItem!.chineseName != nil {
-                                    Text(currentDisplayHangarItem!.chineseName!)
+                                if mainPageViewModel.selectedItem!.chineseName != nil {
+                                    Text(mainPageViewModel.selectedItem!.chineseName!)
                                         .bold()
                                         .lineLimit(2)
                                         .font(.system(size: 20))
                                         .padding(.all, 0)
                                 }
-                                Text(currentDisplayHangarItem!.name)
+                                Text(mainPageViewModel.selectedItem!.name)
                                     .font(.system(size: 14))
                                     .lineLimit(3)
                                     .padding(.all, 0)
@@ -91,7 +95,7 @@ struct HangarListView: View {
                             }
                             Spacer()
                         }
-                        if currentDisplayHangarItem!.items.count > 0 {
+                        if mainPageViewModel.selectedItem!.items.count > 0 {
                             Divider()
                                 .padding(.top, 5)
                             HStack() {
@@ -104,27 +108,27 @@ struct HangarListView: View {
                             }
                         }
                         
-                        ForEach(currentDisplayHangarItem!.items.indices, id:\.self) {index in
+                        ForEach(mainPageViewModel.selectedItem!.items.indices, id:\.self) {index in
                             HStack {
-                                makeImage(url: URL(string: currentDisplayHangarItem!.items[index].image))
+                                makeImage(url: URL(string: mainPageViewModel.selectedItem!.items[index].image))
                                     .padding(0)
                                     .frame(height: 100)
                                     .frame(width: 150)
                                 VStack(alignment: .leading) {
-                                    if currentDisplayHangarItem!.items[index].chineseTitle != nil {
-                                        Text(currentDisplayHangarItem!.items[index].chineseTitle!)
+                                    if mainPageViewModel.selectedItem!.items[index].chineseTitle != nil {
+                                        Text(mainPageViewModel.selectedItem!.items[index].chineseTitle!)
                                             .font(.system(size: 16))
                                             .padding(0)
                                     } else {
-                                        Text(currentDisplayHangarItem!.items[index].title)
+                                        Text(mainPageViewModel.selectedItem!.items[index].title)
                                             .font(.system(size: 16))
                                             .padding(0)
                                     }
                                     
-                                    Text(currentDisplayHangarItem!.items[index].kind)
+                                    Text(mainPageViewModel.selectedItem!.items[index].kind)
                                         .font(.system(size: 16))
                                         .padding(0)
-                                    Text(currentDisplayHangarItem!.items[index].subtitle)
+                                    Text(mainPageViewModel.selectedItem!.items[index].subtitle)
                                         .font(.system(size: 16))
                                         .padding(0)
                                 }
@@ -143,7 +147,7 @@ struct HangarListView: View {
                             Spacer()
                         }
                         VStack(alignment: .leading) {
-                            ForEach(currentDisplayHangarItem!.chineseAlsoContains!.split(separator: "#"), id:\.self) {item in
+                            ForEach(mainPageViewModel.selectedItem!.chineseAlsoContains!.split(separator: "#"), id:\.self) {item in
                                 HStack {
                                     Text(item)
                                         .font(.system(size: 18))
@@ -151,7 +155,7 @@ struct HangarListView: View {
                                 }
                             }
                         }
-                        if currentDisplayHangarItem!.rawData.count > 1 {
+                        if mainPageViewModel.selectedItem!.rawData.count > 1 {
                             VStack(alignment: .leading) {
                                 Divider()
                                 HStack() {
@@ -160,7 +164,7 @@ struct HangarListView: View {
                                         .font(.system(size: 24))
                                     Spacer()
                                 }
-                                ForEach(currentDisplayHangarItem!.rawData, id: \.id) { item in
+                                ForEach(mainPageViewModel.selectedItem!.rawData, id: \.id) { item in
                                     Text("id: \(String(item.id)), 入库时间: \(item.date)")
                                 }
                             }
@@ -170,7 +174,7 @@ struct HangarListView: View {
                         
                         Spacer()
                         Button("关闭") {
-                            currentDisplayHangarItem = nil
+                            isBottomSheetPresented = false
                         }
                     }.padding(.all, 20)
                 }
@@ -184,16 +188,6 @@ struct HangarListView: View {
         .ignoresSafeArea()
     }
     
-    func refreshHangar() async {
-        hangarItemRepository.items.append(HangarItem.sampleData)
-        do {
-            try await hangarItemRepository.save()
-        } catch {
-            
-        }
-        
-    }
-    
     func makeImage(url: URL?) -> some View {
 
         LazyImage(source: url)
@@ -202,10 +196,4 @@ struct HangarListView: View {
             .cornerRadius(4)
     }
     
-}
-
-struct HangarListView_Previews: PreviewProvider {
-    static var previews: some View {
-        HangarListView()
-    }
 }

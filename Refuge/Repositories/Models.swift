@@ -8,8 +8,7 @@
 import Foundation
 
 
-struct User: Identifiable, Codable {
-    let id: Int
+struct User: Codable {
     let handle: String
     let email: String
     let password: String
@@ -26,10 +25,13 @@ struct User: Identifiable, Codable {
     let hangarValue: Int
     let totalSpent: Int
     
-    let organization: String
-    let organizationImage: String
-    let orgRank: String
+    let organization: String?
+    let organizationName: String?
+    let organizationImage: String?
+    let orgRank: String?
+    let orgLevel: Int
     
     let registerTime: Date
+    let registerTimeString: String
     var extra: String = ""
 }

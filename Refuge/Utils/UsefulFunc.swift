@@ -42,3 +42,9 @@ func getShipAlias(shipName: String) -> ShipAlias? {
     }
     return nil
 }
+
+func asyncDelay(seconds: Double, completion: @escaping () -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+        completion()
+    }
+}

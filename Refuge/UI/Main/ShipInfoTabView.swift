@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NukeUI
 
 struct ShipInfoTabView: View {
     @StateObject private var mainPageViewModel = MainPageViewModel()
@@ -16,7 +17,7 @@ struct ShipInfoTabView: View {
                 TabView(selection: $mainPageViewModel.tabPosition) {
                     Text("First tab")
                         .tag(0)
-                    HangarListView()
+                    HangarListView(mainPageViewModel: mainPageViewModel)
                         .tag(1)
                     Text("First tab")
                         .tag(2)
@@ -34,6 +35,18 @@ struct ShipInfoTabView: View {
             }
             .ignoresSafeArea()
             SideMenu(mainPageViewModel: mainPageViewModel)
+        }.onAppear {
+            Task.init {
+                do {
+                    try await userRepo.load()
+                    try await repository.load()
+                    
+                    mainPageViewModel.currentUser = userRepo.getCurrentUser()
+                    mainPageViewModel.hangarItems = repository.items
+                } catch {
+                    
+                }
+            }
         }
     }
 }
@@ -82,6 +95,9 @@ struct CustomTopBar: View {
 class MainPageViewModel: ObservableObject {
     @Published var tabPosition = 1
     @Published var isSideBarVisible = false
+    @Published var currentUser: User? = nil
+    @Published var hangarItems: [HangarItem] = []
+    @Published var selectedItem: HangarItem? = nil
 }
 
 struct CustomTabBar: View {
@@ -90,6 +106,7 @@ struct CustomTabBar: View {
     @State private var hangarIconColor: String = "ColorPrimary"
     @State private var mainIconColor: String = "ColorUnselected"
     @State private var meIconColor: String = "ColorUnselected"
+    private let pipeline = ImagePipeline()
     var body: some View {
         
         VStack {
@@ -130,10 +147,15 @@ struct CustomTabBar: View {
                 Button(action: {
                     mainPageViewModel.tabPosition = 3
                 }) {
-                    Image("ic_user_bottom")
-                        .resizable()
-                        .foregroundColor(Color(meIconColor))
-                        .frame(width: 30, height: 30)
+                    if (mainPageViewModel.currentUser != nil) {
+                        makeUserCircleImage(url: URL(string: mainPageViewModel.currentUser!.profileImage))
+                    } else {
+                        Image("ic_user_bottom")
+                            .resizable()
+                            .foregroundColor(Color(meIconColor))
+                            .frame(width: 30, height: 30)
+                    }
+                    
                 }
             }
             .frame(height: 60)
@@ -144,6 +166,7 @@ struct CustomTabBar: View {
         .background(Color.white)
         .frame(height: 60)
         .onChange(of: mainPageViewModel.tabPosition) { newValue in
+            debugPrint(mainPageViewModel.currentUser)
             switch newValue {
             case 0:
                 shopIconColor = "ColorPrimary"
@@ -172,6 +195,14 @@ struct CustomTabBar: View {
             }
         }
         
+    }
+    func makeUserCircleImage(url: URL?) -> some View {
+        LazyImage(source: url)
+            .animation(.default)
+            .pipeline(pipeline)
+            .cornerRadius(20)
+            .frame(width: 40)
+            .frame(height: 40)
     }
 }
 

@@ -114,7 +114,7 @@ public class UserRepository: ObservableObject{
         UserDefaults.standard.set(user.handle, forKey: "current_user")
     }
     
-    func getCurrentUser(handle: String) -> User? {
+    func getCurrentUser() -> User? {
         let currentUserName = UserDefaults.standard.string(forKey: "current_user")
         if currentUserName == nil {
             return nil
