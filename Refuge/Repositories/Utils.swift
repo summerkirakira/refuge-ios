@@ -200,3 +200,20 @@ func addTagsToHangarItems(hangarItems: [HangarItem]) -> [HangarItem] {
     }
     return newHangarItems
 }
+
+
+func getTotalHangarItemPrice(items: [HangarItem]) -> Float {
+    var price: Float = 0
+    for item in items {
+        price += Float(item.price * item.number)
+    }
+    return price
+}
+
+func getTotalCurrentHangarItemPrice(items: [HangarItem]) -> Float {
+    var price: Float = 0
+    for item in items {
+        price += Float(item.currentPrice * item.number)
+    }
+    return price
+}

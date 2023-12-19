@@ -102,6 +102,10 @@ public class RSIApi: DefaultApi{
 
         return headers
     }
+    
+    func getDefaultDevice() -> String {
+        return "ninv6pihctq8lnzkwaqimafsdf"
+    }
 
 
     func setToken(token: String) {

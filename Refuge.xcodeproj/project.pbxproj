@@ -32,6 +32,7 @@
 		9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66C2B2FBE7B00AA9465 /* File.swift */; };
 		9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */; };
 		9F65A6712B30968100AA9465 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6702B30968100AA9465 /* SideBar.swift */; };
+		9F65A6782B3129BF00AA9465 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6772B3129BF00AA9465 /* UserInfoView.swift */; };
 		9FF09DA62954ECFD00CB0CC0 /* HangarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */; };
 		9FF09DA9295541A400CB0CC0 /* ShipInfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */; };
 		9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF243232955598E0050904C /* HangarItemRepository.swift */; };
@@ -91,6 +92,7 @@
 		9F65A66C2B2FBE7B00AA9465 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunc.swift; sourceTree = "<group>"; };
 		9F65A6702B30968100AA9465 /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		9F65A6772B3129BF00AA9465 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarListView.swift; sourceTree = "<group>"; };
 		9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipInfoTabView.swift; sourceTree = "<group>"; };
 		9FF243232955598E0050904C /* HangarItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarItemRepository.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 		9F4A8CBA2954669800C566C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9F65A6762B3129AC00AA9465 /* User */,
 				9FF09DA72955415F00CB0CC0 /* Main */,
 				9F4A8CBD2954684500C566C1 /* Hangar */,
 			);
@@ -338,6 +341,14 @@
 			children = (
 			);
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		9F65A6762B3129AC00AA9465 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				9F65A6772B3129BF00AA9465 /* UserInfoView.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		9FF09DA72955415F00CB0CC0 /* Main */ = {
@@ -592,6 +603,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F65A6782B3129BF00AA9465 /* UserInfoView.swift in Sources */,
 				9F43BCD22B14905300135755 /* UserParser.swift in Sources */,
 				9F65A66B2B2FBAFF00AA9465 /* InitFunc.swift in Sources */,
 				9F0BCFB829565B9800FD536C /* CirnoApi.swift in Sources */,

@@ -22,8 +22,6 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
     }
     let userName = try? referral_doc!.select(".c-account-sidebar__profile-info-displayname").first()?.text()
     let userHandle = try? referral_doc!.select(".c-account-sidebar__profile-info-handle").first()?.text()
-    var userImage =
-    try? referral_doc!.select(".c-account-sidebar__profile-metas-avatar").first()?.attr("style").replacingOccurrences(of: "background-image:url('", with: "").replacingOccurrences(of: "');", with: "")
     let userCreditsString =
     try? referral_doc!.select(".c-account-sidebar__profile-info-credits-amount--pledge").first()?.text().replacingOccurrences(of: "$", with: "")
         .replacingOccurrences(of: " ", with: "")
@@ -81,6 +79,8 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
         return nil
     }
     
+    var userImage = try? userInfoDoc!.select(".left-col").first()?.select(".thumb").first()?.select("img").first()?.attr("src")
+    
     let enlisted = try? userInfoDoc!.select(".left-col").last()?.select(".entry").first()?.select("strong").first()?.text()
     let orgName = try? userInfoDoc!.select(".right-col").first()?.select(".entry").first()?.select("a").first()?.text()
     var orgLogoUrl = try? userInfoDoc!.select(".right-col").first()?.select(".thumb").first()?.select("img").first()?.attr("src")
@@ -128,6 +128,7 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
     
     let newUser = User(
         handle: userHandle!,
+        name: userName!,
         email: email,
         password: password,
         rsi_token: rsi_token,
@@ -140,7 +141,8 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
         uec: Int(userUECString!)!,
         rec: Int(userRECString!)!,
         
-        hangarValue: 0,
+        hangarValue: Int(repository.getTotalPrice()),
+        currentHangarValue: Int(repository.getCurrentTotalPrice()),
         totalSpent: Int(Float(totalSpentString!)! * 100),
         organization: orgIdString,
         organizationName: orgName,

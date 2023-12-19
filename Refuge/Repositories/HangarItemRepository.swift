@@ -118,6 +118,14 @@ public class HangarItemRepository: ObservableObject{
             try! await self.save()
         }
     }
+    
+    func getTotalPrice() -> Float {
+        return getTotalHangarItemPrice(items: self.items)
+    }
+    
+    func getCurrentTotalPrice() -> Float {
+        return getTotalCurrentHangarItemPrice(items: self.items)
+    }
 }
 
 public let repository = HangarItemRepository()

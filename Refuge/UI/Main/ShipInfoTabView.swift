@@ -11,9 +11,9 @@ import NukeUI
 struct ShipInfoTabView: View {
     @StateObject private var mainPageViewModel = MainPageViewModel()
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
+            CustomTopBar(mainPageViewModel: mainPageViewModel)
             VStack(spacing: 0) {
-                CustomTopBar(mainPageViewModel: mainPageViewModel)
                 TabView(selection: $mainPageViewModel.tabPosition) {
                     Text("First tab")
                         .tag(0)
@@ -21,7 +21,7 @@ struct ShipInfoTabView: View {
                         .tag(1)
                     Text("First tab")
                         .tag(2)
-                    Text("First tab")
+                    UserInfoMenu(mainPageViewModel: mainPageViewModel)
                         .tag(3)
                     
                 }
@@ -43,6 +43,8 @@ struct ShipInfoTabView: View {
                     
                     mainPageViewModel.currentUser = userRepo.getCurrentUser()
                     mainPageViewModel.hangarItems = repository.items
+                    mainPageViewModel.tabPosition = 2
+                    
                 } catch {
                     
                 }
@@ -67,8 +69,6 @@ struct CustomTopBar: View {
 //                        .foregroundColor(Color("ColorUnselected"))
 //                }
                 Spacer()
-                Text(title)
-                    .font(.system(size: 20))
                 Spacer()
             }.padding(.top, 50)
         }
@@ -93,7 +93,7 @@ struct CustomTopBar: View {
 }
 
 class MainPageViewModel: ObservableObject {
-    @Published var tabPosition = 1
+    @Published var tabPosition = 2
     @Published var isSideBarVisible = false
     @Published var currentUser: User? = nil
     @Published var hangarItems: [HangarItem] = []
@@ -103,8 +103,8 @@ class MainPageViewModel: ObservableObject {
 struct CustomTabBar: View {
     @ObservedObject var mainPageViewModel: MainPageViewModel
     @State private var shopIconColor: String = "ColorUnselected"
-    @State private var hangarIconColor: String = "ColorPrimary"
-    @State private var mainIconColor: String = "ColorUnselected"
+    @State private var hangarIconColor: String = "ColorUnselected"
+    @State private var mainIconColor: String = "ColorPrimary"
     @State private var meIconColor: String = "ColorUnselected"
     private let pipeline = ImagePipeline()
     var body: some View {
@@ -160,13 +160,11 @@ struct CustomTabBar: View {
             }
             .frame(height: 60)
             .padding(.horizontal, 30)
-            .padding(.bottom, 20)
+            .padding(.bottom, 10)
         }
         .padding(.all, 0)
-        .background(Color.white)
-        .frame(height: 60)
+        .frame(height: 70)
         .onChange(of: mainPageViewModel.tabPosition) { newValue in
-            debugPrint(mainPageViewModel.currentUser)
             switch newValue {
             case 0:
                 shopIconColor = "ColorPrimary"

@@ -10,6 +10,7 @@ import Foundation
 
 struct User: Codable {
     let handle: String
+    let name: String
     let email: String
     let password: String
     let rsi_token: String
@@ -22,7 +23,8 @@ struct User: Codable {
     let uec: Int
     let rec: Int
     
-    let hangarValue: Int
+    var hangarValue: Int
+    var currentHangarValue: Int = 0
     let totalSpent: Int
     
     let organization: String?
