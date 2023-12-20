@@ -20,7 +20,7 @@ public class DefaultApi {
     }
     
     
-    let defaultUserAgent: String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"
+    let defaultUserAgent: String = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5410.0 Safari/537.36"
 
     func getRequest(endPoint: String) -> DataRequest {
         var request = URLRequest(url: URL(string: serverAdress + endPoint)!)

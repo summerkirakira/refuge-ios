@@ -62,6 +62,8 @@ func appInit() async {
         translationDict = await checkTranslations(version: version!)
     }
     
+    await RsiApi.setCsrfToken()
+    
     
     await checkShipAlias(shipAliasUrl: "https://image.biaoju.site/starcitizen/formatted_ship_alias.1.0.9.json")
 }

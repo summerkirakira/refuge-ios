@@ -18,6 +18,9 @@ struct HangarSubItem: Codable {
     let insert_time: Int
     var chineseSubtitle: String? = nil
     var chineseTitle: String? = nil
+    var price: Int = 0
+    var fromShipPrice: Int = 0
+    var toShipPrice: Int = 0
 }
 
 struct Tag: Codable {

@@ -112,6 +112,7 @@ public class UserRepository: ObservableObject{
     func setCurrentUser(user: User) {
         self.addUser(user: user)
         UserDefaults.standard.set(user.handle, forKey: "current_user")
+        RsiApi.setToken(token: user.rsi_token)
     }
     
     func getCurrentUser() -> User? {
@@ -119,7 +120,11 @@ public class UserRepository: ObservableObject{
         if currentUserName == nil {
             return nil
         }
-        return getUser(handle: currentUserName!)
+        let user = getUser(handle: currentUserName!)
+        if user != nil {
+            RsiApi.setToken(token: user!.rsi_token)
+        }
+        return user
     }
     
     func getUsers() -> [User] {

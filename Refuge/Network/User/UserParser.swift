@@ -8,11 +8,16 @@
 import Foundation
 import SwiftSoup
 
-func parseNewUser(email: String, password: String, rsi_device: String, rsi_token: String) async throws -> User? {
-    RsiApi.setToken(token: rsi_token)
-    RsiApi.setDevice(device: rsi_device)
+func parseNewUser(email: String, password: String, rsi_device: String?, rsi_token: String?) async throws -> User? {
+    if rsi_token != nil {
+        RsiApi.setToken(token: rsi_token!)
+    }
+    if rsi_device != nil {
+        RsiApi.setDevice(device: rsi_device!)
+    }
     
     let referrel_page = try? await RsiApi.getPage(endPoint: "account/referral-program")
+//    debugPrint(referrel_page)
     if referrel_page == nil {
         return nil
     }
@@ -62,7 +67,11 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
         return nil
     }
     
-    let totalSpentString = try? billing_doc!.select(".spent-line").last()?.select("em").first()?.text()
+    if userHandle == nil {
+        return nil
+    }
+    
+    var totalSpentString = try? billing_doc!.select(".spent-line:last-of-type em").first()?.text()
         .replacingOccurrences(of: "$", with: "")
         .replacingOccurrences(of: " ", with: "")
         .replacingOccurrences(of: "USD", with: "")
@@ -82,29 +91,42 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
     var userImage = try? userInfoDoc!.select(".left-col").first()?.select(".thumb").first()?.select("img").first()?.attr("src")
     
     let enlisted = try? userInfoDoc!.select(".left-col").last()?.select(".entry").first()?.select("strong").first()?.text()
-    let orgName = try? userInfoDoc!.select(".right-col").first()?.select(".entry").first()?.select("a").first()?.text()
-    var orgLogoUrl = try? userInfoDoc!.select(".right-col").first()?.select(".thumb").first()?.select("img").first()?.attr("src")
-    let orgRank = try? userInfoDoc!.select(".right-col").first()?.select(".entry")[2].select("strong").first()?.text()
-    let orgId = try? userInfoDoc!.select(".right-col").first()?.select(".thumb").first()?.select("a").first()?.attr("href").split(separator: "/")[1]
+    var orgName: String? = nil
+    var orgRank: String? = nil
+    var orgLogoUrl: String? = nil
     var orgIdString: String? = nil
-    if orgId != nil {
-        orgIdString = String(orgId!)
-    }
-    let rankList = try? userInfoDoc!.select(".ranking").first()?.select("span")
     var orgLevel = 0
-    if rankList != nil {
-        for item in rankList! {
-            let activeString = try? item.attr("class")
-            if activeString == nil {
-                continue
-            }
-            if activeString! == "active" {
-                orgLevel += 1
+    orgName = try? userInfoDoc!.select(".right-col").first()?.select(".entry").first()?.select("a").first()?.text()
+    if orgName != nil {
+        orgLogoUrl = try? userInfoDoc!.select(".right-col").first()?.select(".thumb").first()?.select("img").first()?.attr("src")
+        orgRank = try? userInfoDoc!.select(".right-col").first()?.select(".entry")[2].select("strong").first()?.text()
+        let orgId = try? userInfoDoc!.select(".right-col").first()?.select(".thumb").first()?.select("a").first()?.attr("href").split(separator: "/")[1]
+        
+        var orgIdString: String? = nil
+        if orgId != nil {
+            orgIdString = String(orgId!)
+        }
+        let rankList = try? userInfoDoc!.select(".ranking").first()?.select("span")
+        
+        if rankList != nil {
+            for item in rankList! {
+                let activeString = try? item.attr("class")
+                if activeString == nil {
+                    continue
+                }
+                if activeString! == "active" {
+                    orgLevel += 1
+                }
             }
         }
+        
+        
+        
     }
     
-    debugPrint(userName, userHandle, userImage, userRECString, userCreditsString, totalSpentString, enlisted, orgName, orgLogoUrl, orgId, referralCode, recruitNumberString, totalReferralNumberString)
+    
+    
+    debugPrint(userName, userHandle, userImage, userRECString, userCreditsString, totalSpentString, enlisted, orgName, orgLogoUrl, orgIdString, referralCode, recruitNumberString, totalReferralNumberString)
     
     if (userImage == nil || userHandle == nil || referralCode == nil || recruitNumberString == nil || totalReferralNumberString == nil || userCreditsString == nil || userUECString == nil || userRECString == nil || totalSpentString == nil || enlisted == nil) {
         return nil
@@ -124,6 +146,12 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
     let registerTime = dateFormatter.date(from: enlisted!)
     dateFormatter.dateFormat = "yyyy年MM月dd日"
     let registerTimeString = dateFormatter.string(from: registerTime!)
+    
+    var rsiToken = rsi_token
+    
+    if rsiToken == nil {
+        rsiToken = RsiApi.rsi_token
+    }
 
     
     let newUser = User(
@@ -131,7 +159,7 @@ func parseNewUser(email: String, password: String, rsi_device: String, rsi_token
         name: userName!,
         email: email,
         password: password,
-        rsi_token: rsi_token,
+        rsi_token: rsiToken!,
         profileImage: userImage!,
         referralCode: referralCode!,
         referralCount: Int(recruitNumberString!)!,

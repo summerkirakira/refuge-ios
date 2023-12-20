@@ -22,6 +22,7 @@ struct RefugeApp: App {
 //                            try await userRepo.save()
 //                        }
                         await appInit()
+                        
                     } catch {
                         repository.items = []
                         do {

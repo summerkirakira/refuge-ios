@@ -10,12 +10,13 @@ import NukeUI
 
 struct ShipInfoTabView: View {
     @StateObject private var mainPageViewModel = MainPageViewModel()
+    
     var body: some View {
         ZStack(alignment: .top) {
-            CustomTopBar(mainPageViewModel: mainPageViewModel)
+            
             VStack(spacing: 0) {
                 TabView(selection: $mainPageViewModel.tabPosition) {
-                    Text("First tab")
+                    Text("Coming sooooon")
                         .tag(0)
                     HangarListView(mainPageViewModel: mainPageViewModel)
                         .tag(1)
@@ -34,7 +35,9 @@ struct ShipInfoTabView: View {
                 CustomTabBar(mainPageViewModel: mainPageViewModel)
             }
             .ignoresSafeArea()
+            CustomTopBar(mainPageViewModel: mainPageViewModel)
             SideMenu(mainPageViewModel: mainPageViewModel)
+            
         }.onAppear {
             Task.init {
                 do {
@@ -50,45 +53,81 @@ struct ShipInfoTabView: View {
                 }
             }
         }
+        
     }
 }
 
 struct CustomTopBar: View {
     @ObservedObject var mainPageViewModel: MainPageViewModel
     @State private var title: String = "我的机库"
+    @State private var topBarColor: String = "ColorTopBarBlack"
+    private let pipeline = ImagePipeline()
     var body: some View {
         VStack {
             HStack {
-//                Button(action: {
-//                    mainPageViewModel.isSideBarVisible.toggle()
-//                }) {
-//                    Image("ic_user_bottom")
-//                        .resizable()
-//                        .frame(width: 25, height: 25)
-//                        .padding(.leading, 10)
-//                        .foregroundColor(Color("ColorUnselected"))
-//                }
+                VStack(alignment: .leading, spacing: 5) {
+                    Rectangle()
+                        .foregroundColor(Color(topBarColor))
+                        .frame(width: 10)
+                        .frame(height: 2)
+                        .cornerRadius(1)
+                    Rectangle()
+                        .foregroundColor(Color(topBarColor))
+                        .frame(width: 8)
+                        .frame(height: 2)
+                        .cornerRadius(1)
+                    Rectangle()
+                        .foregroundColor(Color(topBarColor))
+                        .frame(width: 10)
+                        .frame(height: 2)
+                        .cornerRadius(1)
+                }
+                Button(action: {
+                    mainPageViewModel.isSideBarVisible.toggle()
+                }) {
+                    if mainPageViewModel.currentUser != nil {
+                        makeUserCircleImage(url: URL(string: mainPageViewModel.currentUser!.profileImage))
+                    } else {
+                        Image("ic_user_bottom")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(Color(topBarColor))
+                    }
+                    
+                }
                 Spacer()
                 Spacer()
-            }.padding(.top, 50)
+            }
+            .padding(.top, 50)
+            .padding(.horizontal, 20)
         }
         .frame(height: 85)
-        .background(Color.white)
+        .background(Color.clear)
         .ignoresSafeArea()
         .onChange(of: mainPageViewModel.tabPosition) { position in
             switch position {
             case 0:
-                title = "商店"
+                topBarColor = "ColorTopBarBlack"
             case 1:
-                title = "我的机库"
+                topBarColor = "ColorTopBarBlack"
             case 2:
-                title = ""
+                topBarColor = "ColorTopBarWhite"
             case 3:
-                title = ""
+                topBarColor = "ColorTopBarWhite"
             default:
-                title = ""
+                topBarColor = "ColorTopBarWhite"
             }
+            
         }
+    }
+    
+    func makeUserCircleImage(url: URL?) -> some View {
+        LazyImage(source: url)
+            .animation(.default)
+            .pipeline(pipeline)
+            .cornerRadius(20)
+            .frame(width: 27)
+            .frame(height: 27)
     }
 }
 
@@ -106,6 +145,7 @@ struct CustomTabBar: View {
     @State private var hangarIconColor: String = "ColorUnselected"
     @State private var mainIconColor: String = "ColorPrimary"
     @State private var meIconColor: String = "ColorUnselected"
+    @State private var topBarColor: String = "ColorTopBarBlack"
     private let pipeline = ImagePipeline()
     var body: some View {
         
@@ -191,6 +231,17 @@ struct CustomTabBar: View {
                 hangarIconColor = "ColorUnselected"
                 mainIconColor = "ColorUnselected"
             }
+            
+            Task {
+//                let token = try? await RsiApi.getDefaultRsiToken()
+//                RsiApi.setToken(token: token!)
+//                RsiApi.setDevice(device: "")
+//                await RsiApi.setCsrfToken()
+                
+//                debugPrint(await RecaptchaV3().getRecaptchaToken())
+            }
+            
+            
         }
         
     }

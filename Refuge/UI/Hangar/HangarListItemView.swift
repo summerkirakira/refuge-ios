@@ -17,7 +17,7 @@ struct HangarListItemView: View {
             makeImage(url: URL(string: data.image)!)
                 .overlay (
                     makeDial(num: data.number)
-                        .position(x: 82, y:82)
+                        .position(x: 84, y:84)
                 )
             VStack(spacing: 0) {
                 HStack {
@@ -130,11 +130,12 @@ struct HangarListItemView: View {
     func makeDial(num: Int) -> some View {
         Circle()
             .fill(Color("ItemNumberDialBlue"))
-            .frame(height: 34)
-            .frame(width: 34)
+            .frame(height: 30)
+            .frame(width: 30)
             .overlay(
                 Text("+\(data.number)")
                     .foregroundColor(.white)
+                    .minimumScaleFactor(0.5)
             )
 //            .shadow(color: .gray, radius: 2, x: 0, y: 2)
     }

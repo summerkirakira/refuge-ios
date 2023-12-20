@@ -33,6 +33,11 @@
 		9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */; };
 		9F65A6712B30968100AA9465 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6702B30968100AA9465 /* SideBar.swift */; };
 		9F65A6782B3129BF00AA9465 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6772B3129BF00AA9465 /* UserInfoView.swift */; };
+		9F65A67A2B3160A300AA9465 /* BaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6792B3160A300AA9465 /* BaseRequest.swift */; };
+		9F65A67C2B31677400AA9465 /* LoginProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A67B2B31677400AA9465 /* LoginProperty.swift */; };
+		9F65A67E2B31F2A800AA9465 /* Website.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A67D2B31F2A800AA9465 /* Website.swift */; };
+		9F65A6812B32189700AA9465 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6802B32189700AA9465 /* Login.swift */; };
+		9F65A6842B3247A900AA9465 /* LoginMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6832B3247A900AA9465 /* LoginMenu.swift */; };
 		9FF09DA62954ECFD00CB0CC0 /* HangarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */; };
 		9FF09DA9295541A400CB0CC0 /* ShipInfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */; };
 		9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF243232955598E0050904C /* HangarItemRepository.swift */; };
@@ -93,6 +98,11 @@
 		9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunc.swift; sourceTree = "<group>"; };
 		9F65A6702B30968100AA9465 /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
 		9F65A6772B3129BF00AA9465 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		9F65A6792B3160A300AA9465 /* BaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRequest.swift; sourceTree = "<group>"; };
+		9F65A67B2B31677400AA9465 /* LoginProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProperty.swift; sourceTree = "<group>"; };
+		9F65A67D2B31F2A800AA9465 /* Website.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Website.swift; sourceTree = "<group>"; };
+		9F65A6802B32189700AA9465 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		9F65A6832B3247A900AA9465 /* LoginMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginMenu.swift; sourceTree = "<group>"; };
 		9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarListView.swift; sourceTree = "<group>"; };
 		9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipInfoTabView.swift; sourceTree = "<group>"; };
 		9FF243232955598E0050904C /* HangarItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarItemRepository.swift; sourceTree = "<group>"; };
@@ -156,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				9F0BCFB929565BB000FD536C /* HangarParser.swift */,
+				9F65A67D2B31F2A800AA9465 /* Website.swift */,
 			);
 			path = Hangar;
 			sourceTree = "<group>";
@@ -180,6 +191,7 @@
 		9F0BCFC12956607D00FD536C /* RSI */ = {
 			isa = PBXGroup;
 			children = (
+				9F65A67B2B31677400AA9465 /* LoginProperty.swift */,
 			);
 			path = RSI;
 			sourceTree = "<group>";
@@ -285,7 +297,8 @@
 		9F4A8CBB295466A000C566C1 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				9F65A6722B309E8600AA9465 /* New Group */,
+				9F65A67F2B32188500AA9465 /* RSI */,
+				9F65A6722B309E8600AA9465 /* GraphQL */,
 				9F43BCD32B1490AE00135755 /* Utils */,
 				9F43BCD02B14902D00135755 /* User */,
 				9F0BCFBD29565C4F00FD536C /* Models */,
@@ -336,11 +349,12 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		9F65A6722B309E8600AA9465 /* New Group */ = {
+		9F65A6722B309E8600AA9465 /* GraphQL */ = {
 			isa = PBXGroup;
 			children = (
+				9F65A6792B3160A300AA9465 /* BaseRequest.swift */,
 			);
-			path = "New Group";
+			path = GraphQL;
 			sourceTree = "<group>";
 		};
 		9F65A6762B3129AC00AA9465 /* User */ = {
@@ -351,11 +365,20 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		9F65A67F2B32188500AA9465 /* RSI */ = {
+			isa = PBXGroup;
+			children = (
+				9F65A6802B32189700AA9465 /* Login.swift */,
+			);
+			path = RSI;
+			sourceTree = "<group>";
+		};
 		9FF09DA72955415F00CB0CC0 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */,
 				9F65A6702B30968100AA9465 /* SideBar.swift */,
+				9F65A6832B3247A900AA9465 /* LoginMenu.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -611,21 +634,26 @@
 				9F4A8CC32954696600C566C1 /* HangarItemProperty.swift in Sources */,
 				9F43BCCB2B144AB800135755 /* Utils.swift in Sources */,
 				9F65A6712B30968100AA9465 /* SideBar.swift in Sources */,
+				9F65A67A2B3160A300AA9465 /* BaseRequest.swift in Sources */,
 				9F43BCD72B1490E900135755 /* Recaptcha.swift in Sources */,
 				9F0BCFBA29565BB000FD536C /* HangarParser.swift in Sources */,
 				9F0BCFBC29565C0700FD536C /* DefaultApi.swift in Sources */,
 				9FF09DA62954ECFD00CB0CC0 /* HangarListView.swift in Sources */,
 				9F4A8C912954625C00C566C1 /* ContentView.swift in Sources */,
 				9F43BCCD2B148B0200135755 /* UserRepository.swift in Sources */,
+				9F65A6812B32189700AA9465 /* Login.swift in Sources */,
 				9F4A8CBF2954688B00C566C1 /* HangarListItemView.swift in Sources */,
 				9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */,
 				9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */,
 				9F43BCCF2B148B5800135755 /* Models.swift in Sources */,
+				9F65A6842B3247A900AA9465 /* LoginMenu.swift in Sources */,
 				9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */,
 				9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */,
 				9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */,
+				9F65A67C2B31677400AA9465 /* LoginProperty.swift in Sources */,
 				9F0BCFC029565C8A00FD536C /* Version.swift in Sources */,
 				9F0BCFB629565B8B00FD536C /* RSIApi.swift in Sources */,
+				9F65A67E2B31F2A800AA9465 /* Website.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

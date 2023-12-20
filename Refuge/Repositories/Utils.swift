@@ -86,19 +86,33 @@ func getHangarItemPrice(hangarItem: HangarItem) -> HangarItem {
             newHangarItem.currentPrice = -1
             return newHangarItem
         }
+        
+        if hangarItem.items.count > 0 {
+            var newSubItem = hangarItem.items[0]
+            newSubItem.fromShipPrice = fromShip!.getHighestSkuPrice()
+            newSubItem.toShipPrice = toShip!.getHighestSkuPrice()
+            newHangarItem.items = [newSubItem]
+        }
+        
         let currentPrice = toShip!.getHighestSkuPrice() - fromShip!.getHighestSkuPrice()
         newHangarItem.currentPrice = currentPrice
         return newHangarItem
     } else {
         var currentPrice = 0
+        var newSubItemList: [HangarSubItem] = []
         for subItem in hangarItem.items {
+            var newSubItem = subItem
             if subItem.kind == "Ship" {
                 let shipAlias = getShipAlias(shipName: getFormattedShipName(shipName: subItem.title))
                 if shipAlias != nil {
-                    currentPrice += shipAlias!.getHighestSkuPrice()
+                    let subItemCurrentPrice = shipAlias!.getHighestSkuPrice()
+                    currentPrice += subItemCurrentPrice
+                    newSubItem.price = subItemCurrentPrice
                 }
             }
+            newSubItemList.append(newSubItem)
         }
+        newHangarItem.items = newSubItemList
         for alsoContain in hangarItem.alsoContains.split(separator: "#") {
             if alsoContain == "Squadron 42 Digital Download" {
                 currentPrice += 4500

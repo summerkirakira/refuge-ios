@@ -92,8 +92,8 @@ public class HangarItemRepository: ObservableObject{
     func refreshHangar() async {
         var page = 1
         var totalItems: [HangarItem] = []
-        RsiApi.setToken(token: "f28f2f29020fe3852694d6210ee81214")
-        RsiApi.setDevice(device: "ninv6pihctq8lnzkwaqimafsdf")
+//        RsiApi.setToken(token: "f28f2f29020fe3852694d6210ee81214")
+//        RsiApi.setDevice(device: "ninv6pihctq8lnzkwaqimafsdf")
         while(true) {
             do {
                 let data = try await RsiApi.getPage(endPoint: "account/pledges?page=\(page)&pagesize=10")

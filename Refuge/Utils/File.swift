@@ -87,3 +87,16 @@ func loadDictionaryFromPlist(dictName: String) -> [String: String]? {
         return nil
     }
 }
+
+
+func getDeviceId() -> String {
+    let deviceID = UserDefaults.standard.string(forKey: "deviceId")
+    if deviceID == nil {
+        return ""
+    }
+    return deviceID!
+}
+
+func setDeviceId(deviceId: String) {
+    UserDefaults.standard.set(deviceId, forKey: "deviceId")
+}

@@ -148,7 +148,7 @@ struct UserInfoMenu: View {
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
                             HStack {
-                                Text("邀请数量(未购买游戏包)")
+                                Text("邀请进行中(未购买)")
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                                 Spacer()
@@ -194,6 +194,10 @@ struct UserInfoMenu: View {
                 }
                 .listStyle(PlainListStyle())
                 .edgesIgnoringSafeArea(.all)
+        } else {
+            VStack {
+                LoginMenu(mainViewModel: mainPageViewModel)
+            }
         }
     }
     
@@ -210,6 +214,9 @@ struct UserInfoMenu: View {
                         .cornerRadius(100)
                         .frame(width: 95)
                         .frame(height: 95)
+                    LoginMenu(mainViewModel: mainPageViewModel)
+                        .padding(.leading, 95)
+                        .padding(.top, 80)
                 }
             }
         

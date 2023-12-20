@@ -104,6 +104,14 @@ struct HangarListView: View {
                                         .lineLimit(3)
                                         .padding(.all, 0)
                                         .padding(.top, 5)
+                                    Spacer()
+                                    HStack {
+                                        Text("可融: $\(mainPageViewModel.selectedItem!.price / 100)")
+                                            .minimumScaleFactor(0.5)
+                                        Text("当前: $\(mainPageViewModel.selectedItem!.currentPrice / 100)")
+                                            .foregroundColor(Color.green)
+                                            .minimumScaleFactor(0.5)
+                                    }
                                 }
                                 Spacer()
                             }
@@ -143,6 +151,31 @@ struct HangarListView: View {
                                         Text(mainPageViewModel.selectedItem!.items[index].subtitle)
                                             .font(.system(size: 16))
                                             .padding(0)
+                                        
+                                        
+                                        if mainPageViewModel.selectedItem!.items[index].fromShipPrice > 0 {
+                                            HStack {
+                                                Text("从")
+                                                    .font(.system(size: 14))
+                                                Text("$\(mainPageViewModel.selectedItem!.items[index].fromShipPrice / 100)")
+                                                    .font(.system(size: 18))
+                                                    .foregroundColor(Color.green)
+                                                Text("到")
+                                                    .font(.system(size: 14))
+                                                Text("$\(mainPageViewModel.selectedItem!.items[index].toShipPrice / 100)")
+                                                    .font(.system(size: 18))
+                                                    .foregroundColor(Color.green)
+                                            }
+                                        } else {
+                                            if mainPageViewModel.selectedItem!.items[index].price > 0 {
+                                                VStack(alignment: .trailing) {
+                                                    Text("$\(mainPageViewModel.selectedItem!.items[index].price / 100)")
+                                                        .foregroundColor(Color.green)
+                                                }
+                                            }
+                                        }
+                                        
+                                        
                                     }
                                     .padding(0)
                                     Spacer()
@@ -200,7 +233,7 @@ struct HangarListView: View {
             .ignoresSafeArea()
         } else {
             VStack {
-                Text("LOGIN")
+                LoginMenu(mainViewModel: mainPageViewModel)
             }
         }
         
