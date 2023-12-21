@@ -100,6 +100,7 @@ struct LoginMenu: View {
                         if user != nil {
                             userRepo.setCurrentUser(user: user!)
                             mainViewModel.currentUser = user!
+                            userRepo.saveSync(users: userRepo.users)
                         }
                     }
                     username = ""
