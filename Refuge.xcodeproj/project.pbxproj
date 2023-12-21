@@ -13,6 +13,9 @@
 		9F0BCFBA29565BB000FD536C /* HangarParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BCFB929565BB000FD536C /* HangarParser.swift */; };
 		9F0BCFBC29565C0700FD536C /* DefaultApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BCFBB29565C0700FD536C /* DefaultApi.swift */; };
 		9F0BCFC029565C8A00FD536C /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BCFBF29565C8A00FD536C /* Version.swift */; };
+		9F22F5F02B34158800EE21FD /* ShipDetailBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F5EF2B34158800EE21FD /* ShipDetailBottomSheet.swift */; };
+		9F22F5F22B3425B100EE21FD /* UtilUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F5F12B3425B100EE21FD /* UtilUI.swift */; };
+		9F22F5F42B34376000EE21FD /* GiftButtonMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F22F5F32B34376000EE21FD /* GiftButtonMenu.swift */; };
 		9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F43BCC82B11D58A00135755 /* HangarDetailBottomSheet.swift */; };
 		9F43BCCB2B144AB800135755 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F43BCCA2B144AB800135755 /* Utils.swift */; };
 		9F43BCCD2B148B0200135755 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F43BCCC2B148B0200135755 /* UserRepository.swift */; };
@@ -38,6 +41,9 @@
 		9F65A67E2B31F2A800AA9465 /* Website.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A67D2B31F2A800AA9465 /* Website.swift */; };
 		9F65A6812B32189700AA9465 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6802B32189700AA9465 /* Login.swift */; };
 		9F65A6842B3247A900AA9465 /* LoginMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6832B3247A900AA9465 /* LoginMenu.swift */; };
+		9F65A6862B3318EA00AA9465 /* Hangar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6852B3318EA00AA9465 /* Hangar.swift */; };
+		9F65A6882B336FCA00AA9465 /* HangarFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6872B336FCA00AA9465 /* HangarFunc.swift */; };
+		9F65A68A2B33739700AA9465 /* ReclaimButtonMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6892B33739700AA9465 /* ReclaimButtonMenu.swift */; };
 		9FF09DA62954ECFD00CB0CC0 /* HangarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */; };
 		9FF09DA9295541A400CB0CC0 /* ShipInfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */; };
 		9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF243232955598E0050904C /* HangarItemRepository.swift */; };
@@ -74,6 +80,9 @@
 		9F0BCFB929565BB000FD536C /* HangarParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarParser.swift; sourceTree = "<group>"; };
 		9F0BCFBB29565C0700FD536C /* DefaultApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultApi.swift; sourceTree = "<group>"; };
 		9F0BCFBF29565C8A00FD536C /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		9F22F5EF2B34158800EE21FD /* ShipDetailBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipDetailBottomSheet.swift; sourceTree = "<group>"; };
+		9F22F5F12B3425B100EE21FD /* UtilUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilUI.swift; sourceTree = "<group>"; };
+		9F22F5F32B34376000EE21FD /* GiftButtonMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftButtonMenu.swift; sourceTree = "<group>"; };
 		9F43BCC82B11D58A00135755 /* HangarDetailBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarDetailBottomSheet.swift; sourceTree = "<group>"; };
 		9F43BCCA2B144AB800135755 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		9F43BCCC2B148B0200135755 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
@@ -103,6 +112,9 @@
 		9F65A67D2B31F2A800AA9465 /* Website.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Website.swift; sourceTree = "<group>"; };
 		9F65A6802B32189700AA9465 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		9F65A6832B3247A900AA9465 /* LoginMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginMenu.swift; sourceTree = "<group>"; };
+		9F65A6852B3318EA00AA9465 /* Hangar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hangar.swift; sourceTree = "<group>"; };
+		9F65A6872B336FCA00AA9465 /* HangarFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarFunc.swift; sourceTree = "<group>"; };
+		9F65A6892B33739700AA9465 /* ReclaimButtonMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReclaimButtonMenu.swift; sourceTree = "<group>"; };
 		9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarListView.swift; sourceTree = "<group>"; };
 		9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipInfoTabView.swift; sourceTree = "<group>"; };
 		9FF243232955598E0050904C /* HangarItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarItemRepository.swift; sourceTree = "<group>"; };
@@ -167,6 +179,7 @@
 			children = (
 				9F0BCFB929565BB000FD536C /* HangarParser.swift */,
 				9F65A67D2B31F2A800AA9465 /* Website.swift */,
+				9F65A6872B336FCA00AA9465 /* HangarFunc.swift */,
 			);
 			path = Hangar;
 			sourceTree = "<group>";
@@ -192,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				9F65A67B2B31677400AA9465 /* LoginProperty.swift */,
+				9F65A6852B3318EA00AA9465 /* Hangar.swift */,
 			);
 			path = RSI;
 			sourceTree = "<group>";
@@ -290,6 +304,7 @@
 				9F65A6762B3129AC00AA9465 /* User */,
 				9FF09DA72955415F00CB0CC0 /* Main */,
 				9F4A8CBD2954684500C566C1 /* Hangar */,
+				9F22F5F12B3425B100EE21FD /* UtilUI.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -327,6 +342,9 @@
 				9F4A8CBE2954688B00C566C1 /* HangarListItemView.swift */,
 				9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */,
 				9F43BCC82B11D58A00135755 /* HangarDetailBottomSheet.swift */,
+				9F65A6892B33739700AA9465 /* ReclaimButtonMenu.swift */,
+				9F22F5EF2B34158800EE21FD /* ShipDetailBottomSheet.swift */,
+				9F22F5F32B34376000EE21FD /* GiftButtonMenu.swift */,
 			);
 			path = Hangar;
 			sourceTree = "<group>";
@@ -632,9 +650,13 @@
 				9F0BCFB829565B9800FD536C /* CirnoApi.swift in Sources */,
 				9FF09DA9295541A400CB0CC0 /* ShipInfoTabView.swift in Sources */,
 				9F4A8CC32954696600C566C1 /* HangarItemProperty.swift in Sources */,
+				9F65A68A2B33739700AA9465 /* ReclaimButtonMenu.swift in Sources */,
+				9F65A6882B336FCA00AA9465 /* HangarFunc.swift in Sources */,
 				9F43BCCB2B144AB800135755 /* Utils.swift in Sources */,
 				9F65A6712B30968100AA9465 /* SideBar.swift in Sources */,
+				9F22F5F42B34376000EE21FD /* GiftButtonMenu.swift in Sources */,
 				9F65A67A2B3160A300AA9465 /* BaseRequest.swift in Sources */,
+				9F22F5F02B34158800EE21FD /* ShipDetailBottomSheet.swift in Sources */,
 				9F43BCD72B1490E900135755 /* Recaptcha.swift in Sources */,
 				9F0BCFBA29565BB000FD536C /* HangarParser.swift in Sources */,
 				9F0BCFBC29565C0700FD536C /* DefaultApi.swift in Sources */,
@@ -644,6 +666,7 @@
 				9F65A6812B32189700AA9465 /* Login.swift in Sources */,
 				9F4A8CBF2954688B00C566C1 /* HangarListItemView.swift in Sources */,
 				9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */,
+				9F65A6862B3318EA00AA9465 /* Hangar.swift in Sources */,
 				9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */,
 				9F43BCCF2B148B5800135755 /* Models.swift in Sources */,
 				9F65A6842B3247A900AA9465 /* LoginMenu.swift in Sources */,
@@ -651,6 +674,7 @@
 				9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */,
 				9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */,
 				9F65A67C2B31677400AA9465 /* LoginProperty.swift in Sources */,
+				9F22F5F22B3425B100EE21FD /* UtilUI.swift in Sources */,
 				9F0BCFC029565C8A00FD536C /* Version.swift in Sources */,
 				9F0BCFB629565B8B00FD536C /* RSIApi.swift in Sources */,
 				9F65A67E2B31F2A800AA9465 /* Website.swift in Sources */,
@@ -815,6 +839,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
+				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Refuge/Info.plist;
@@ -831,7 +856,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vip.kirakira.Refuge;
+				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -852,6 +877,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
+				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Refuge/Info.plist;
@@ -868,7 +894,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vip.kirakira.Refuge;
+				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

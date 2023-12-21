@@ -12,6 +12,10 @@ import NukeUI
 @MainActor
 struct HangarListItemView: View {
     @Binding var data: HangarItem
+    @State var isShowReclaimModeAlert = false
+    @State var isShowReclaimWarningAlert = false
+    @State var relaimMode = 0
+    @StateObject var mainViewModel: MainPageViewModel
     var body: some View {
         HStack {
             makeImage(url: URL(string: data.image)!)
@@ -48,7 +52,8 @@ struct HangarListItemView: View {
                         makeTag(color: Color("GiftablePink"), text: "已礼物")
                     }
                     if data.tags.contains("可回收") {
-                        makeTag(color: Color("ReclaimableGrey"), text: "可回收")
+                        ReclaimButtonMenu(pledgeIdList: $data.idList, mainPageViewModel: mainViewModel, currentItem: $data)
+                        
                     }
                     if data.tags.contains("可升级") {
                         makeTag(color: Color("CanUpgradeBlue"), text: "可升级")

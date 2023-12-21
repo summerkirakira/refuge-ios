@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (5.6.4)
+  - AlertToast (1.3.9)
   - Gifu (3.3.1)
   - Nuke (10.7.1)
   - NukeUI (0.8.0):
@@ -9,12 +10,14 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.6.4)
+  - AlertToast
   - NukeUI (~> 0.8.0)
   - SwiftSoup
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AlertToast
     - Gifu
     - Nuke
     - NukeUI
@@ -22,11 +25,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
+  AlertToast: e8db15da727beff75500bcf33a78cd617f408fa1
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Nuke: 279f17a599fd1c83cf51de5e0e1f2db143a287b0
   NukeUI: 6e99837a8d066c93baa4262692d9ea9ffbc863ba
   SwiftSoup: 3384f2e618cfc1b3cbc7852c16692fe8de13fb8f
 
-PODFILE CHECKSUM: 3527fe2b75630d50311d1c3ba8768a6384317f74
+PODFILE CHECKSUM: ccbaa1ff7dc52545d58657dc301ab4395d993f55
 
 COCOAPODS: 1.11.3

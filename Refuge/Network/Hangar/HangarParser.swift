@@ -28,7 +28,7 @@ func imageStringToUrl(imageString: String) -> String {
     if imageUrl.starts(with: "/") {
         imageUrl = "https://robertsspaceindustries.com" + imageUrl
     }
-    debugPrint(imageUrl)
+//    debugPrint(imageUrl)
     return imageUrl
 }
 

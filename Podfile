@@ -19,5 +19,6 @@ target 'Refuge' do
   pod 'Alamofire', '~> 5.6.4'
   pod 'NukeUI', '~> 0.8.0'
   pod 'SwiftSoup'
+  pod 'AlertToast'
 
 end

@@ -35,8 +35,6 @@ func Rsilogin(rsiAPI: RSIApi = RsiApi, email: String, password: String) async ->
     
 //    await rsiAPI.setCsrfToken()
     
-    debugPrint(result)
-    
     if result == nil {
         return nil
     }
@@ -84,5 +82,16 @@ func RsiMultiLogin(rsiAPI: RSIApi = RsiApi, code: String) async -> Bool {
         return false
     }
     
+    return true
+}
+
+func isLogin(rsiAPI: RSIApi = RsiApi) async -> Bool {
+    let page = try? await rsiAPI.getPage(endPoint: "account/settings")
+    if page == nil {
+        return false
+    }
+    if page!.contains("You must be authenticated to reach this area.") {
+        return false
+    }
     return true
 }

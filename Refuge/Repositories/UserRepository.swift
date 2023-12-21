@@ -47,36 +47,81 @@ public class UserRepository: ObservableObject{
         }
     }
     
+    func loadSync() {
+        do {
+            let fileURL = try UserRepository.fileURL()
+            let users = try loadArrayFromJSON(User.self, from: fileURL)
+            self.users = users
+        } catch {
+            self.users = []
+        }
+    }
+    
+    
+//    func load(completion: @escaping (Result<[User], Error>)->Void) {
+//        DispatchQueue.global(qos: .background).async {
+//            do {
+//                let fileURL = try UserRepository.fileURL()
+//                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
+//                    DispatchQueue.main.async {
+//                        completion(.success([]))
+//                    }
+//                    return
+//                }
+//                let users = try JSONDecoder().decode([User].self, from: file.availableData)
+//                DispatchQueue.main.async {
+//                    self.users = users
+//                    completion(.success(users))
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//            }
+//        }
+//    }
     
     func load(completion: @escaping (Result<[User], Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
             do {
                 let fileURL = try UserRepository.fileURL()
-                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
-                    DispatchQueue.main.async {
-                        completion(.success([]))
-                    }
-                    return
-                }
-                let users = try JSONDecoder().decode([User].self, from: file.availableData)
+                let users = try loadArrayFromJSON(User.self, from: fileURL)
                 DispatchQueue.main.async {
                     self.users = users
                     completion(.success(users))
                 }
             } catch {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.success([]))
                 }
             }
         }
     }
     
+//    func save(scrums: [User], completion: @escaping (Result<Int, Error>)->Void) {
+//        DispatchQueue.global(qos: .background).async {
+//            do {
+//                let data = try JSONEncoder().encode(scrums)
+//                let outfile = try UserRepository.fileURL()
+//                try data.write(to: outfile)
+//                DispatchQueue.main.async {
+//                    self.users = scrums
+//                    completion(.success(scrums.count))
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//            }
+//        }
+//    }
     func save(scrums: [User], completion: @escaping (Result<Int, Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
             do {
-                let data = try JSONEncoder().encode(scrums)
+//                let data = try JSONEncoder().encode(scrums)
                 let outfile = try UserRepository.fileURL()
-                try data.write(to: outfile)
+//                try data.write(to: outfile)
+                try saveArrayAsJSON(scrums, to: outfile)
                 DispatchQueue.main.async {
                     self.users = scrums
                     completion(.success(scrums.count))
@@ -86,6 +131,17 @@ public class UserRepository: ObservableObject{
                     completion(.failure(error))
                 }
             }
+        }
+    }
+    
+    func saveSync(users: [User]) {
+        do {
+            let outfile = try UserRepository.fileURL()
+            try saveArrayAsJSON(users, to: outfile)
+            self.users = users
+
+        } catch {
+
         }
     }
     

@@ -22,6 +22,15 @@ struct LoginMenu: View {
                 Button(user.handle) {
                     userRepo.setCurrentUser(user: user)
                     mainViewModel.currentUser = user
+                    Task {
+                        do {
+                            mainViewModel.needCheckLoginStatus = true
+                            try await userRepo.save()
+                        } catch {
+                            
+                        }
+                        
+                    }
                 }
             }
 
@@ -49,6 +58,8 @@ struct LoginMenu: View {
             Button("取消", role: .cancel) { }
             Button("确认") {
                 Task {
+                    mainViewModel.loadingTitle = "正在登录中..."
+                    mainViewModel.isShowLoading = true
                     let firstLoginStep = await Rsilogin(email: username, password: password)
                     if firstLoginStep != nil {
                         rsiToken = firstLoginStep!
@@ -59,9 +70,13 @@ struct LoginMenu: View {
                         if user != nil {
                             userRepo.setCurrentUser(user: user!)
                             mainViewModel.currentUser = user!
-                            try await userRepo.save()
+                            userRepo.saveSync(users: userRepo.users)
                             username = ""
                             password = ""
+                            mainViewModel.isShowLoading = false
+                        } else {
+                            mainViewModel.isShowLoading = false
+                            showErrorMessage(mainPageViewModel: mainViewModel, errorTitle: "登录失败", errorSubtitle: "请检查账号和密码重试哦")
                         }
                     }
                     
@@ -76,10 +91,12 @@ struct LoginMenu: View {
             Button("取消", role: .cancel) { }
             Button("确认") {
                 Task {
+                    mainViewModel.loadingTitle = "正在验证账户"
+                    mainViewModel.isShowLoading = true
                     let result = await RsiMultiLogin(code: multiStepCode)
                     if result == true {
                         let user = try? await parseNewUser(email: username, password: password, rsi_device: getDeviceId(), rsi_token: rsiToken)
-                        debugPrint(user)
+//                        debugPrint(user)
                         if user != nil {
                             userRepo.setCurrentUser(user: user!)
                             mainViewModel.currentUser = user!
@@ -88,6 +105,7 @@ struct LoginMenu: View {
                     username = ""
                     password = ""
                     multiStepCode = ""
+                    mainViewModel.isShowLoading = false
                 }
             }
         } message: {

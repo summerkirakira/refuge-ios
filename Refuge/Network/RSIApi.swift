@@ -113,6 +113,8 @@ public class RSIApi: DefaultApi{
         headers["User-Agent"] = defaultUserAgent
         headers["X-Csrf-Token"] = rsi_csrf_token
         headers["cookie"] = cookieString
+        headers["x-rsi-token"] = rsi_token
+        headers["x-rsi-device"] = rsi_device
         
         
 
@@ -166,6 +168,27 @@ public class RSIApi: DefaultApi{
                     }
                     let token = setCookieHeader?.components(separatedBy: ";")[0].components(separatedBy: "=")[1].trimmingCharacters(in: .whitespacesAndNewlines)
                     continuation.resume(returning: token)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    
+    func basicPostRequest<Input: Encodable, Output: Decodable>(endPoint: String, postBody: Input) async throws -> Output {
+        try await withCheckedThrowingContinuation{ continuation in
+            AF.request(serverAdress + endPoint,
+                       method: .post,
+                       parameters: postBody,
+                       encoder: JSONParameterEncoder.default,
+                       headers: self.getHeaders()
+            )
+            .responseDecodable(of: Output.self) { response in
+                switch response.result {
+                case .success(let value):
+                    debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
+                    continuation.resume(returning: value)
                 case .failure(let error):
                     continuation.resume(throwing: error)
                 }

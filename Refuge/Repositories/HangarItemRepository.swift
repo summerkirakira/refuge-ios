@@ -48,28 +48,65 @@ public class HangarItemRepository: ObservableObject{
     }
     
     
+//    func load(completion: @escaping (Result<[HangarItem], Error>)->Void) {
+//        DispatchQueue.global(qos: .background).async {
+//            do {
+//                let fileURL = try HangarItemRepository.fileURL()
+//                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
+//                    DispatchQueue.main.async {
+//                        completion(.success([]))
+//                    }
+//                    return
+//                }
+//                let hangarItems = try JSONDecoder().decode([HangarItem].self, from: file.availableData)
+//                DispatchQueue.main.async {
+//                    self.items = hangarItems
+//                    completion(.success(hangarItems))
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    completion(.failure(error))
+//                }
+//            }
+//        }
+//    }
     func load(completion: @escaping (Result<[HangarItem], Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
             do {
                 let fileURL = try HangarItemRepository.fileURL()
-                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
-                    DispatchQueue.main.async {
-                        completion(.success([]))
-                    }
-                    return
-                }
-                let hangarItems = try JSONDecoder().decode([HangarItem].self, from: file.availableData)
+                let hangarItems = try loadArrayFromJSON(HangarItem.self, from: fileURL)
                 DispatchQueue.main.async {
                     self.items = hangarItems
                     completion(.success(hangarItems))
                 }
             } catch {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.success([]))
                 }
             }
         }
     }
+    
+    func loadSync() {
+        do {
+            let fileURL = try HangarItemRepository.fileURL()
+            let hangarItems = try loadArrayFromJSON(HangarItem.self, from: fileURL)
+            self.items = hangarItems
+        } catch {
+            self.items = []
+        }
+    }
+    
+    func saveSync(items: [HangarItem]) {
+        do {
+            let outfile = try HangarItemRepository.fileURL()
+            try saveArrayAsJSON(items, to: outfile)
+            self.items = items
+        } catch {
+            
+        }
+    }
+    
     
     func save(scrums: [HangarItem], completion: @escaping (Result<Int, Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
@@ -115,7 +152,7 @@ public class HangarItemRepository: ObservableObject{
         totalItems = addTagsToHangarItems(hangarItems: totalItems)
         if (totalItems.count > 0) {
             self.items = totalItems
-            try! await self.save()
+            self.saveSync(items: self.items)
         }
     }
     

@@ -295,8 +295,8 @@ public final class CharacterReader {
 
     public func containsIgnoreCase(_ seq: String ) -> Bool {
         // used to check presence of </title>, </style>. only finds consistent case.
-        let loScan = seq.lowercased(with: Locale(identifier: "en"))
-        let hiScan = seq.uppercased(with: Locale(identifier: "eng"))
+        let loScan = seq.lowercased()
+        let hiScan = seq.uppercased()
         return nextIndexOf(loScan) != nil || nextIndexOf(hiScan) != nil
     }
 

@@ -7,53 +7,109 @@
 
 import SwiftUI
 import NukeUI
+import AlertToast
 
 struct ShipInfoTabView: View {
     @StateObject private var mainPageViewModel = MainPageViewModel()
+    @State var isFinishedLoading = false
     
     var body: some View {
         ZStack(alignment: .top) {
-            
-            VStack(spacing: 0) {
-                TabView(selection: $mainPageViewModel.tabPosition) {
-                    Text("Coming sooooon")
-                        .tag(0)
-                    HangarListView(mainPageViewModel: mainPageViewModel)
-                        .tag(1)
-                    Text("First tab")
-                        .tag(2)
-                    UserInfoMenu(mainPageViewModel: mainPageViewModel)
-                        .tag(3)
-                    
-                }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .onChange(of: mainPageViewModel.tabPosition) { newSelection in
+            if (isFinishedLoading) {
+                VStack(spacing: 0) {
+                    TabView(selection: $mainPageViewModel.tabPosition) {
+                        Text("Coming sooooon")
+                            .tag(0)
+                        HangarListView(mainPageViewModel: mainPageViewModel)
+                            .tag(1)
+                        Text("First tab")
+                            .tag(2)
+                        UserInfoMenu(mainPageViewModel: mainPageViewModel)
+                            .tag(3)
+                        
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .onChange(of: mainPageViewModel.tabPosition) { newSelection in
 
+                    }
+                    .ignoresSafeArea()
+                    .padding(.all, 0)
+                    CustomTabBar(mainPageViewModel: mainPageViewModel)
                 }
                 .ignoresSafeArea()
-                .padding(.all, 0)
-                CustomTabBar(mainPageViewModel: mainPageViewModel)
+                CustomTopBar(mainPageViewModel: mainPageViewModel)
+                SideMenu(mainPageViewModel: mainPageViewModel)
             }
-            .ignoresSafeArea()
-            CustomTopBar(mainPageViewModel: mainPageViewModel)
-            SideMenu(mainPageViewModel: mainPageViewModel)
-            
-        }.onAppear {
+        }
+        .onChange(of: mainPageViewModel.needCheckLoginStatus) { newValue in
+            if newValue == true {
+                Task {
+                    await checkRsiLogin()
+                }
+                mainPageViewModel.needCheckLoginStatus = false
+            }
+        }
+        .onAppear {
             Task.init {
                 do {
-                    try await userRepo.load()
-                    try await repository.load()
+                    mainPageViewModel.loadingTitle = nil
+                    mainPageViewModel.isShowLoading = true
+                    userRepo.loadSync()
+                    repository.loadSync()
+                    
                     
                     mainPageViewModel.currentUser = userRepo.getCurrentUser()
                     mainPageViewModel.hangarItems = repository.items
                     mainPageViewModel.tabPosition = 2
+                    mainPageViewModel.isShowLoading = false
+                    isFinishedLoading = true
+                    
+                    if (mainPageViewModel.currentUser != nil) {
+                        await checkRsiLogin()
+                    }
+                    
                     
                 } catch {
-                    
+                    mainPageViewModel.isShowLoading = false
+                    isFinishedLoading = true
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "加载数据库失败", errorSubtitle: "请重新登陆")
                 }
             }
+        }.toast(isPresenting: $mainPageViewModel.isShowErrorMessage) {
+            AlertToast(displayMode: .hud, type: .regular, title: mainPageViewModel.errorMessageTitle, subTitle: mainPageViewModel.errorMessageSubTitle)
+        }
+        .toast(isPresenting: $mainPageViewModel.isShowLoading) {
+            AlertToast(type: .loading, title: mainPageViewModel.loadingTitle)
         }
         
+        
+    }
+    
+    func checkRsiLogin() async {
+        let isLogin = await isLogin()
+        if (!isLogin) {
+            showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "账号登录失效", errorSubtitle: "正在尝试自动重新登陆")
+            let userToken = await Rsilogin(email: mainPageViewModel.currentUser!.email, password: mainPageViewModel.currentUser!.password)
+            if userToken != nil {
+                showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "自动重新登陆失败", errorSubtitle: "需要两步验证，请重新登陆")
+                return
+            }
+            let user = try? await parseNewUser(email: mainPageViewModel.currentUser!.email, password: mainPageViewModel.currentUser!.password, rsi_device: nil, rsi_token: nil)
+            if user == nil {
+                showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "自动重新登陆失败", errorSubtitle: "请重新登陆")
+            } else {
+                userRepo.setCurrentUser(user: user!)
+                mainPageViewModel.currentUser = user!
+                do {
+                    try await userRepo.save()
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "自动重新登陆成功", errorSubtitle: "账号信息已更新")
+                } catch {
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "自动重新登陆失败", errorSubtitle: "账号信息存储失败")
+                }
+                
+                
+            }
+        }
     }
 }
 
@@ -137,6 +193,12 @@ class MainPageViewModel: ObservableObject {
     @Published var currentUser: User? = nil
     @Published var hangarItems: [HangarItem] = []
     @Published var selectedItem: HangarItem? = nil
+    @Published var isShowErrorMessage: Bool = false
+    @Published var errorMessageTitle: String = "只是一个普通的错误"
+    @Published var errorMessageSubTitle: String = "只是一个普通的错误"
+    @Published var isShowLoading: Bool = false
+    @Published var loadingTitle: String? = "少女祈祷中..."
+    @Published var needCheckLoginStatus = false
 }
 
 struct CustomTabBar: View {
