@@ -22,7 +22,7 @@ struct ShipInfoTabView: View {
                             .tag(0)
                         HangarListView(mainPageViewModel: mainPageViewModel)
                             .tag(1)
-                        Text("First tab")
+                        UtilityPage(mainPageViewModel: mainPageViewModel)
                             .tag(2)
                         UserInfoMenu(mainPageViewModel: mainPageViewModel)
                             .tag(3)
@@ -36,6 +36,7 @@ struct ShipInfoTabView: View {
                     .padding(.all, 0)
                     CustomTabBar(mainPageViewModel: mainPageViewModel)
                 }
+                .padding(.all, 0)
                 .ignoresSafeArea()
                 CustomTopBar(mainPageViewModel: mainPageViewModel)
                 SideMenu(mainPageViewModel: mainPageViewModel)
@@ -56,6 +57,7 @@ struct ShipInfoTabView: View {
                     mainPageViewModel.isShowLoading = true
                     userRepo.loadSync()
                     repository.loadSync()
+                    bannerRepo.loadSync()
                     
                     
                     mainPageViewModel.currentUser = userRepo.getCurrentUser()
@@ -67,6 +69,10 @@ struct ShipInfoTabView: View {
                     if (mainPageViewModel.currentUser != nil) {
                         await checkRsiLogin()
                     }
+                    
+                    await bannerRepo.refresh()
+                    
+                    mainPageViewModel.banners = bannerRepo.banners
                     
                     
                 } catch {
@@ -80,6 +86,18 @@ struct ShipInfoTabView: View {
         }
         .toast(isPresenting: $mainPageViewModel.isShowLoading) {
             AlertToast(type: .loading, title: mainPageViewModel.loadingTitle)
+        }
+        .toast(isPresenting: $mainPageViewModel.isShowCompleteMessage) {
+            AlertToast(type: .systemImage("checkmark.seal", Color("ColorPrimary")), title: mainPageViewModel.completeMessageTitle, subTitle: mainPageViewModel.completeMessageSubTitle)
+        }
+        .onChange(of: mainPageViewModel.needToRefreshHangar) { newValue in
+            if newValue == true {
+                mainPageViewModel.needToRefreshHangar = false
+            }
+            Task {
+                await repository.refreshHangar()
+                mainPageViewModel.hangarItems = repository.items
+            }
         }
         
         
@@ -116,7 +134,7 @@ struct ShipInfoTabView: View {
 struct CustomTopBar: View {
     @ObservedObject var mainPageViewModel: MainPageViewModel
     @State private var title: String = "我的机库"
-    @State private var topBarColor: String = "ColorTopBarBlack"
+    @State private var topBarColor: String = "ColorTopBarWhite"
     private let pipeline = ImagePipeline()
     var body: some View {
         VStack {
@@ -152,7 +170,7 @@ struct CustomTopBar: View {
                     
                 }
                 Spacer()
-                Spacer()
+//                FilterButtonMenu(mainViewModel: mainPageViewModel, topBarColorString: $topBarColor)
             }
             .padding(.top, 50)
             .padding(.horizontal, 20)
@@ -198,7 +216,15 @@ class MainPageViewModel: ObservableObject {
     @Published var errorMessageSubTitle: String = "只是一个普通的错误"
     @Published var isShowLoading: Bool = false
     @Published var loadingTitle: String? = "少女祈祷中..."
+    @Published var isShowCompleteMessage = false
+    @Published var completeMessageTitle: String? = nil
+    @Published var completeMessageSubTitle: String? = nil
+    @Published var needToRefreshHangar: Bool = false
+    @Published var hangarFilterString: String = ""
+    
+    
     @Published var needCheckLoginStatus = false
+    @Published var banners: [Banner] = []
 }
 
 struct CustomTabBar: View {

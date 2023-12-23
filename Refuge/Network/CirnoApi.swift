@@ -21,7 +21,16 @@ public class CIRNOApi: DefaultApi{
         var request = URLRequest(url: URL(string: serverAdress + endPoint)!)
         request.method = .get
         request.headers.add(.userAgent(defaultUserAgent))
+        request.addValue("cirno-token", forHTTPHeaderField: getUuid())
         return AF.request(request)
+    }
+    
+    func getPostHeaders() -> HTTPHeaders {
+        let headers: HTTPHeaders = [
+            "cirno-token": getUuid(),
+            "Content-Type": "application/json"
+            ]
+        return headers
     }
     
     func getVersion() async -> Version? {
@@ -57,6 +66,40 @@ public class CIRNOApi: DefaultApi{
             return value
         } catch {
             return []
+        }
+    }
+    
+    func getBanners() async -> [Banner] {
+        do {
+            let value = try await getRequest(endPoint: "banner").serializingDecodable([Banner].self).value
+            return value
+        } catch {
+            return []
+        }
+    }
+    
+    func getRefugeVersion(postBody: RefugeVersion) async -> Version? {
+        let result: Version? = try? await self.basicPostRequest(endPoint: "version", postBody: postBody)
+        return result
+    }
+    
+    func basicPostRequest<Input: Encodable, Output: Decodable>(endPoint: String, postBody: Input) async throws -> Output {
+        try await withCheckedThrowingContinuation{ continuation in
+            AF.request(serverAdress + endPoint,
+                       method: .post,
+                       parameters: postBody,
+                       encoder: JSONParameterEncoder.default,
+                       headers: self.getPostHeaders()
+            )
+            .responseDecodable(of: Output.self) { response in
+                switch response.result {
+                case .success(let value):
+                    debugPrint("Post \(endPoint), headers \(self.getPostHeaders()), response \(value)")
+                    continuation.resume(returning: value)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
         }
     }
 }

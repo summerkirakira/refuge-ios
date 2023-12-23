@@ -45,12 +45,21 @@ func Rsilogin(rsiAPI: RSIApi = RsiApi, email: String, password: String) async ->
     
     if result!.errors![0].code == "MultiStepRequiredException" {
         
-        let deviceId = result!.errors![0].extensions.details.device_id!
+        var deviceId: String? = nil
+        if result!.errors![0].extensions.details.device_id == nil {
+            deviceId = RsiApi.rsi_device
+        } else {
+            deviceId = result!.errors![0].extensions.details.device_id!
+        }
+        if result!.errors![0].extensions.details.session_id == nil {
+            return nil
+        }
+        
         let rsiToken = result!.errors![0].extensions.details.session_id!
         
-        setDeviceId(deviceId: deviceId)
+        setDeviceId(deviceId: deviceId!)
         rsiAPI.setToken(token: rsiToken)
-        rsiAPI.setDevice(device: deviceId)
+        rsiAPI.setDevice(device: deviceId!)
         
         debugPrint("New RSI Token \(rsiToken)")
         
@@ -77,7 +86,7 @@ func RsiMultiLogin(rsiAPI: RSIApi = RsiApi, code: String) async -> Bool {
 
     }
     let loginResult = await rsiAPI.multiStepLogin(multiStepLoginBody: MultiStepLoginBody(code: code))
-    debugPrint(loginResult)
+//    debugPrint(loginResult)
     if loginResult == nil {
         return false
     }

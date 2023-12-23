@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 let defaults = UserDefaults.standard
 
@@ -29,7 +30,9 @@ func checkShipAlias(shipAliasUrl: String) async {
     let shipAliasPath = getDocumentsDirectory().appendingPathComponent("shipAlias.json")
     if result == .orderedAscending {
         let shipAlias = await CirnoApi.getShipAlias(url: URL(string: shipAliasUrl)!)
-        debugPrint(shipAlias)
+        if shipAlias.count == 0 {
+            return
+        }
         try! saveArrayAsJSON(shipAlias, to: shipAliasPath)
         defaults.set(newVersion, forKey: "shipAliasVersion")
     }
@@ -57,13 +60,25 @@ func checkTranslations(version: TranslationVersion) async -> [String: String] {
 }
 
 func appInit() async {
-    let version = await CirnoApi.getTranslationVersion()
-    if version != nil {
-        translationDict = await checkTranslations(version: version!)
+    let translationVersion = await CirnoApi.getTranslationVersion()
+    if translationVersion != nil {
+        translationDict = await checkTranslations(version: translationVersion!)
+    }
+    
+    var version = ""
+    let systemVersion = await UIDevice.current.systemVersion
+    let deviceModel = await UIDevice.current.localizedModel
+    
+    if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+       let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+        version = "\(appVersion) (\(buildNumber))"
+    } else {
+        debugPrint("Unable to retrieve version information.")
+    }
+    
+    if let refugeVersion = await CirnoApi.getRefugeVersion(postBody: RefugeVersion(version: version, androidVersion: systemVersion, systemModel: deviceModel)) {
+        await checkShipAlias(shipAliasUrl: refugeVersion.shipAliasUrl)
     }
     
     await RsiApi.setCsrfToken()
-    
-    
-    await checkShipAlias(shipAliasUrl: "https://image.biaoju.site/starcitizen/formatted_ship_alias.1.0.9.json")
 }

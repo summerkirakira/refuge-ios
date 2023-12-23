@@ -24,13 +24,16 @@ struct UserInfoMenu: View {
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets())
                 
-                    VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 10) {
                         Text(mainPageViewModel.currentUser!.handle)
                             .font(.system(size: 30))
                             .padding(.top, 20)
+                            .padding(.horizontal, 20)
                         Text(mainPageViewModel.currentUser!.name)
                             .font(.system(size: 22))
+                            .padding(.horizontal, 20)
                         Divider()
+                        .padding(.horizontal, 10)
                         VStack(spacing: 4) {
                             HStack {
                                 Text("注册时间")
@@ -74,9 +77,11 @@ struct UserInfoMenu: View {
                                 
                             }
                         }
+                        .padding(.horizontal, 20)
                         
                         
                         Divider()
+                        .padding(.horizontal, 10)
                         
                         VStack(spacing: 4) {
                             HStack {
@@ -134,8 +139,10 @@ struct UserInfoMenu: View {
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
                         }
+                        .padding(.horizontal, 20)
                         
                         Divider()
+                        .padding(.horizontal, 10)
                         
                         VStack(spacing: 4) {
                             HStack {
@@ -166,12 +173,13 @@ struct UserInfoMenu: View {
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
                         }
+                        .padding(.horizontal, 20)
                         
                     }
-                    .background(Color.white)
+                    .background(Color.gray.opacity(0.04))
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets())
-                    .padding(.horizontal, 20)
+                    
                 }
                 .background {
                     VStack {
@@ -180,7 +188,7 @@ struct UserInfoMenu: View {
                             .foregroundColor(Color("ColorPrimary"))
                         Rectangle()
                             .frame(height: 1000)
-                            .foregroundColor(Color.white)
+                            .foregroundColor(Color.gray.opacity(0.04))
                     }
                     
                 }

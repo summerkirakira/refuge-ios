@@ -11,25 +11,29 @@ import NukeUI
 
 struct SearchBar: View {
     @Binding var searchText: String
+//    @Binding var isSearchBtnClicked: Bool
 
     var body: some View {
         HStack {
-            TextField("Search", text: $searchText)
+            TextField("搜索", text: $searchText)
                 .padding(8)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
                 .padding(.horizontal, 10)
             
-            Button(action: {
-                searchText = ""
-            }) {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.gray)
-                    .padding(8)
-            }
-            .opacity(searchText.isEmpty ? 0 : 1)
-            .animation(.default)
+//            Button(action: {
+//                searchText = ""
+//            }) {
+//                Image(systemName: "magnifyingglass")
+//                    .resizable()
+//                    .frame(width: 30, height: 30)
+//                    .foregroundColor(.gray)
+//                    .padding(8)
+//            }
+//            .opacity(searchText.isEmpty ? 0 : 1)
+//            .animation(.default)
         }
+        .padding(.top, 5)
     }
 }
 
@@ -53,9 +57,11 @@ struct HangarListView: View {
                 .padding(.top, 58)
                 .padding(.bottom, 8)
                 Divider()
-                
                 List{
-    //                SearchBar(searchText: $searchString)
+                    SearchBar(searchText: $searchString)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.gray.opacity(0.01))
                     ForEach(mainPageViewModel.hangarItems.indices, id:\.self) {index in
                         HangarListItemView(data: $mainPageViewModel.hangarItems[index], mainViewModel: mainPageViewModel)
                             .listRowSeparator(.hidden)
@@ -72,12 +78,15 @@ struct HangarListView: View {
                 .listStyle(PlainListStyle())
                 .padding(.horizontal, 0)
                 .padding(.bottom, 0)
+                .onChange(of: searchString) { newValue in
+                    mainPageViewModel.hangarItems = repository.items.filter { item in
+                        isHangarItemMatchedString(hangarItem: item, searchString: newValue)
+                    }
+                }
                 .refreshable {
+                    searchString = ""
                     await repository.refreshHangar()
                     mainPageViewModel.hangarItems = repository.items
-                }
-                .searchable(text: $searchString) {
-                    
                 }
                 .sheet(isPresented: $isBottomSheetPresented) {
                     ShipDetailBottomSheet(mainPageViewModel: mainPageViewModel, isBottomSheetPresented: $isBottomSheetPresented)

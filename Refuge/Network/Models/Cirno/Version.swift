@@ -48,3 +48,11 @@ struct ShipAlias: Identifiable, Codable {
     }
 
 }
+
+struct RefugeVersion: Codable {
+    let version: String
+    let androidVersion: String
+    let systemModel: String
+}
+
+

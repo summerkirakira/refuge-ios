@@ -77,9 +77,20 @@ func getHangarItems(content: String) throws -> [HangarItem] {
             let itemsArea = try? pledge.select(".with-images").first()
             var items: [HangarSubItem] = []
             if itemsArea != nil {
-                items = try itemsArea!.select(".item").map{ item in
+                items = try itemsArea!.select(".item")
+                    .filter { item in
+                        let imageItem = try? item.select(".image").first()
+                        if imageItem == nil {
+                            return false
+                        }
+                        return true
+                    }
+                    .map{ item in
                     let id: String = String(pledgeId!)
                     let title = try item.select(".title").first()!.text()
+                    let imageItem = try? item.select(".image").first()
+                    
+                    
                     let image = imageStringToUrl(imageString: try item.select(".image").first()!.attr("style"))
                     var kind = try? item.select(".kind").first()
                     var kindString = try? kind == nil ? "" : kind!.text()

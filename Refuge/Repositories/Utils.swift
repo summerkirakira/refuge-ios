@@ -15,6 +15,8 @@ func getHangarItemKey(hangarItem: HangarItem) -> String {
         tag
     }.joined(separator: "#")
     key += hangarItem.alsoContains
+    key += hangarItem.status
+    key += hangarItem.alsoContains
     return key
 }
 
@@ -195,14 +197,17 @@ func addTagsToHangarItem(hangarItem: HangarItem) -> HangarItem {
     if newHangarItem.status == "Attributed" {
         newHangarItem.tags.append("库存中")
     }
-    if newHangarItem.status == "Gitfted" {
-        newHangarItem.tags.append("已礼物")
-    }
     if newHangarItem.canReclaim {
         newHangarItem.tags.append("可回收")
     }
     if newHangarItem.canUpgrade {
+        newHangarItem.tags.append("可升级")
+    }
+    if newHangarItem.canGit {
         newHangarItem.tags.append("可礼物")
+    }
+    if newHangarItem.status == "Gifted" {
+        newHangarItem.tags = ["已礼物"]
     }
     return newHangarItem
 }
@@ -230,4 +235,41 @@ func getTotalCurrentHangarItemPrice(items: [HangarItem]) -> Float {
         price += Float(item.currentPrice * item.number)
     }
     return price
+}
+
+func matchString(str: String?, target: String) -> Bool {
+    if str == nil {
+        return false
+    }
+    if str!.range(of: target, options: .caseInsensitive) != nil {
+        return true
+    }
+    return false
+}
+
+func isHangarItemMatchedString(hangarItem: HangarItem, searchString: String) -> Bool {
+    if searchString == "" {
+        return true
+    }
+    if matchString(str: hangarItem.name, target: searchString) {
+        return true
+    }
+    if matchString(str: hangarItem.chineseName, target: searchString) {
+        return true
+    }
+    if matchString(str: hangarItem.alsoContains, target: searchString) {
+        return true
+    }
+    if matchString(str: hangarItem.chineseAlsoContains, target: searchString) {
+        return true
+    }
+    for item in hangarItem.items {
+        if matchString(str: item.title, target: searchString) {
+            return true
+        }
+        if matchString(str: item.chineseTitle, target: searchString) {
+            return true
+        }
+    }
+    return false
 }

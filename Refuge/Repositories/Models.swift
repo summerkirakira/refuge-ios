@@ -37,3 +37,8 @@ struct User: Codable {
     let registerTimeString: String
     var extra: String = ""
 }
+
+struct Banner: Codable {
+    let id: Int
+    let url: String
+}

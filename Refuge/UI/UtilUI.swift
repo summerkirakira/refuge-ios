@@ -12,3 +12,9 @@ func showErrorMessage(mainPageViewModel: MainPageViewModel, errorTitle: String, 
     mainPageViewModel.errorMessageSubTitle = errorSubtitle
     mainPageViewModel.isShowErrorMessage = true
 }
+
+func showCompleteMessage(mainPageViewModel: MainPageViewModel, completeTitle: String, completeSubtitle: String? = nil) {
+    mainPageViewModel.completeMessageTitle = completeTitle
+    mainPageViewModel.completeMessageSubTitle = completeSubtitle
+    mainPageViewModel.isShowCompleteMessage = true
+}

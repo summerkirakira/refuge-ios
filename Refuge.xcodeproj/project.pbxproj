@@ -44,6 +44,11 @@
 		9F65A6862B3318EA00AA9465 /* Hangar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6852B3318EA00AA9465 /* Hangar.swift */; };
 		9F65A6882B336FCA00AA9465 /* HangarFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6872B336FCA00AA9465 /* HangarFunc.swift */; };
 		9F65A68A2B33739700AA9465 /* ReclaimButtonMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A6892B33739700AA9465 /* ReclaimButtonMenu.swift */; };
+		9FCD47D72B353FEF00F7B0EA /* UtilityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD47D62B353FEF00F7B0EA /* UtilityPage.swift */; };
+		9FCD47D92B35403900F7B0EA /* BannerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD47D82B35403900F7B0EA /* BannerRepository.swift */; };
+		9FCD47DB2B35427F00F7B0EA /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD47DA2B35427F00F7B0EA /* Banner.swift */; };
+		9FCD47DD2B36A22B00F7B0EA /* filterButtonMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD47DC2B36A22B00F7B0EA /* filterButtonMenu.swift */; };
+		9FCD47DF2B36C40800F7B0EA /* CancelGiftButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD47DE2B36C40800F7B0EA /* CancelGiftButton.swift */; };
 		9FF09DA62954ECFD00CB0CC0 /* HangarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */; };
 		9FF09DA9295541A400CB0CC0 /* ShipInfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */; };
 		9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF243232955598E0050904C /* HangarItemRepository.swift */; };
@@ -115,6 +120,11 @@
 		9F65A6852B3318EA00AA9465 /* Hangar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hangar.swift; sourceTree = "<group>"; };
 		9F65A6872B336FCA00AA9465 /* HangarFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarFunc.swift; sourceTree = "<group>"; };
 		9F65A6892B33739700AA9465 /* ReclaimButtonMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReclaimButtonMenu.swift; sourceTree = "<group>"; };
+		9FCD47D62B353FEF00F7B0EA /* UtilityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityPage.swift; sourceTree = "<group>"; };
+		9FCD47D82B35403900F7B0EA /* BannerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerRepository.swift; sourceTree = "<group>"; };
+		9FCD47DA2B35427F00F7B0EA /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		9FCD47DC2B36A22B00F7B0EA /* filterButtonMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterButtonMenu.swift; sourceTree = "<group>"; };
+		9FCD47DE2B36C40800F7B0EA /* CancelGiftButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelGiftButton.swift; sourceTree = "<group>"; };
 		9FF09DA52954ECFD00CB0CC0 /* HangarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarListView.swift; sourceTree = "<group>"; };
 		9FF09DA8295541A400CB0CC0 /* ShipInfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipInfoTabView.swift; sourceTree = "<group>"; };
 		9FF243232955598E0050904C /* HangarItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarItemRepository.swift; sourceTree = "<group>"; };
@@ -197,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				9F0BCFBF29565C8A00FD536C /* Version.swift */,
+				9FCD47DA2B35427F00F7B0EA /* Banner.swift */,
 			);
 			path = Cirno;
 			sourceTree = "<group>";
@@ -301,6 +312,7 @@
 		9F4A8CBA2954669800C566C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9FCD47D52B353FCB00F7B0EA /* Utility */,
 				9F65A6762B3129AC00AA9465 /* User */,
 				9FF09DA72955415F00CB0CC0 /* Main */,
 				9F4A8CBD2954684500C566C1 /* Hangar */,
@@ -332,6 +344,7 @@
 				9F43BCCA2B144AB800135755 /* Utils.swift */,
 				9F43BCCC2B148B0200135755 /* UserRepository.swift */,
 				9F43BCCE2B148B5800135755 /* Models.swift */,
+				9FCD47D82B35403900F7B0EA /* BannerRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -345,6 +358,8 @@
 				9F65A6892B33739700AA9465 /* ReclaimButtonMenu.swift */,
 				9F22F5EF2B34158800EE21FD /* ShipDetailBottomSheet.swift */,
 				9F22F5F32B34376000EE21FD /* GiftButtonMenu.swift */,
+				9FCD47DC2B36A22B00F7B0EA /* filterButtonMenu.swift */,
+				9FCD47DE2B36C40800F7B0EA /* CancelGiftButton.swift */,
 			);
 			path = Hangar;
 			sourceTree = "<group>";
@@ -389,6 +404,14 @@
 				9F65A6802B32189700AA9465 /* Login.swift */,
 			);
 			path = RSI;
+			sourceTree = "<group>";
+		};
+		9FCD47D52B353FCB00F7B0EA /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				9FCD47D62B353FEF00F7B0EA /* UtilityPage.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		9FF09DA72955415F00CB0CC0 /* Main */ = {
@@ -645,6 +668,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F65A6782B3129BF00AA9465 /* UserInfoView.swift in Sources */,
+				9FCD47D72B353FEF00F7B0EA /* UtilityPage.swift in Sources */,
 				9F43BCD22B14905300135755 /* UserParser.swift in Sources */,
 				9F65A66B2B2FBAFF00AA9465 /* InitFunc.swift in Sources */,
 				9F0BCFB829565B9800FD536C /* CirnoApi.swift in Sources */,
@@ -669,7 +693,9 @@
 				9F65A6862B3318EA00AA9465 /* Hangar.swift in Sources */,
 				9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */,
 				9F43BCCF2B148B5800135755 /* Models.swift in Sources */,
+				9FCD47DD2B36A22B00F7B0EA /* filterButtonMenu.swift in Sources */,
 				9F65A6842B3247A900AA9465 /* LoginMenu.swift in Sources */,
+				9FCD47D92B35403900F7B0EA /* BannerRepository.swift in Sources */,
 				9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */,
 				9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */,
 				9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */,
@@ -677,6 +703,8 @@
 				9F22F5F22B3425B100EE21FD /* UtilUI.swift in Sources */,
 				9F0BCFC029565C8A00FD536C /* Version.swift in Sources */,
 				9F0BCFB629565B8B00FD536C /* RSIApi.swift in Sources */,
+				9FCD47DF2B36C40800F7B0EA /* CancelGiftButton.swift in Sources */,
+				9FCD47DB2B35427F00F7B0EA /* Banner.swift in Sources */,
 				9F65A67E2B31F2A800AA9465 /* Website.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -837,7 +865,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
 				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
@@ -850,12 +878,13 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -875,7 +904,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
 				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
@@ -888,12 +917,13 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

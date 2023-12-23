@@ -51,6 +51,8 @@ struct LoginMenu: View {
         }
         .alert(Text("账号登录"), isPresented: $isShowingLoginAlert) {
             TextField("账号", text: $username)
+                .disableAutocorrection(true)
+                .autocapitalization(.none)
                 .padding()
             SecureField("密码", text: $password)
                 .padding(.top, 0)

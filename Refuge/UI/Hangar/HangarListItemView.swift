@@ -49,17 +49,17 @@ struct HangarListItemView: View {
                         makeTag(color: Color("InHangarGreen"), text: "库存中")
                     }
                     if data.tags.contains("已礼物") {
-                        makeTag(color: Color("GiftablePink"), text: "已礼物")
+                        CancelGiftButtonMenu(mainPageViewModel: mainViewModel, currentItem: $data)
                     }
                     if data.tags.contains("可回收") {
-                        ReclaimButtonMenu(pledgeIdList: $data.idList, mainPageViewModel: mainViewModel, currentItem: $data)
+                        ReclaimButtonMenu(mainPageViewModel: mainViewModel, currentItem: $data)
                         
                     }
                     if data.tags.contains("可升级") {
                         makeTag(color: Color("CanUpgradeBlue"), text: "可升级")
                     }
                     if data.tags.contains("可礼物") {
-                        makeTag(color: Color("GiftablePink"), text: "可礼物")
+                        GiftButtonMenu(mainPageViewModel: mainViewModel, currentItem: $data)
                     }
                     
 //                    ForEach(data.tags) { tag in

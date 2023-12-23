@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct ReclaimButtonMenu: View {
-    @Binding var pledgeIdList: [Int]
     @StateObject var mainPageViewModel: MainPageViewModel
     @Binding var currentItem: HangarItem
     @State var reclaimMode = 0
@@ -24,6 +23,7 @@ struct ReclaimButtonMenu: View {
             Button("回收全部") {
 //                debugPrint(mainPageViewModel.isShowErrorMessage)
                 isShowReclaimAllAlert = true
+                
             }
             
         } label: {
@@ -47,8 +47,8 @@ struct ReclaimButtonMenu: View {
                         return
                     } else {
                         mainPageViewModel.isShowLoading = false
-                        
-                        
+                        mainPageViewModel.needToRefreshHangar = true
+                        showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "融船成功", completeSubtitle: "正在刷新机库")
                     }
                 }
                 
@@ -79,6 +79,8 @@ struct ReclaimButtonMenu: View {
                             return
                         } else {
                             mainPageViewModel.isShowLoading = false
+                            mainPageViewModel.needToRefreshHangar = true
+                            showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "融船成功", completeSubtitle: "正在刷新机库")
                         }
                     }
                 }
