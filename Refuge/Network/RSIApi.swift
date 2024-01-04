@@ -20,8 +20,8 @@ public class RSIApi: DefaultApi{
     var csrf_token = ""
     var rsi_cookie_constent = "{stamp:%27yW0Q5I4vGut12oNYLMr/N0OUTu+Q5WcW8LJgDKocZw3n9aA+4Ro4pA==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1647068701970%2Cregion:%27gb%27}"
     var rsi_cookie = ""
-    var rsi_account_auth = ""
-    var rsi_ship_upgrades_context = ""
+    var rsi_account_auth: String? = nil
+    var rsi_ship_upgrades_context: String? = nil
     var rsi_csrf_token = ""
     var extra_cookies: [String] = []
     
@@ -40,7 +40,7 @@ public class RSIApi: DefaultApi{
     }
 
     func getShipUpgradesCookie() -> String {
-        return "Rsi-Ship-Upgrades-Context=\(rsi_ship_upgrades_context);Rsi-Account-Auth=\(rsi_account_auth); \(rsi_cookie)"
+        return "Rsi-Ship-Upgrades-Context=\(rsi_ship_upgrades_context);Rsi-Account-Auth=\(rsi_account_auth);"
     }
 
     func getRsiBasicCookie() -> [HTTPCookie] {
@@ -97,10 +97,18 @@ public class RSIApi: DefaultApi{
             cookieList.append("\(cookie.name)=\(cookie.value)")
         }
         
-        var cookieString = "Rsi-Token=\(rsi_token); _rsi_device=\(rsi_device)"
+        var cookieString = "Rsi-Token=\(rsi_token); _rsi_device=\(rsi_device);"
         
         if extra_cookies.count > 0 {
             cookieString = cookieString + ";" + extra_cookies.joined(separator: ";")
+        }
+        
+        if rsi_account_auth != nil {
+            cookieString += "; Rsi-Account-Auth=\(rsi_account_auth!); "
+        }
+        
+        if rsi_ship_upgrades_context != nil {
+            cookieString += "Rsi-ShipUpgrades-Context=\(rsi_ship_upgrades_context!);"
         }
         
         var headers: HTTPHeaders = HTTPCookieStorage.shared.cookies?.reduce(into: [:]) { dict, cookie in
@@ -139,7 +147,6 @@ public class RSIApi: DefaultApi{
         if token == nil {
             return
         }
-        debugPrint(token)
         rsi_csrf_token = token!
     }
     
@@ -150,6 +157,66 @@ public class RSIApi: DefaultApi{
         }
         return getCsrfTokenByPage(page: page!)
     }
+    
+    
+    func getAuthToken() async throws -> String? {
+        try await withUnsafeThrowingContinuation{ continuation in
+            AF.request(serverAdress + "api/account/v2/setAuthToken", 
+                       method: .post,
+                       parameters: [:],
+                       headers: RsiApi.getHeaders()
+            ).response { response in
+                switch response.result {
+                case .success(let value):
+                    let headerFields = response.response?.allHeaderFields as? [String: String]
+                    if headerFields == nil {
+                        continuation.resume(returning: "")
+                        return
+                    }
+                    let setCookieHeader = headerFields!["Set-Cookie"]
+                    if setCookieHeader == nil {
+                        continuation.resume(returning: "")
+                        return
+                    }
+                    let token = setCookieHeader?.components(separatedBy: ";")[0].components(separatedBy: "=")[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    self.rsi_account_auth = token
+                    continuation.resume(returning: token)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    func getUpgradeContextToken() async throws -> String? {
+        try await withUnsafeThrowingContinuation{ continuation in
+            AF.request(serverAdress + "api/ship-upgrades/setContextToken",
+                       method: .post,
+                       parameters: [:],
+                       headers: RsiApi.getHeaders()
+            ).response { response in
+                switch response.result {
+                case .success(let value):
+                    let headerFields = response.response?.allHeaderFields as? [String: String]
+                    if headerFields == nil {
+                        continuation.resume(returning: "")
+                        return
+                    }
+                    let setCookieHeader = headerFields!["Set-Cookie"]
+                    if setCookieHeader == nil {
+                        continuation.resume(returning: "")
+                        return
+                    }
+                    let token = setCookieHeader?.components(separatedBy: ";")[0].components(separatedBy: "=")[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    self.rsi_ship_upgrades_context = token
+                    continuation.resume(returning: token)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
     
     func getDefaultRsiToken() async throws -> String? {
         try await withUnsafeThrowingContinuation{ continuation in
@@ -190,6 +257,30 @@ public class RSIApi: DefaultApi{
                     debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
                     continuation.resume(returning: value)
                 case .failure(let error):
+                    debugPrint("Request Error: \(error)")
+                    debugPrint(response.data)
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    func basicPostRequestForString<Input: Encodable>(endPoint: String, postBody: Input) async throws -> String {
+        try await withCheckedThrowingContinuation{ continuation in
+            AF.request(serverAdress + endPoint,
+                       method: .post,
+                       parameters: postBody,
+                       encoder: JSONParameterEncoder.default,
+                       headers: self.getHeaders()
+            )
+            .responseString { response in
+                switch response.result {
+                case .success(let value):
+                    debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
+                    continuation.resume(returning: value)
+                case .failure(let error):
+                    debugPrint("Request Error: \(error)")
+                    debugPrint(response.data)
                     continuation.resume(throwing: error)
                 }
             }
@@ -239,4 +330,17 @@ public class RSIApi: DefaultApi{
 //            print(error)
 //        }
     }
+    
+    func initShipUpgrade() async -> InitUpgradeProperty? {
+        let graphQlReq = GraphQLRequest<InitShipUpgradePostBody, InitUpgradeProperty>(url: self.serverAdress + "pledge-store/api/upgrade/graphql", query: initShipUpgradeQuery, variables: InitShipUpgradePostBody())
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func getUpgradeFromShip(toShipId: Int?) async -> FilterShipUpgradeProperty? {
+        let graphQlReq = GraphQLRequest<SearchFromShipPostBody, FilterShipUpgradeProperty>(url: self.serverAdress + "pledge-store/api/upgrade/graphql", query: filterShipQuery, variables: SearchFromShipPostBody(fromFilters: [], toFilters: [], toId: toShipId))
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    
+    
 }

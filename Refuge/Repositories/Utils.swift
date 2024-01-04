@@ -273,3 +273,19 @@ func isHangarItemMatchedString(hangarItem: HangarItem, searchString: String) -> 
     }
     return false
 }
+
+
+func calUserHangarPrice(user: User) -> User {
+    var newUser = user
+    var currentPrice = 0
+    var realPrice = 0
+    for item in repository.items {
+        currentPrice += item.currentPrice * item.number
+        realPrice += item.price * item.number
+    }
+    newUser.hangarValue = realPrice
+    newUser.currentHangarValue = currentPrice
+    return newUser
+}
+
+

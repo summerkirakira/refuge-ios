@@ -97,6 +97,7 @@ public class CIRNOApi: DefaultApi{
                     debugPrint("Post \(endPoint), headers \(self.getPostHeaders()), response \(value)")
                     continuation.resume(returning: value)
                 case .failure(let error):
+                    debugPrint(error)
                     continuation.resume(throwing: error)
                 }
             }

@@ -28,18 +28,28 @@ func checkShipAlias(shipAliasUrl: String) async {
     let currentVersion = defaults.string(forKey: "shipAliasVersion") ?? "0.0.0"
     let result = compareVersions(currentVersion, newVersion)
     let shipAliasPath = getDocumentsDirectory().appendingPathComponent("shipAlias.json")
-    if result == .orderedAscending {
+    
+    do {
+        shipAliases = try loadArrayFromJSON(ShipAlias.self, from: shipAliasPath)
+        debugPrint(shipAliases)
+    } catch {
+        debugPrint("Load ShipAlias Failed")
+        shipAliases = []
+    }
+    
+    if result == .orderedAscending ||  shipAliases.count == 0 {
         let shipAlias = await CirnoApi.getShipAlias(url: URL(string: shipAliasUrl)!)
         if shipAlias.count == 0 {
             return
         }
-        try! saveArrayAsJSON(shipAlias, to: shipAliasPath)
-        defaults.set(newVersion, forKey: "shipAliasVersion")
-    }
-    do {
-        shipAliases = try loadArrayFromJSON(ShipAlias.self, from: shipAliasPath)
-    } catch {
-        debugPrint("Load ShipAlias Failed")
+        
+        do {
+            try saveArrayAsJSON(shipAlias, to: shipAliasPath)
+            defaults.set(newVersion, forKey: "shipAliasVersion")
+            shipAliases = shipAlias
+        } catch {
+            debugPrint("Load ShipAlias Failed")
+        }
     }
 }
 
@@ -49,6 +59,9 @@ func checkTranslations(version: TranslationVersion) async -> [String: String] {
     if result == .orderedAscending {
         var translationDict = [String: String]()
         let translations = await CirnoApi.getTranslation()
+        if translations.count == 0 {
+            return [:]
+        }
         for translation in translations {
             translationDict[translation.english_title] = translation.title
         }
@@ -59,7 +72,16 @@ func checkTranslations(version: TranslationVersion) async -> [String: String] {
     return translations!
 }
 
+func loadUpgradeData() async {
+    
+    await upgradeRepo.refresh(needRefreshToken: true)
+    
+}
+
 func appInit() async {
+    
+    try? await upgradeRepo.load()
+    
     let translationVersion = await CirnoApi.getTranslationVersion()
     if translationVersion != nil {
         translationDict = await checkTranslations(version: translationVersion!)
@@ -81,4 +103,6 @@ func appInit() async {
     }
     
     await RsiApi.setCsrfToken()
+    
+    await loadUpgradeData()
 }

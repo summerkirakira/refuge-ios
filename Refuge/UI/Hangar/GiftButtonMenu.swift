@@ -19,6 +19,7 @@ struct GiftButtonMenu: View {
     var body: some View {
         Menu {
             Button("礼物一件") {
+                
                 isShowGiftTargetAlert = true
                 giftMode = 1
             }
@@ -69,7 +70,7 @@ struct GiftButtonMenu: View {
                     } else {
                         mainPageViewModel.isShowLoading = false
                         mainPageViewModel.needToRefreshHangar = true
-                        showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "礼物成功", completeSubtitle: "正在刷新机库")
+                        showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "礼物成功", completeSubtitle: "")
                     }
                 }
 
@@ -101,7 +102,7 @@ struct GiftButtonMenu: View {
                         } else {
                             mainPageViewModel.isShowLoading = false
                             mainPageViewModel.needToRefreshHangar = true
-                            showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "礼物成功", completeSubtitle: "正在刷新机库")
+                            showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "礼物成功", completeSubtitle: "")
                         }
                     }
                 }

@@ -26,6 +26,7 @@ struct LoginMenu: View {
                         do {
                             mainViewModel.needCheckLoginStatus = true
                             try await userRepo.save()
+                            mainViewModel.needToRefreshHangar = true
                         } catch {
                             
                         }
@@ -36,6 +37,9 @@ struct LoginMenu: View {
 
             Button("登录新账号") {
                 isShowingLoginAlert = true
+                Task {
+                    await appInit()
+                }
             }
             
         } label: {
@@ -76,6 +80,7 @@ struct LoginMenu: View {
                             username = ""
                             password = ""
                             mainViewModel.isShowLoading = false
+                            mainViewModel.needToRefreshHangar = true
                         } else {
                             mainViewModel.isShowLoading = false
                             showErrorMessage(mainPageViewModel: mainViewModel, errorTitle: "登录失败", errorSubtitle: "请检查账号和密码重试哦")
@@ -103,6 +108,7 @@ struct LoginMenu: View {
                             userRepo.setCurrentUser(user: user!)
                             mainViewModel.currentUser = user!
                             userRepo.saveSync(users: userRepo.users)
+                            mainViewModel.needToRefreshHangar = true
                         }
                     }
                     username = ""

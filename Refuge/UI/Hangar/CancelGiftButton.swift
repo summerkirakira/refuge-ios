@@ -27,22 +27,27 @@ struct CancelGiftButtonMenu: View {
 //            Text("确认要收回礼物: \(currentItem.name)吗？发送到目标邮箱的领取链接将即刻失效。")
             Button("取消", role: .cancel) { }
             Button("确认") {
+                mainPageViewModel.loadingTitle = "正在收回礼物"
                 mainPageViewModel.isShowLoading = true
+                
                 Task {
                     let result = await cancelGiftHangarItem(pledge_id: String(currentItem.id))
                     
                     if result == nil {
                         showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "未知错误", errorSubtitle: "请稍后重试")
+                        mainPageViewModel.isShowLoading = false
                     }
 
                     if result!.success == 0 {
                         showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "收回礼物失败", errorSubtitle: result!.msg)
+                        mainPageViewModel.isShowLoading = false
                         return
                     } else {
+                        showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "收回礼物成功", completeSubtitle: "")
+                        mainPageViewModel.isShowLoading = false
+                        
                         mainPageViewModel.needToRefreshHangar = true
-                        showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "收回礼物成功", completeSubtitle: "正在刷新机库")
                     }
-                    mainPageViewModel.isShowLoading = false
                 }
             }
         }

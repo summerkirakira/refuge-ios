@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct Version: Identifiable, Codable {
-    public var id: Int
+struct Version: Codable {
     public var version: String
     public var shipDetailVersion: String
     public var shipAliasUrl: String

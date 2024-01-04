@@ -52,6 +52,7 @@ func loadArrayFromJSON<T: Decodable>(_ type: T.Type, from filePath: URL) throws 
         let array = try decoder.decode([T].self, from: jsonData)
         return array
     } catch {
+        debugPrint(error)
         throw error
     }
 }

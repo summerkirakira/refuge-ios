@@ -29,10 +29,46 @@ struct Paylaod<Variable: Encodable>: Encodable {
 }
 
 func performGraphQLRequest<Input: Encodable, Output: Decodable>(request: GraphQLRequest<Input, Output>, completion: @escaping (Result<Output, Error>) -> Void) {
-    debugPrint(RsiApi.getHeaders())
+//    debugPrint(RsiApi.getHeaders())
     let jsonData = try? JSONEncoder().encode(request.variables)
     let jsonString = String(data: jsonData!, encoding: .utf8)
-    debugPrint(jsonString)
+//    debugPrint(jsonString)
+    AF.request(request.url,
+               method: .post,
+               parameters: ["query": request.query, "variables": jsonString],
+               encoder: JSONParameterEncoder.default,
+               headers: RsiApi.getHeaders())
+        .responseDecodable(of: Output.self) { response in
+            
+            let allHeaders = response.response?.allHeaderFields
+            
+            if allHeaders != nil {
+                if let setCookieHeader = allHeaders!["Set-Cookie"] as? String {
+                    let token = setCookieHeader.components(separatedBy: ";")[0].components(separatedBy: "=")[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    RsiApi.setToken(token: token)
+                    // 在这里可以进一步处理 Set-Cookie 字段
+                }
+            }
+            
+            switch response.result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+                debugPrint(error)
+                if response.data != nil {
+                    let str = String(bytes: response.data!, encoding: .utf8)
+                    debugPrint(str)
+                }
+            }
+        }
+}
+
+func performGraphQLRequestForString<Input: Encodable, Output: Decodable>(request: GraphQLRequest<Input, Output>, completion: @escaping (Result<Output, Error>) -> Void) {
+//    debugPrint(RsiApi.getHeaders())
+    let jsonData = try? JSONEncoder().encode(request.variables)
+    let jsonString = String(data: jsonData!, encoding: .utf8)
+//    debugPrint(jsonString)
     AF.request(request.url,
                method: .post,
                parameters: ["query": request.query, "variables": jsonString],

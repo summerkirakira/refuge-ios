@@ -18,7 +18,7 @@ struct ShipInfoTabView: View {
             if (isFinishedLoading) {
                 VStack(spacing: 0) {
                     TabView(selection: $mainPageViewModel.tabPosition) {
-                        Text("Coming sooooon")
+                        UpgradeShopView(mainPageViewModel: mainPageViewModel)
                             .tag(0)
                         HangarListView(mainPageViewModel: mainPageViewModel)
                             .tag(1)
@@ -42,6 +42,7 @@ struct ShipInfoTabView: View {
                 SideMenu(mainPageViewModel: mainPageViewModel)
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onChange(of: mainPageViewModel.needCheckLoginStatus) { newValue in
             if newValue == true {
                 Task {
@@ -59,6 +60,8 @@ struct ShipInfoTabView: View {
                     repository.loadSync()
                     bannerRepo.loadSync()
                     
+                    upgradeRepo.loadSync()
+                    
                     
                     mainPageViewModel.currentUser = userRepo.getCurrentUser()
                     mainPageViewModel.hangarItems = repository.items
@@ -68,6 +71,10 @@ struct ShipInfoTabView: View {
                     
                     if (mainPageViewModel.currentUser != nil) {
                         await checkRsiLogin()
+                        
+                        await upgradeRepo.refresh(needRefreshToken: true)
+                        mainPageViewModel.upgradeList = await upgradeRepo.getFilteredUpgradeList()
+                        sortUpgradeItem(mainPageViewModel: mainPageViewModel)
                     }
                     
                     await bannerRepo.refresh()
@@ -94,9 +101,19 @@ struct ShipInfoTabView: View {
             if newValue == true {
                 mainPageViewModel.needToRefreshHangar = false
             }
+            if mainPageViewModel.currentUser == nil {
+                return
+            }
             Task {
+                mainPageViewModel.loadingTitle = "刷新机库中"
+                mainPageViewModel.isShowLoading = true
                 await repository.refreshHangar()
                 mainPageViewModel.hangarItems = repository.items
+                mainPageViewModel.isShowLoading = false
+                let newUser = calUserHangarPrice(user: mainPageViewModel.currentUser!)
+                userRepo.setCurrentUser(user: newUser)
+                userRepo.saveSync(users: userRepo.users)
+                mainPageViewModel.currentUser = newUser
             }
         }
         
@@ -221,6 +238,8 @@ class MainPageViewModel: ObservableObject {
     @Published var completeMessageSubTitle: String? = nil
     @Published var needToRefreshHangar: Bool = false
     @Published var hangarFilterString: String = ""
+    
+    @Published var upgradeList: [UpgradeListItem] = []
     
     
     @Published var needCheckLoginStatus = false

@@ -51,7 +51,7 @@ struct HangarListView: View {
                 HStack {
                     Spacer()
                     Text("我的机库")
-                        .font(.system(size: 18))
+                        .font(.system(size: 20))
                     Spacer()
                 }
                 .padding(.top, 58)
@@ -87,6 +87,10 @@ struct HangarListView: View {
                     searchString = ""
                     await repository.refreshHangar()
                     mainPageViewModel.hangarItems = repository.items
+                    let newUser = calUserHangarPrice(user: mainPageViewModel.currentUser!)
+                    userRepo.setCurrentUser(user: newUser)
+                    userRepo.saveSync(users: userRepo.users)
+                    mainPageViewModel.currentUser = newUser
                 }
                 .sheet(isPresented: $isBottomSheetPresented) {
                     ShipDetailBottomSheet(mainPageViewModel: mainPageViewModel, isBottomSheetPresented: $isBottomSheetPresented)
