@@ -123,7 +123,21 @@ struct UpgradeShopView: View {
             .alert(Text("确定要购买升级吗"), isPresented: $isShowFinalStepAlert) {
                 Button("取消", role: .cancel) {}
                 Button("确认") {
-                    
+                    Task {
+                        mainPageViewModel.loadingTitle = "购买处理中"
+                        mainPageViewModel.isShowLoading = true
+                        let clear = await RsiApi.clearCart()
+                        for i in 1...Int(inputNumber)! {
+                            let result = await buyUpgrade(fromSkuId: fromSku!.skuId, toSkuId: toSku!.skuId, number: 1)
+                            if result != nil {
+                                mainPageViewModel.isShowLoading = false
+                                showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: result!, errorSubtitle: "请稍后重试")
+                                return
+                            }
+                        }
+                        mainPageViewModel.isShowLoading = false
+                        showCompleteMessage(mainPageViewModel: mainPageViewModel, completeTitle: "成功购买\(inputNumber)个升级包哦~")
+                    }
                 }
             } message: {
                 if toSku != nil && fromSku != nil && inputNumber != "" {
@@ -137,7 +151,7 @@ struct UpgradeShopView: View {
                     Button("取消", role: .cancel) {}
                     Button("确认") {
                         if Int(inputNumber) == nil {
-                            showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "请输入一个正整数哦", errorSubtitle: "")
+                            showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "请输入正整数哦", errorSubtitle: "")
                             return
                         }
                         isShowFinalStepAlert = true
@@ -153,16 +167,24 @@ struct UpgradeShopView: View {
                 if newValue == UpgradeStep.CHOOSE_FROM_SHIP {
                     title = "请选择起始舰船"
                     isShowBackBtn = true
-                    mainPageViewModel.upgradeList = mainPageViewModel.upgradeList.filter { item in
-                        if item.chineseName == toSku!.chineseName {
-                            return false
-                        }
-                        if item.price < toSku!.price {
-                            return true
-                        }
-                        return false
+//                    mainPageViewModel.upgradeList = mainPageViewModel.upgradeList.filter { item in
+//                        if item.chineseName == toSku!.chineseName {
+//                            return false
+//                        }
+//                        if item.price < toSku!.price {
+//                            return true
+//                        }
+//                        return false
+//                    }
+                    mainPageViewModel.loadingTitle = "正在查询可升级舰船"
+                    mainPageViewModel.isShowLoading = true
+                    Task {
+                        mainPageViewModel.upgradeList = await upgradeRepo.getFilteredUpgradeList(toSkuId: toSku!.skuId)
+                        sortUpgradeItem(mainPageViewModel: mainPageViewModel)
+                        mainPageViewModel.isShowLoading = false
                     }
                 } else if (newValue == UpgradeStep.CHOOSE_TO_SHIP) {
+                    title = "请选择目标舰船"
                     isShowBackBtn = false
                 }
                 

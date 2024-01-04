@@ -114,6 +114,8 @@ struct ShipInfoTabView: View {
                 userRepo.setCurrentUser(user: newUser)
                 userRepo.saveSync(users: userRepo.users)
                 mainPageViewModel.currentUser = newUser
+                mainPageViewModel.upgradeList = await upgradeRepo.getFilteredUpgradeList()
+                sortUpgradeItem(mainPageViewModel: mainPageViewModel)
             }
         }
         

@@ -22,11 +22,19 @@ struct UpgradeListItemView: View {
                         Text(data.chineseName)
                             .font(.system(size: 16))
                             .bold()
-                            .padding(.vertical, 5)
+                            .padding(.bottom, 5)
                             .padding(.horizontal, 5)
                             .lineLimit(2)
                             .fixedSize(horizontal: false, vertical: true)
+                        
                     }
+                    Spacer()
+                }
+                HStack {
+                    Text("可升级")
+                        .font(.system(size: 14))
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 5)
                     Spacer()
                 }
                 Spacer()

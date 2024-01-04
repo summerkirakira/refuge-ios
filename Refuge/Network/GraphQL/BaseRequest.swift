@@ -50,8 +50,14 @@ func performGraphQLRequest<Input: Encodable, Output: Decodable>(request: GraphQL
                 }
             }
             
+            if response.data != nil {
+                let str = String(bytes: response.data!, encoding: .utf8)
+                debugPrint(str)
+            }
+            
             switch response.result {
             case .success(let data):
+                
                 completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))

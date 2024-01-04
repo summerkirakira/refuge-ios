@@ -31,12 +31,13 @@ struct UtilityPage: View {
             VStack {
                 HStack {
                     VStack {
-                        Image("ic_hangar_main")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                        Text("我的机库")
-                            .font(.system(size: 10))
-                            .foregroundColor(Color.black).opacity(0.75)
+//                        Image("ic_hangar_main")
+//                            .resizable()
+//                            .frame(width: 50, height: 50)
+//                        Text("我的机库")
+//                            .font(.system(size: 10))
+//                            .foregroundColor(Color.black).opacity(0.75)
+//                        Text("开发中")
                     }
                     .onTapGesture {
                         

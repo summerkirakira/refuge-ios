@@ -23,6 +23,8 @@ public class RSIApi: DefaultApi{
     var rsi_account_auth: String? = nil
     var rsi_ship_upgrades_context: String? = nil
     var rsi_csrf_token = ""
+    var xsrf = ""
+    var marker = ""
     var extra_cookies: [String] = []
     
     func setRSICookie(rsiToken: String, rsiDevice: String) {
@@ -111,6 +113,10 @@ public class RSIApi: DefaultApi{
             cookieString += "Rsi-ShipUpgrades-Context=\(rsi_ship_upgrades_context!);"
         }
         
+        if xsrf != "" {
+            cookieString += "Rsi-XSRF=\(xsrf)"
+        }
+        
         var headers: HTTPHeaders = HTTPCookieStorage.shared.cookies?.reduce(into: [:]) { dict, cookie in
                 dict[cookie.name] = cookie.value
             } ?? [:]
@@ -154,6 +160,11 @@ public class RSIApi: DefaultApi{
         let page = try? await getPage(endPoint: "")
         if page == nil {
             return nil
+        }
+        let xsrf_token = getXsrfTokenByPage(page: page!)
+        self.marker = generateRandomString(length: 22)
+        if xsrf_token != nil {
+            xsrf = "\(xsrf_token!):\(self.marker):\(String(getCurrentMillisecondTimestamp() + 1800 * 1000))"
         }
         return getCsrfTokenByPage(page: page!)
     }
@@ -341,6 +352,49 @@ public class RSIApi: DefaultApi{
         return try? await performGraphQLRequestAsync(request: graphQlReq)
     }
     
+    func applyCartToken(jwt: String) async -> ApplyCartTokenProperty? {
+        let result: ApplyCartTokenProperty? = try? await self.basicPostRequest(endPoint: "api/store/v2/cart/token", postBody: ApplyCartTokenPostBody(jwt: jwt))
+        return result
+    }
     
+    func addUpgradeToCart(fromSkuId: Int, toSkuId: Int) async -> AddUpgradeToCartProperty? {
+        let postBody = UpgradeAddToCartPostBody(from: fromSkuId, to: toSkuId)
+        let graphQlReq = GraphQLRequest<UpgradeAddToCartPostBody, AddUpgradeToCartProperty>(url: self.serverAdress + "pledge-store/api/upgrade/graphql", query: UpgradeAddToCartQuery, variables: postBody)
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
     
+    func getCartSummary() async -> CartSummaryProperty? {
+        let graphQlReq = GraphQLRequest<CartSummaryViewMutationPostBody, CartSummaryProperty>(url: self.serverAdress + "graphql", query: CartSummaryViewMutationQuery, variables: CartSummaryViewMutationPostBody())
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func addCredit(amount: Float) async -> AddCreditProperty? {
+        let graphQlReq = GraphQLRequest<AddCreditPostBody, AddCreditProperty>(url: self.serverAdress + "graphql", query: AddCreditQuery, variables: AddCreditPostBody(amount: amount))
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func clearCart() async -> ClearCartProperty? {
+        let graphQlReq = GraphQLRequest<ClearCartPostBody, ClearCartProperty>(url: self.serverAdress + "graphql", query: ClearCartQuery, variables: ClearCartPostBody())
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func nextStep() async -> BasicCartProperty? {
+        let graphQlReq = GraphQLRequest<NextStepPostBody, BasicCartProperty>(url: self.serverAdress + "graphql", query: NextStepQuery, variables: NextStepPostBody())
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func cartValidate() async -> BasicCartProperty? {
+        let graphQlReq = GraphQLRequest<CartValidationMutationPostBody, BasicCartProperty>(url: self.serverAdress + "graphql", query: CartValidationMutationQuery, variables: CartValidationMutationPostBody(token: await RecaptchaV3().getRecaptchaToken(), mark: self.marker))
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func cartAddressQuery() async -> CartAddressProperty? {
+        let graphQlReq = GraphQLRequest<AddressBookPostBody, CartAddressProperty>(url: self.serverAdress + "graphql", query: AdressBookQuery, variables: AddressBookPostBody())
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
+    
+    func cartAddressAssign(billing: String) async -> BasicCartProperty? {
+        let graphQlReq = GraphQLRequest<CartAddressAssignMutationPostBody, BasicCartProperty>(url: self.serverAdress + "graphql", query: CartAddressAssignMutationQuery, variables: CartAddressAssignMutationPostBody(billing: billing))
+        return try? await performGraphQLRequestAsync(request: graphQlReq)
+    }
 }

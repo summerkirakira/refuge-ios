@@ -89,7 +89,7 @@ struct UserInfoMenu: View {
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                                 Spacer()
-                                Text("\(mainPageViewModel.currentUser!.hangarValue / 100) USD")
+                                Text("\(displayFloat(number: mainPageViewModel.currentUser!.hangarValue)) USD")
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
@@ -98,7 +98,7 @@ struct UserInfoMenu: View {
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                                 Spacer()
-                                Text("\(mainPageViewModel.currentUser!.currentHangarValue / 100) USD")
+                                Text("\(displayFloat(number: mainPageViewModel.currentUser!.currentHangarValue)) USD")
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
@@ -107,7 +107,7 @@ struct UserInfoMenu: View {
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                                 Spacer()
-                                Text("\(mainPageViewModel.currentUser!.usd / 100) USD")
+                                Text("\(displayFloat(number: mainPageViewModel.currentUser!.usd)) USD")
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
@@ -134,7 +134,7 @@ struct UserInfoMenu: View {
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                                 Spacer()
-                                Text("\(mainPageViewModel.currentUser!.totalSpent / 100) USD")
+                                Text("\(displayFloat(number: mainPageViewModel.currentUser!.totalSpent)) USD")
                                     .font(.system(size: 18))
                                     .foregroundColor(Color.black.opacity(0.6))
                             }
@@ -194,7 +194,18 @@ struct UserInfoMenu: View {
                 }
                 .refreshable {
                     do {
-                        let user = try? await parseNewUser(email: mainPageViewModel.currentUser!.email, password: mainPageViewModel.currentUser!.password, rsi_device: RsiApi.getDefaultDevice(), rsi_token: mainPageViewModel.currentUser!.rsi_token)
+                        var user = try? await parseNewUser(email: mainPageViewModel.currentUser!.email, password: mainPageViewModel.currentUser!.password, rsi_device: RsiApi.getDefaultDevice(), rsi_token: mainPageViewModel.currentUser!.rsi_token)
+                        if user == nil {
+                            showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "获取用户信息失败", errorSubtitle: "请稍后再试")
+                            return
+                        }
+                        if mainPageViewModel.currentUser != nil {
+                            user!.currentHangarValue = mainPageViewModel.currentUser!.currentHangarValue
+                            user!.hangarValue = mainPageViewModel.currentUser!.hangarValue
+                        }
+                        userRepo.setCurrentUser(user: user!)
+                        userRepo.saveSync(users: userRepo.users)
+                        mainPageViewModel.currentUser = user
                     } catch {
                         
                     }
@@ -227,8 +238,11 @@ struct UserInfoMenu: View {
                         .padding(.top, 80)
                 }
             }
-        
-            
+    }
+    
+    func displayFloat(number: Int) -> String {
+        let floatNumber = Float(number) / 100
+        return String(format: "%.2f", floatNumber).replacingOccurrences(of: ".00", with: "")
     }
 
 }

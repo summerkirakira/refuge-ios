@@ -35,6 +35,19 @@ struct ShipUpgradeInfo: Decodable, Encodable {
         let title: String
         let price: Int
     }
+    
+    func getHighestSku() -> Sku? {
+        if self.skus == nil {
+            return nil
+        }
+        if self.skus!.count == 0 {
+            return nil
+        }
+        let sortedSku = self.skus!.sorted {
+            return $0.price < $1.price
+        }
+        return sortedSku[0]
+    }
 }
 
 enum ShipUpgradeType {
@@ -99,6 +112,19 @@ struct InitUpgradeProperty: Decodable {
         }
     }
 }
+
+struct AddUpgradeToCartProperty: Decodable {
+    let data: Data
+
+    struct Data: Decodable {
+        let addToCart: AddToCart?
+
+        struct AddToCart: Decodable {
+            let jwt: String
+        }
+    }
+}
+
 
 let initShipUpgradeQuery = """
 query initShipUpgrade {
@@ -218,6 +244,14 @@ to(from: $fromId, filters: $toFilters) {
 }
 """
 
+let UpgradeAddToCartQuery = """
+mutation addToCart($from: Int!, $to: Int!) {
+addToCart(from: $from, to: $to) {
+  jwt
+}
+}
+"""
+
 struct SearchFromShipPostBody: Encodable {
     let fromFilters: [String]
     let toFilters: [String]
@@ -226,4 +260,271 @@ struct SearchFromShipPostBody: Encodable {
 
 struct InitShipUpgradePostBody: Encodable {
     
+}
+
+struct UpgradeAddToCartPostBody: Encodable {
+    let from: Int
+    let to: Int
+}
+
+let AdressBookQuery = """
+query AddressBookQuery($storeFront: String) {
+store(name: $storeFront) {
+  addressBook {
+    ...TyAddressFragment
+    __typename
+  }
+  cart {
+    lineItems {
+      id
+      sku {
+        id
+        stock {
+          unlimited
+          backOrder
+          __typename
+        }
+        __typename
+      }
+      __typename
+    }
+    totals {
+      ...TyCartTotalFragment
+      __typename
+    }
+    shippingAddress {
+      ...PostalAddressFragment
+      __typename
+    }
+    billingAddress {
+      ...PostalAddressFragment
+      __typename
+    }
+    shippingRequired
+    billingRequired
+    __typename
+  }
+  __typename
+}
+}
+
+fragment TyAddressFragment on TyAddress {
+id
+defaultBilling
+defaultShipping
+company
+firstname
+lastname
+addressLine
+postalCode
+phone
+city
+country {
+  id
+  name
+  requireRegion
+  hasRegion
+  code
+  __typename
+}
+region {
+  id
+  code
+  name
+  __typename
+}
+__typename
+}
+
+fragment PostalAddressFragment on PostalAddress {
+id
+firstname
+lastname
+addressLine
+city
+company
+phone
+postalCode
+regionName
+countryName
+countryCode
+__typename
+}
+
+fragment TyCartTotalFragment on TyCartTotal {
+discount
+shipping
+total
+subTotal
+tax1 {
+  name
+  amount
+  __typename
+}
+tax2 {
+  name
+  amount
+  __typename
+}
+coupon {
+  amount
+  allowed
+  code
+  __typename
+}
+credits {
+  amount
+  nativeAmount {
+    value
+    __typename
+  }
+  applicable
+  maxApplicable
+  __typename
+}
+__typename
+}
+"""
+
+struct AddressBookPostBody: Encodable {
+    let storeFront: String = "pledge"
+}
+
+struct CartAddressProperty: Decodable {
+    let data: Data
+
+    struct Data: Decodable {
+        let store: Store
+
+        struct Store: Decodable {
+            let addressBook: [AddressBook]
+
+            struct AddressBook: Decodable {
+                let id: String
+            }
+        }
+    }
+}
+
+let CartAddressAssignMutationQuery = """
+mutation CartAddressAssignMutation($billing: ID, $shipping: ID, $storeFront: String) {
+  store(name: $storeFront) {
+    cart {
+      mutations {
+        assignAddresses(assign: {billing: $billing, shipping: $shipping})
+        __typename
+      }
+      shippingAddress {
+        ...PostalAddressFragment
+        __typename
+      }
+      billingAddress {
+        ...PostalAddressFragment
+        __typename
+      }
+      totals {
+        ...TyCartTotalFragment
+        __typename
+      }
+      __typename
+    }
+    context {
+      currencies {
+        code
+        symbol
+        __typename
+      }
+      pricing {
+        ...PricingContextFragment
+        __typename
+      }
+      __typename
+    }
+    ...CartFlowFragment
+    __typename
+  }
+}
+
+fragment PricingContextFragment on PricingContext {
+  currencyCode
+  currencySymbol
+  exchangeRate
+  taxInclusive
+  __typename
+}
+
+fragment PostalAddressFragment on PostalAddress {
+  id
+  firstname
+  lastname
+  addressLine
+  city
+  company
+  phone
+  postalCode
+  regionName
+  countryName
+  countryCode
+  __typename
+}
+
+fragment TyCartTotalFragment on TyCartTotal {
+  discount
+  shipping
+  total
+  subTotal
+  tax1 {
+    name
+    amount
+    __typename
+  }
+  tax2 {
+    name
+    amount
+    __typename
+  }
+  coupon {
+    amount
+    allowed
+    code
+    __typename
+  }
+  credits {
+    amount
+    nativeAmount {
+      value
+      __typename
+    }
+    applicable
+    maxApplicable
+    __typename
+  }
+  __typename
+}
+
+fragment CartFlowFragment on TyStore {
+  cart {
+    flow {
+      steps {
+        step
+        action
+        finalStep
+        active
+        __typename
+      }
+      current {
+        orderCreated
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+"""
+
+struct CartAddressAssignMutationPostBody: Encodable {
+    let storeFront: String = "pledge"
+    let billing: String
 }

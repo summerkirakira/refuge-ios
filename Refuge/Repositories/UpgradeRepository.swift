@@ -85,18 +85,29 @@ public class UpgradeRepository: ObservableObject{
         }
     }
     
-    func getFilteredUpgradeList() async -> [UpgradeListItem] {
-        let filterData = await getUpgradeFromShip(toShipId: nil)
+    func getFilteredUpgradeList(toSkuId: Int? = nil) async -> [UpgradeListItem] {
+        await upgradeRepo.refresh(needRefreshToken: true)
+        let filterData = await getUpgradeFromShip(toShipId: toSkuId)
         
         var shipUpgradeList: [UpgradeListItem] = []
-        for ship in filterData!.data.to.ships {
-            for sku in ship.skus {
-                let shipUpgrade = getUpgradeListItemById(skuId: sku.id)
+        if toSkuId == nil {
+            for ship in filterData!.data.to.ships {
+                for sku in ship.skus {
+                    let shipUpgrade = getUpgradeListItemById(skuId: sku.id)
+                    if shipUpgrade != nil {
+                        shipUpgradeList.append(shipUpgrade!)
+                    }
+                }
+            }
+        } else {
+            for ship in filterData!.data.from.ships {
+                let shipUpgrade = getUpgradeListItemByShipId(shipId: ship.id)
                 if shipUpgrade != nil {
                     shipUpgradeList.append(shipUpgrade!)
                 }
             }
         }
+        
         return shipUpgradeList
     }
     
@@ -118,6 +129,27 @@ public class UpgradeRepository: ObservableObject{
                         }
                         return UpgradeListItem(skuId: skuId, shipAlias: shipAlias, price: sku.price, chineseName: shipChineseName, upgradeName: sku.title, detail: item, type: type)
                     }
+                }
+            }
+        }
+        return nil
+    }
+    
+    func getUpgradeListItemByShipId(shipId: Int) -> UpgradeListItem? {
+        for item in self.items {
+            if item.id == shipId && item.skus != nil {
+                let shipAlias = getShipAlias(shipName: item.name)
+                var shipChineseName = translateItem(name: item.name)
+                let type = ShipUpgradeType.STANDARD
+                let highestSku = item.getHighestSku()
+                if highestSku == nil {
+                    if shipAlias != nil {
+                        return UpgradeListItem(skuId: shipId, shipAlias: shipAlias, price: shipAlias!.getHighestSkuPrice(), chineseName: shipChineseName, upgradeName: "Standard Version", detail: item, type: type)
+                    } else {
+                        return nil
+                    }
+                } else {
+                    return UpgradeListItem(skuId: shipId, shipAlias: shipAlias, price: highestSku!.price, chineseName: shipChineseName, upgradeName: "Standard Version", detail: item, type: type)
                 }
             }
         }

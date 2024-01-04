@@ -36,6 +36,7 @@
 		9F50272A2B4567EA003B726D /* UpgradeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5027292B4567EA003B726D /* UpgradeRepository.swift */; };
 		9F50272D2B460581003B726D /* UpgradeShopPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50272C2B460581003B726D /* UpgradeShopPage.swift */; };
 		9F50272F2B4607F5003B726D /* UpgradeListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50272E2B4607F5003B726D /* UpgradeListItemView.swift */; };
+		9F5027322B46CB4E003B726D /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5027312B46CB4E003B726D /* Shop.swift */; };
 		9F65A66B2B2FBAFF00AA9465 /* InitFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66A2B2FBAFF00AA9465 /* InitFunc.swift */; };
 		9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66C2B2FBE7B00AA9465 /* File.swift */; };
 		9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */; };
@@ -117,6 +118,7 @@
 		9F5027292B4567EA003B726D /* UpgradeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeRepository.swift; sourceTree = "<group>"; };
 		9F50272C2B460581003B726D /* UpgradeShopPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeShopPage.swift; sourceTree = "<group>"; };
 		9F50272E2B4607F5003B726D /* UpgradeListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeListItemView.swift; sourceTree = "<group>"; };
+		9F5027312B46CB4E003B726D /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
 		9F65A66A2B2FBAFF00AA9465 /* InitFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitFunc.swift; sourceTree = "<group>"; };
 		9F65A66C2B2FBE7B00AA9465 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunc.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				9F65A67B2B31677400AA9465 /* LoginProperty.swift */,
 				9F65A6852B3318EA00AA9465 /* Hangar.swift */,
 				9F5027252B449DA7003B726D /* UpgradeProperty.swift */,
+				9F5027312B46CB4E003B726D /* Shop.swift */,
 			);
 			path = RSI;
 			sourceTree = "<group>";
@@ -723,6 +726,7 @@
 				9F50272F2B4607F5003B726D /* UpgradeListItemView.swift in Sources */,
 				9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */,
 				9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */,
+				9F5027322B46CB4E003B726D /* Shop.swift in Sources */,
 				9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */,
 				9F65A67C2B31677400AA9465 /* LoginProperty.swift in Sources */,
 				9F50272D2B460581003B726D /* UpgradeShopPage.swift in Sources */,
@@ -893,7 +897,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
 				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
@@ -911,7 +915,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -931,7 +935,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
 				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
@@ -949,7 +953,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
