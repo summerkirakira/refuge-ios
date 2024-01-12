@@ -52,7 +52,7 @@ func performGraphQLRequest<Input: Encodable, Output: Decodable>(request: GraphQL
             
             if response.data != nil {
                 let str = String(bytes: response.data!, encoding: .utf8)
-                debugPrint(str)
+//                debugPrint(str)
             }
             
             switch response.result {
@@ -61,10 +61,10 @@ func performGraphQLRequest<Input: Encodable, Output: Decodable>(request: GraphQL
                 completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
-                debugPrint(error)
+//                debugPrint(error)
                 if response.data != nil {
                     let str = String(bytes: response.data!, encoding: .utf8)
-                    debugPrint(str)
+//                    debugPrint(str)
                 }
             }
         }
@@ -98,7 +98,7 @@ func performGraphQLRequestForString<Input: Encodable, Output: Decodable>(request
                 completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
-                debugPrint(error)
+//                debugPrint(error)
             }
         }
 }

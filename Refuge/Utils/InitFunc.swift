@@ -23,6 +23,49 @@ func getUuid() -> String {
     }
 }
 
+func getIsTranslationEnabled() -> Bool {
+    if let _ = defaults.object(forKey: "is_translation_enabled") {
+        let result = defaults.bool(forKey: "is_translation_enabled")
+        return result
+    } else {
+        defaults.set(true, forKey: "is_translation_enabled")
+        return true
+    }
+    
+}
+
+func setIsTranslationEnabled(result: Bool){
+    defaults.set(result, forKey: "is_translation_enabled")
+}
+
+func getIsReclaimEnabled() -> Bool {
+    if let _ = defaults.object(forKey: "is_reclaim_enabled") {
+        let result = defaults.bool(forKey: "is_reclaim_enabled")
+        return result
+    } else {
+        defaults.set(false, forKey: "is_reclaim_enabled")
+        return false
+    }
+}
+
+func setIsReclaimEnabled(result: Bool){
+    defaults.set(result, forKey: "is_reclaim_enabled")
+}
+
+func getIsGiftBanned() -> Bool {
+    if let _ = defaults.object(forKey: "is_gift_banned") {
+        let result = defaults.bool(forKey: "is_gift_banned")
+        return result
+    } else {
+        defaults.set(false, forKey: "is_gift_banned")
+        return false
+    }
+}
+
+func setIsGiftBanned(result: Bool){
+    defaults.set(result, forKey: "is_gift_banned")
+}
+
 func checkShipAlias(shipAliasUrl: String) async {
     let newVersion = shipAliasUrl.split(separator: "/").last!.replacingOccurrences(of: "formatted_ship_alias.", with: "").replacingOccurrences(of: ".json", with: "")
     let currentVersion = defaults.string(forKey: "shipAliasVersion") ?? "0.0.0"
@@ -31,9 +74,9 @@ func checkShipAlias(shipAliasUrl: String) async {
     
     do {
         shipAliases = try loadArrayFromJSON(ShipAlias.self, from: shipAliasPath)
-        debugPrint(shipAliases)
+//        debugPrint(shipAliases)
     } catch {
-        debugPrint("Load ShipAlias Failed")
+//        debugPrint("Load ShipAlias Failed")
         shipAliases = []
     }
     
@@ -48,7 +91,7 @@ func checkShipAlias(shipAliasUrl: String) async {
             defaults.set(newVersion, forKey: "shipAliasVersion")
             shipAliases = shipAlias
         } catch {
-            debugPrint("Load ShipAlias Failed")
+//            debugPrint("Load ShipAlias Failed")
         }
     }
 }
@@ -95,7 +138,7 @@ func appInit() async {
        let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
         version = "\(appVersion) (\(buildNumber))"
     } else {
-        debugPrint("Unable to retrieve version information.")
+//        debugPrint("Unable to retrieve version information.")
     }
     
     if let refugeVersion = await CirnoApi.getRefugeVersion(postBody: RefugeVersion(version: version, androidVersion: systemVersion, systemModel: deviceModel)) {

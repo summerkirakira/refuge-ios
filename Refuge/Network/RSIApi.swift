@@ -265,11 +265,11 @@ public class RSIApi: DefaultApi{
             .responseDecodable(of: Output.self) { response in
                 switch response.result {
                 case .success(let value):
-                    debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
+//                    debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
                     continuation.resume(returning: value)
                 case .failure(let error):
-                    debugPrint("Request Error: \(error)")
-                    debugPrint(response.data)
+//                    debugPrint("Request Error: \(error)")
+//                    debugPrint(response.data)
                     continuation.resume(throwing: error)
                 }
             }
@@ -287,11 +287,11 @@ public class RSIApi: DefaultApi{
             .responseString { response in
                 switch response.result {
                 case .success(let value):
-                    debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
+//                    debugPrint("Post \(endPoint), headers \(self.getHeaders()), response \(value)")
                     continuation.resume(returning: value)
                 case .failure(let error):
-                    debugPrint("Request Error: \(error)")
-                    debugPrint(response.data)
+//                    debugPrint("Request Error: \(error)")
+//                    debugPrint(response.data)
                     continuation.resume(throwing: error)
                 }
             }
@@ -305,7 +305,7 @@ public class RSIApi: DefaultApi{
     
     func multiStepLogin(multiStepLoginBody: MultiStepLoginBody) async -> MultiStepLoginProperty? {
         
-        debugPrint("Multi Header \(self.getHeaders())")
+//        debugPrint("Multi Header \(self.getHeaders())")
         
         let graphQlReq = GraphQLRequest<MultiStepLoginBody, MultiStepLoginProperty>(url: self.serverAdress + "graphql", query: MultiStepLoginQuery, variables: multiStepLoginBody)
         return try? await performGraphQLRequestAsync(request: graphQlReq)
@@ -329,7 +329,7 @@ public class RSIApi: DefaultApi{
                 getRequest(endPoint: endPoint).responseString { response in
                     switch response.result {
                     case .success(let value):
-                        debugPrint("getpage \(endPoint), headers \(self.getHeaders())")
+//                        debugPrint("getpage \(endPoint), headers \(self.getHeaders())")
                         continuation.resume(returning: value)
                     case .failure(let error):
                         continuation.resume(throwing: error)

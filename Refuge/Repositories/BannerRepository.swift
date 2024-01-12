@@ -46,6 +46,7 @@ public class BannerRepository: ObservableObject{
             return
         } else {
             self.banners = newBanners
+            self.saveSync(banners: newBanners)
         }
     }
     

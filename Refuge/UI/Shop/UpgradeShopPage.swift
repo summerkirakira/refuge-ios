@@ -140,7 +140,7 @@ struct UpgradeShopView: View {
                     }
                 }
             } message: {
-                if toSku != nil && fromSku != nil && inputNumber != "" {
+                if toSku != nil && fromSku != nil && Int(inputNumber) != nil {
                     Text("确定要购买\(inputNumber)个 \(fromSku!.chineseName) 到 \(toSku!.chineseName)的升级包(价值$\((toSku!.price - fromSku!.price) / 100 * Int(inputNumber)!))吗？\n你选择的版本是: \(toSku!.upgradeName)")
                 }
             }

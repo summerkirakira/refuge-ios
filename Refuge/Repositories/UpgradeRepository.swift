@@ -88,6 +88,9 @@ public class UpgradeRepository: ObservableObject{
     func getFilteredUpgradeList(toSkuId: Int? = nil) async -> [UpgradeListItem] {
         await upgradeRepo.refresh(needRefreshToken: true)
         let filterData = await getUpgradeFromShip(toShipId: toSkuId)
+        if filterData == nil {
+            return []
+        }
         
         var shipUpgradeList: [UpgradeListItem] = []
         if toSkuId == nil {

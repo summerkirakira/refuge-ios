@@ -14,7 +14,7 @@ import Foundation
 public class CIRNOApi: DefaultApi{
     
     init() {
-        super.init(serverAdress: "http://biaoju.site:6088/")
+        super.init(serverAdress: "https://biaoju.site:6188/")
     }
     
     override func getRequest(endPoint: String) -> DataRequest {
@@ -94,10 +94,10 @@ public class CIRNOApi: DefaultApi{
             .responseDecodable(of: Output.self) { response in
                 switch response.result {
                 case .success(let value):
-                    debugPrint("Post \(endPoint), headers \(self.getPostHeaders()), response \(value)")
+//                    debugPrint("Post \(endPoint), headers \(self.getPostHeaders()), response \(value)")
                     continuation.resume(returning: value)
                 case .failure(let error):
-                    debugPrint(error)
+//                    debugPrint(error)
                     continuation.resume(throwing: error)
                 }
             }

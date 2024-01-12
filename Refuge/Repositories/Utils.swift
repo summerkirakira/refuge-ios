@@ -82,6 +82,9 @@ func getHangarItemPrice(hangarItem: HangarItem) -> HangarItem {
     var newHangarItem = hangarItem
     if hangarItem.isUpgrade {
         let shipNameList = getFullUpgradeNames(upgradeTitle: hangarItem.name)
+        if shipNameList.count != 2 {
+            return newHangarItem
+        }
         let fromShip = getShipAlias(shipName: shipNameList[0])
         let toShip = getShipAlias(shipName: shipNameList[1])
         if fromShip == nil || toShip == nil {
@@ -162,8 +165,10 @@ func translateHangarString(name: String) -> String {
         if name.contains("warbond") {
             newName += "[战争债券版]"
         }
+    } else if (name.contains("Standalone Ship - ")) {
+        newName = "单船 - \(translateItem(name: name.replacingOccurrences(of: "Standalone Ship - ", with: "").replacingOccurrences(of: " Upgrades", with: "")))"
     } else {
-        newName = translateItem(name: name)
+        newName = translateItem(name: name.replacingOccurrences(of: " Upgrades", with: ""))
     }
     return newName
 }
@@ -274,6 +279,22 @@ func isHangarItemMatchedString(hangarItem: HangarItem, searchString: String) -> 
     return false
 }
 
+func isBuybackItemMatchedString(hangarItem: BuybackItem, searchString: String) -> Bool {
+    if searchString == "" {
+        return true
+    }
+    if matchString(str: hangarItem.name, target: searchString) {
+        return true
+    }
+    if matchString(str: hangarItem.chineseName, target: searchString) {
+        return true
+    }
+    if matchString(str: hangarItem.chineseAlsoContains, target: searchString) {
+        return true
+    }
+    return false
+}
+
 
 func calUserHangarPrice(user: User) -> User {
     var newUser = user
@@ -289,3 +310,84 @@ func calUserHangarPrice(user: User) -> User {
 }
 
 
+enum HangarItemType {
+    case Upgrade
+    case Warbond
+    case Subscribe
+    case Skin
+    case Pakage
+    case Ship
+    case FPS
+}
+
+
+func getHangarItemTypes(item: HangarItem) -> [HangarItemType] {
+    var types: [HangarItemType] = []
+    if item.name.contains("Upgrade") {
+        types.append(HangarItemType.Upgrade)
+    }
+    if item.name.contains("Warbond") {
+        types.append(HangarItemType.Warbond)
+    }
+    for subItem in item.items {
+        if subItem.kind == "FPS Equipment" {
+            types.append(HangarItemType.FPS)
+        }
+        if subItem.kind == "Skin" {
+            types.append(HangarItemType.Skin)
+        }
+        if subItem.kind == "Ship" {
+            types.append(HangarItemType.Ship)
+        }
+    }
+    if item.items.count > 1 && types.contains(HangarItemType.Ship) {
+        types.append(HangarItemType.Pakage)
+    }
+    return types
+}
+
+
+func concatSameBuyBackPakage(buybackItems: [BuybackItem]) -> [BuybackItem] {
+    var itemDict: [String: Int] = [:]
+    var itemList: [BuybackItem] = []
+    var currentNumber = 0
+    
+    for hangarItem in buybackItems {
+        let key = getBuyBackItemKey(buybackItem: hangarItem)
+        if itemDict.keys.contains(key) {
+            let itemNum = itemDict[key]
+            itemList[itemNum!].number += 1
+        } else {
+            itemDict[key] = currentNumber
+            currentNumber += 1
+            var newHangarItem = hangarItem
+            itemList.append(newHangarItem)
+        }
+    }
+    return itemList
+}
+
+func getBuyBackItemKey(buybackItem: BuybackItem) -> String {
+    return "\(buybackItem.name)#\(buybackItem.image)#\(buybackItem.fromShipId)#\(buybackItem.toShipId)#\(buybackItem.toSkuId)"
+}
+
+
+func translateBuybackItem(buybackItem: BuybackItem) -> BuybackItem {
+    var newHangarItem = buybackItem
+    newHangarItem.chineseName = translateHangarString(name: buybackItem.name)
+    
+//    var alsoContainList: [String] = []
+//    for alsoContain in newHangarItem.alsoContains.split(separator: "#") {
+//        alsoContainList.append(translateHangarString(name: String(alsoContain)))
+//    }
+//    newHangarItem.chineseAlsoContains = alsoContainList.joined(separator: "#")
+    return newHangarItem
+}
+
+func translateBuybackItems(buybackItems: [BuybackItem]) -> [BuybackItem] {
+    var newHangarItems: [BuybackItem] = []
+    for hangarItem in buybackItems {
+        newHangarItems.append(translateBuybackItem(buybackItem: hangarItem))
+    }
+    return newHangarItems
+}

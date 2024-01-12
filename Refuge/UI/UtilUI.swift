@@ -18,3 +18,12 @@ func showCompleteMessage(mainPageViewModel: MainPageViewModel, completeTitle: St
     mainPageViewModel.completeMessageSubTitle = completeSubtitle
     mainPageViewModel.isShowCompleteMessage = true
 }
+
+
+func getAppVersion() -> String {
+    if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+        return version
+    } else {
+        return "0.0.0"
+    }
+}

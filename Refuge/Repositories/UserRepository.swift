@@ -165,6 +165,12 @@ public class UserRepository: ObservableObject{
         self.users = newUsers
     }
     
+    func removeUser(handle: String) {
+        self.users = self.users.filter { item in
+            return item.handle != handle
+        }
+    }
+    
     func setCurrentUser(user: User) {
         self.addUser(user: user)
         UserDefaults.standard.set(user.handle, forKey: "current_user")

@@ -48,28 +48,6 @@ public class HangarItemRepository: ObservableObject{
     }
     
     
-//    func load(completion: @escaping (Result<[HangarItem], Error>)->Void) {
-//        DispatchQueue.global(qos: .background).async {
-//            do {
-//                let fileURL = try HangarItemRepository.fileURL()
-//                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
-//                    DispatchQueue.main.async {
-//                        completion(.success([]))
-//                    }
-//                    return
-//                }
-//                let hangarItems = try JSONDecoder().decode([HangarItem].self, from: file.availableData)
-//                DispatchQueue.main.async {
-//                    self.items = hangarItems
-//                    completion(.success(hangarItems))
-//                }
-//            } catch {
-//                DispatchQueue.main.async {
-//                    completion(.failure(error))
-//                }
-//            }
-//        }
-//    }
     func load(completion: @escaping (Result<[HangarItem], Error>)->Void) {
         DispatchQueue.global(qos: .background).async {
             do {

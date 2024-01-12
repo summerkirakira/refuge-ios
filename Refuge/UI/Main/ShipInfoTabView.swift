@@ -22,7 +22,7 @@ struct ShipInfoTabView: View {
                             .tag(0)
                         HangarListView(mainPageViewModel: mainPageViewModel)
                             .tag(1)
-                        UtilityPage(mainPageViewModel: mainPageViewModel)
+                        BuybackListView(mainPageViewModel: mainPageViewModel)
                             .tag(2)
                         UserInfoMenu(mainPageViewModel: mainPageViewModel)
                             .tag(3)
@@ -54,18 +54,22 @@ struct ShipInfoTabView: View {
         .onAppear {
             Task.init {
                 do {
+                    
                     mainPageViewModel.loadingTitle = nil
                     mainPageViewModel.isShowLoading = true
-                    userRepo.loadSync()
-                    repository.loadSync()
                     bannerRepo.loadSync()
+                    userRepo.loadSync()
+                    buybackRepo.loadSync()
+                    repository.loadSync()
+                    
                     
                     upgradeRepo.loadSync()
                     
                     
                     mainPageViewModel.currentUser = userRepo.getCurrentUser()
                     mainPageViewModel.hangarItems = repository.items
-                    mainPageViewModel.tabPosition = 2
+                    mainPageViewModel.buybackItems = buybackRepo.items
+                    mainPageViewModel.tabPosition = 1
                     mainPageViewModel.isShowLoading = false
                     isFinishedLoading = true
                     
@@ -80,7 +84,6 @@ struct ShipInfoTabView: View {
                     await bannerRepo.refresh()
                     
                     mainPageViewModel.banners = bannerRepo.banners
-                    
                     
                 } catch {
                     mainPageViewModel.isShowLoading = false
@@ -109,6 +112,11 @@ struct ShipInfoTabView: View {
                 mainPageViewModel.isShowLoading = true
                 await repository.refreshHangar()
                 mainPageViewModel.hangarItems = repository.items
+                
+                mainPageViewModel.loadingTitle = "刷新回购中"
+                await buybackRepo.refresh()
+                mainPageViewModel.buybackItems = buybackRepo.items
+                
                 mainPageViewModel.isShowLoading = false
                 let newUser = calUserHangarPrice(user: mainPageViewModel.currentUser!)
                 userRepo.setCurrentUser(user: newUser)
@@ -153,7 +161,7 @@ struct ShipInfoTabView: View {
 struct CustomTopBar: View {
     @ObservedObject var mainPageViewModel: MainPageViewModel
     @State private var title: String = "我的机库"
-    @State private var topBarColor: String = "ColorTopBarWhite"
+    @State private var topBarColor: String = "ColorTopBarBlack"
     private let pipeline = ImagePipeline()
     var body: some View {
         VStack {
@@ -204,7 +212,7 @@ struct CustomTopBar: View {
             case 1:
                 topBarColor = "ColorTopBarBlack"
             case 2:
-                topBarColor = "ColorTopBarWhite"
+                topBarColor = "ColorTopBarBlack"
             case 3:
                 topBarColor = "ColorTopBarWhite"
             default:
@@ -230,6 +238,7 @@ class MainPageViewModel: ObservableObject {
     @Published var currentUser: User? = nil
     @Published var hangarItems: [HangarItem] = []
     @Published var selectedItem: HangarItem? = nil
+    @Published var buybackItems: [BuybackItem] = []
     @Published var isShowErrorMessage: Bool = false
     @Published var errorMessageTitle: String = "只是一个普通的错误"
     @Published var errorMessageSubTitle: String = "只是一个普通的错误"
@@ -241,6 +250,12 @@ class MainPageViewModel: ObservableObject {
     @Published var needToRefreshHangar: Bool = false
     @Published var hangarFilterString: String = ""
     
+    @Published var isTranslationEnabled: Bool = getIsTranslationEnabled()
+    
+    @Published var isReclaimEnabled: Bool = getIsReclaimEnabled()
+    
+    @Published var isGiftBanned: Bool = getIsGiftBanned()
+    
     @Published var upgradeList: [UpgradeListItem] = []
     
     
@@ -251,8 +266,8 @@ class MainPageViewModel: ObservableObject {
 struct CustomTabBar: View {
     @ObservedObject var mainPageViewModel: MainPageViewModel
     @State private var shopIconColor: String = "ColorUnselected"
-    @State private var hangarIconColor: String = "ColorUnselected"
-    @State private var mainIconColor: String = "ColorPrimary"
+    @State private var hangarIconColor: String = "ColorPrimary"
+    @State private var mainIconColor: String = "ColorUnselected"
     @State private var meIconColor: String = "ColorUnselected"
     @State private var topBarColor: String = "ColorTopBarBlack"
     private let pipeline = ImagePipeline()

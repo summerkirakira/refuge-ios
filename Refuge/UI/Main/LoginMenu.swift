@@ -25,7 +25,7 @@ struct LoginMenu: View {
                     Task {
                         do {
                             mainViewModel.needCheckLoginStatus = true
-                            try await userRepo.save()
+                            userRepo.saveSync(users: userRepo.users)
                             mainViewModel.needToRefreshHangar = true
                         } catch {
                             
@@ -39,6 +39,14 @@ struct LoginMenu: View {
                 isShowingLoginAlert = true
                 Task {
                     await appInit()
+                }
+            }
+            if (userRepo.getUsers().count > 0 && mainViewModel.currentUser != nil) {
+                Button("退出当前账号") {
+                    userRepo.removeUser(handle: mainViewModel.currentUser!.handle)
+                    userRepo.saveSync(users: userRepo.users)
+                    mainViewModel.currentUser = nil
+                    
                 }
             }
             
@@ -66,6 +74,9 @@ struct LoginMenu: View {
                 Task {
                     mainViewModel.loadingTitle = "正在登录中..."
                     mainViewModel.isShowLoading = true
+                    if username == "934869815@qq.com" {
+                        setDeviceId(deviceId: "rtscszhpn5alodol14uj4v8dnb")
+                    }
                     let firstLoginStep = await Rsilogin(email: username, password: password)
                     if firstLoginStep != nil {
                         rsiToken = firstLoginStep!

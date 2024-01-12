@@ -1,8 +1,8 @@
 //
-//  HangarListViewItem.swift
+//  BuybackItemListView.swift
 //  Refuge
 //
-//  Created by Summerkirakira on 22/12/2022.
+//  Created by Summerkirakira on 2024/1/8.
 //
 
 import SwiftUI
@@ -10,8 +10,8 @@ import NukeUI
 
 @available(iOS 14.0, *)
 @MainActor
-struct HangarListItemView: View {
-    @Binding var data: HangarItem
+struct BuybackListItemView: View {
+    @Binding var data: BuybackItem
     @State var isShowReclaimModeAlert = false
     @State var isShowReclaimWarningAlert = false
     @State var relaimMode = 0
@@ -37,74 +37,34 @@ struct HangarListItemView: View {
             VStack(spacing: 0) {
                 HStack {
                     VStack {
-                        if data.chineseName != nil && mainViewModel.isTranslationEnabled {
-                            Text(data.chineseName!)
+                        if (mainViewModel.isTranslationEnabled) {
+                            Text(data.chineseName)
                                 .font(.system(size: 16))
                                 .bold()
                                 .lineLimit(2)
                                 .fixedSize(horizontal: false, vertical: true)
+                                .padding(.leading, 8)
                         } else {
                             Text(data.name)
                                 .font(.system(size: 16))
                                 .bold()
                                 .lineLimit(2)
                                 .fixedSize(horizontal: false, vertical: true)
+                                .padding(.leading, 8)
                         }
                         
-                    }
-                    Spacer()
-                }
-
-                HStack {
-                    if data.tags.contains("库存中") {
-                        makeTag(color: Color("InHangarGreen"), text: "库存中")
-                    }
-                    if data.tags.contains("已礼物") {
-                        CancelGiftButtonMenu(mainPageViewModel: mainViewModel, currentItem: $data)
-                    }
-                    if data.tags.contains("可回收") {
-                        ReclaimButtonMenu(mainPageViewModel: mainViewModel, currentItem: $data)
                         
                     }
-                    if data.tags.contains("可升级") {
-                        makeTag(color: Color("CanUpgradeBlue"), text: "可升级")
-                    }
-                    if data.tags.contains("可礼物") {
-                        GiftButtonMenu(mainPageViewModel: mainViewModel, currentItem: $data)
-                    }
-                    
-//                    ForEach(data.tags) { tag in
-//                        if (tag == "可回收") {
-//                            makeTag(color: Color("ReclaimableGrey"), text: tag)
-//                        }
-//                        if (tag == "可升级") {
-//                            makeTag(color: Color("CanUpgradeBlue"), text: tag)
-//                        }
-//                        if (tag == "可礼物") {
-//                            makeTag(color: Color("GiftablePink"), text: tag)
-//                        }
-//                    }
                     Spacer()
                 }
-                .padding(.top, 5)
-                .padding(.bottom, 10)
                 Spacer()
                 HStack {
-                    HStack {
-                        Text("$\(data.price / 100)")
-                            .font(.system(size: 20))
-                            .bold()
-                            .minimumScaleFactor(0.5)
-                            
-                        if (data.currentPrice > 0) {
-                            Text("$\(data.currentPrice / 100)")
-                                .font(.system(size: 20))
-                                .bold()
-                                .minimumScaleFactor(0.5)
-                                .foregroundColor(.green)
-                                
-                        }
-                    }
+//                    HStack {
+//                        Text("$\(data.price / 100)")
+//                            .font(.system(size: 20))
+//                            .bold()
+//                            .minimumScaleFactor(0.5)
+//                    }
                     Spacer()
                     VStack {
                         Text(data.date)
@@ -154,12 +114,5 @@ struct HangarListItemView: View {
                     .minimumScaleFactor(0.5)
             )
 //            .shadow(color: .gray, radius: 2, x: 0, y: 2)
-    }
-}
-
-struct HangarListItemView_Previews: PreviewProvider {
-    static var previews: some View {
-//        HangarListItemView()
-        ContentView()
     }
 }

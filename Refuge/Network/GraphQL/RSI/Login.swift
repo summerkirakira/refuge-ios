@@ -61,7 +61,7 @@ func Rsilogin(rsiAPI: RSIApi = RsiApi, email: String, password: String) async ->
         rsiAPI.setToken(token: rsiToken)
         rsiAPI.setDevice(device: deviceId!)
         
-        debugPrint("New RSI Token \(rsiToken)")
+//        debugPrint("New RSI Token \(rsiToken)")
         
         
         

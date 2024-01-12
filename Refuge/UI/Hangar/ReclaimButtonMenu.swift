@@ -17,11 +17,18 @@ struct ReclaimButtonMenu: View {
     var body: some View {
         Menu {
             Button("回收一件") {
+                if (mainPageViewModel.isReclaimEnabled) {
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "融船操作已被禁止", errorSubtitle: "请前往设置开启哦")
+                    return
+                }
                 isShowReclaimSingleAlert = true
             }
 
             Button("回收全部") {
-//                debugPrint(mainPageViewModel.isShowErrorMessage)
+                if (mainPageViewModel.isReclaimEnabled) {
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "融船操作已被禁止", errorSubtitle: "请前往设置开启哦")
+                    return
+                }
                 isShowReclaimAllAlert = true
                 
             }

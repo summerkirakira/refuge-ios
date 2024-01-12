@@ -37,6 +37,13 @@
 		9F50272D2B460581003B726D /* UpgradeShopPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50272C2B460581003B726D /* UpgradeShopPage.swift */; };
 		9F50272F2B4607F5003B726D /* UpgradeListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50272E2B4607F5003B726D /* UpgradeListItemView.swift */; };
 		9F5027322B46CB4E003B726D /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5027312B46CB4E003B726D /* Shop.swift */; };
+		9F585E582B4B32B30024B9E4 /* HangarFilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E572B4B32B30024B9E4 /* HangarFilterButton.swift */; };
+		9F585E5A2B4C70650024B9E4 /* BuybackRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E592B4C70650024B9E4 /* BuybackRepository.swift */; };
+		9F585E5C2B4C7B470024B9E4 /* BuybackProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E5B2B4C7B470024B9E4 /* BuybackProperty.swift */; };
+		9F585E5F2B4C7FC30024B9E4 /* BuybackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E5E2B4C7FC30024B9E4 /* BuybackParser.swift */; };
+		9F585E622B4C8D060024B9E4 /* BuybackListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E612B4C8D060024B9E4 /* BuybackListView.swift */; };
+		9F585E642B4C8D1F0024B9E4 /* BuybackItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E632B4C8D1F0024B9E4 /* BuybackItemListView.swift */; };
+		9F585E672B4F53B70024B9E4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F585E662B4F53B70024B9E4 /* SettingsView.swift */; };
 		9F65A66B2B2FBAFF00AA9465 /* InitFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66A2B2FBAFF00AA9465 /* InitFunc.swift */; };
 		9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66C2B2FBE7B00AA9465 /* File.swift */; };
 		9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */; };
@@ -119,6 +126,13 @@
 		9F50272C2B460581003B726D /* UpgradeShopPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeShopPage.swift; sourceTree = "<group>"; };
 		9F50272E2B4607F5003B726D /* UpgradeListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeListItemView.swift; sourceTree = "<group>"; };
 		9F5027312B46CB4E003B726D /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
+		9F585E572B4B32B30024B9E4 /* HangarFilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarFilterButton.swift; sourceTree = "<group>"; };
+		9F585E592B4C70650024B9E4 /* BuybackRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuybackRepository.swift; sourceTree = "<group>"; };
+		9F585E5B2B4C7B470024B9E4 /* BuybackProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuybackProperty.swift; sourceTree = "<group>"; };
+		9F585E5E2B4C7FC30024B9E4 /* BuybackParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuybackParser.swift; sourceTree = "<group>"; };
+		9F585E612B4C8D060024B9E4 /* BuybackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuybackListView.swift; sourceTree = "<group>"; };
+		9F585E632B4C8D1F0024B9E4 /* BuybackItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuybackItemListView.swift; sourceTree = "<group>"; };
+		9F585E662B4F53B70024B9E4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9F65A66A2B2FBAFF00AA9465 /* InitFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitFunc.swift; sourceTree = "<group>"; };
 		9F65A66C2B2FBE7B00AA9465 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		9F65A66E2B2FBFEF00AA9465 /* UsefulFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunc.swift; sourceTree = "<group>"; };
@@ -232,6 +246,7 @@
 				9F65A6852B3318EA00AA9465 /* Hangar.swift */,
 				9F5027252B449DA7003B726D /* UpgradeProperty.swift */,
 				9F5027312B46CB4E003B726D /* Shop.swift */,
+				9F585E5B2B4C7B470024B9E4 /* BuybackProperty.swift */,
 			);
 			path = RSI;
 			sourceTree = "<group>";
@@ -327,6 +342,8 @@
 		9F4A8CBA2954669800C566C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9F585E652B4F539E0024B9E4 /* Settings */,
+				9F585E602B4C8CE90024B9E4 /* Buyback */,
 				9F50272B2B460557003B726D /* Shop */,
 				9FCD47D52B353FCB00F7B0EA /* Utility */,
 				9F65A6762B3129AC00AA9465 /* User */,
@@ -340,6 +357,7 @@
 		9F4A8CBB295466A000C566C1 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				9F585E5D2B4C7FA00024B9E4 /* Buyback */,
 				9F65A6722B309E8600AA9465 /* GraphQL */,
 				9F43BCD32B1490AE00135755 /* Utils */,
 				9F43BCD02B14902D00135755 /* User */,
@@ -361,6 +379,7 @@
 				9F43BCCE2B148B5800135755 /* Models.swift */,
 				9FCD47D82B35403900F7B0EA /* BannerRepository.swift */,
 				9F5027292B4567EA003B726D /* UpgradeRepository.swift */,
+				9F585E592B4C70650024B9E4 /* BuybackRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -376,6 +395,7 @@
 				9F22F5F32B34376000EE21FD /* GiftButtonMenu.swift */,
 				9FCD47DC2B36A22B00F7B0EA /* filterButtonMenu.swift */,
 				9FCD47DE2B36C40800F7B0EA /* CancelGiftButton.swift */,
+				9F585E572B4B32B30024B9E4 /* HangarFilterButton.swift */,
 			);
 			path = Hangar;
 			sourceTree = "<group>";
@@ -395,6 +415,31 @@
 				9F50272E2B4607F5003B726D /* UpgradeListItemView.swift */,
 			);
 			path = Shop;
+			sourceTree = "<group>";
+		};
+		9F585E5D2B4C7FA00024B9E4 /* Buyback */ = {
+			isa = PBXGroup;
+			children = (
+				9F585E5E2B4C7FC30024B9E4 /* BuybackParser.swift */,
+			);
+			path = Buyback;
+			sourceTree = "<group>";
+		};
+		9F585E602B4C8CE90024B9E4 /* Buyback */ = {
+			isa = PBXGroup;
+			children = (
+				9F585E612B4C8D060024B9E4 /* BuybackListView.swift */,
+				9F585E632B4C8D1F0024B9E4 /* BuybackItemListView.swift */,
+			);
+			path = Buyback;
+			sourceTree = "<group>";
+		};
+		9F585E652B4F539E0024B9E4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9F585E662B4F53B70024B9E4 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		9F65A6692B2FBACD00AA9465 /* Utils */ = {
@@ -713,19 +758,25 @@
 				9F0BCFBC29565C0700FD536C /* DefaultApi.swift in Sources */,
 				9FF09DA62954ECFD00CB0CC0 /* HangarListView.swift in Sources */,
 				9F4A8C912954625C00C566C1 /* ContentView.swift in Sources */,
+				9F585E582B4B32B30024B9E4 /* HangarFilterButton.swift in Sources */,
 				9F43BCCD2B148B0200135755 /* UserRepository.swift in Sources */,
+				9F585E5C2B4C7B470024B9E4 /* BuybackProperty.swift in Sources */,
 				9F65A6812B32189700AA9465 /* Login.swift in Sources */,
 				9F4A8CBF2954688B00C566C1 /* HangarListItemView.swift in Sources */,
+				9F585E672B4F53B70024B9E4 /* SettingsView.swift in Sources */,
 				9F65A66F2B2FBFEF00AA9465 /* UsefulFunc.swift in Sources */,
 				9F65A6862B3318EA00AA9465 /* Hangar.swift in Sources */,
+				9F585E5F2B4C7FC30024B9E4 /* BuybackParser.swift in Sources */,
 				9FF243242955598E0050904C /* HangarItemRepository.swift in Sources */,
 				9F43BCCF2B148B5800135755 /* Models.swift in Sources */,
+				9F585E5A2B4C70650024B9E4 /* BuybackRepository.swift in Sources */,
 				9FCD47DD2B36A22B00F7B0EA /* filterButtonMenu.swift in Sources */,
 				9F65A6842B3247A900AA9465 /* LoginMenu.swift in Sources */,
 				9FCD47D92B35403900F7B0EA /* BannerRepository.swift in Sources */,
 				9F50272F2B4607F5003B726D /* UpgradeListItemView.swift in Sources */,
 				9F65A66D2B2FBE7B00AA9465 /* File.swift in Sources */,
 				9F4A8C8F2954625C00C566C1 /* RefugeApp.swift in Sources */,
+				9F585E642B4C8D1F0024B9E4 /* BuybackItemListView.swift in Sources */,
 				9F5027322B46CB4E003B726D /* Shop.swift in Sources */,
 				9F43BCC92B11D58A00135755 /* HangarDetailBottomSheet.swift in Sources */,
 				9F65A67C2B31677400AA9465 /* LoginProperty.swift in Sources */,
@@ -735,6 +786,7 @@
 				9F0BCFB629565B8B00FD536C /* RSIApi.swift in Sources */,
 				9FCD47DF2B36C40800F7B0EA /* CancelGiftButton.swift in Sources */,
 				9F50272A2B4567EA003B726D /* UpgradeRepository.swift in Sources */,
+				9F585E622B4C8D060024B9E4 /* BuybackListView.swift in Sources */,
 				9F5027262B449DA7003B726D /* UpgradeProperty.swift in Sources */,
 				9FCD47DB2B35427F00F7B0EA /* Banner.swift in Sources */,
 				9F65A67E2B31F2A800AA9465 /* Website.swift in Sources */,
@@ -897,7 +949,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
 				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
@@ -910,12 +962,12 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -935,7 +987,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_ASSET_PATHS = "\"Refuge/Preview Content\"";
 				DEVELOPMENT_TEAM = J29Z88688V;
 				ENABLE_PREVIEWS = YES;
@@ -948,12 +1000,12 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "vip.kirakira.Refuge-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -126,7 +126,7 @@ func parseNewUser(email: String, password: String, rsi_device: String?, rsi_toke
     
     
     
-    debugPrint(userName, userHandle, userImage, userRECString, userCreditsString, totalSpentString, enlisted, orgName, orgLogoUrl, orgIdString, referralCode, recruitNumberString, totalReferralNumberString)
+//    debugPrint(userName, userHandle, userImage, userRECString, userCreditsString, totalSpentString, enlisted, orgName, orgLogoUrl, orgIdString, referralCode, recruitNumberString, totalReferralNumberString)
     
     if (userImage == nil || userHandle == nil || referralCode == nil || recruitNumberString == nil || totalReferralNumberString == nil || userCreditsString == nil || userUECString == nil || userRECString == nil || totalSpentString == nil || enlisted == nil) {
         return nil

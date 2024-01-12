@@ -19,13 +19,23 @@ struct UpgradeListItemView: View {
             VStack(spacing: 0) {
                 HStack {
                     VStack {
-                        Text(data.chineseName)
-                            .font(.system(size: 16))
-                            .bold()
-                            .padding(.bottom, 5)
-                            .padding(.horizontal, 5)
-                            .lineLimit(2)
-                            .fixedSize(horizontal: false, vertical: true)
+                        if (mainViewModel.isTranslationEnabled || data.shipAlias == nil) {
+                            Text(data.chineseName)
+                                .font(.system(size: 16))
+                                .bold()
+                                .padding(.bottom, 5)
+                                .padding(.horizontal, 5)
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        } else {
+                            Text(data.shipAlias!.name)
+                                .font(.system(size: 16))
+                                .bold()
+                                .padding(.bottom, 5)
+                                .padding(.horizontal, 5)
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
                         
                     }
                     Spacer()
@@ -74,6 +84,4 @@ struct UpgradeListItemView: View {
             .frame(width: 170)
             .cornerRadius(4)
     }
-    
-    
 }

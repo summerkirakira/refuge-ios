@@ -19,12 +19,19 @@ struct GiftButtonMenu: View {
     var body: some View {
         Menu {
             Button("礼物一件") {
-                
+                if (mainPageViewModel.isReclaimEnabled) {
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "礼物操作已被禁止", errorSubtitle: "请前往设置开启哦")
+                    return
+                }
                 isShowGiftTargetAlert = true
                 giftMode = 1
             }
 
             Button("礼物全部") {
+                if (mainPageViewModel.isReclaimEnabled) {
+                    showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "礼物操作已被禁止", errorSubtitle: "请前往设置开启哦")
+                    return
+                }
                 isShowGiftTargetAlert = true
                 giftMode = 2
             }
@@ -65,7 +72,7 @@ struct GiftButtonMenu: View {
 
                     if result!.success == 0 {
                         mainPageViewModel.isShowLoading = false
-                        showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "融船失败", errorSubtitle: result!.msg)
+                        showErrorMessage(mainPageViewModel: mainPageViewModel, errorTitle: "礼物失败", errorSubtitle: result!.msg)
                         return
                     } else {
                         mainPageViewModel.isShowLoading = false

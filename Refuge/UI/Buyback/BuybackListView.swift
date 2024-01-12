@@ -1,46 +1,18 @@
 //
-//  HangarListView.swift
+//  BuybackListView.swift
 //  Refuge
 //
-//  Created by Summerkirakira on 22/12/2022.
+//  Created by Summerkirakira on 2024/1/8.
 //
 
+import Foundation
 import SwiftUI
 import NukeUI
 
-
-struct SearchBar: View {
-    @Binding var searchText: String
-//    @Binding var isSearchBtnClicked: Bool
-
-    var body: some View {
-        HStack {
-            TextField("搜索", text: $searchText)
-                .padding(8)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal, 10)
-            
-//            Button(action: {
-//                searchText = ""
-//            }) {
-//                Image(systemName: "magnifyingglass")
-//                    .resizable()
-//                    .frame(width: 30, height: 30)
-//                    .foregroundColor(.gray)
-//                    .padding(8)
-//            }
-//            .opacity(searchText.isEmpty ? 0 : 1)
-//            .animation(.default)
-        }
-        .padding(.top, 5)
-    }
-}
-
 @available(iOS 14.0, *)
-struct HangarListView: View {
+struct BuybackListView: View {
     @ObservedObject var mainPageViewModel: MainPageViewModel
-    @State var currentSelected: HangarItem? = nil
+//    @State var currentSelected: HangarItem? = nil
     @State var searchString: String = ""
     @State var isBottomSheetPresented = false
     private let pipeline = ImagePipeline()
@@ -51,13 +23,13 @@ struct HangarListView: View {
                 ZStack {
                     HStack {
                         Spacer()
-                        Text("我的机库")
+                        Text("我的回购")
                             .font(.system(size: 20))
                         Spacer()
                     }
                     HStack {
                         Spacer()
-                        FilterButtonMenu(mainViewModel: mainPageViewModel)
+//                        FilterButtonMenu(mainViewModel: mainPageViewModel)
                     }
                 }
                 .padding(.top, 58)
@@ -68,8 +40,8 @@ struct HangarListView: View {
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.gray.opacity(0.01))
-                    ForEach(mainPageViewModel.hangarItems.indices, id:\.self) {index in
-                        HangarListItemView(data: $mainPageViewModel.hangarItems[index], mainViewModel: mainPageViewModel)
+                    ForEach(mainPageViewModel.buybackItems.indices, id:\.self) {index in
+                        BuybackListItemView(data: $mainPageViewModel.buybackItems[index], mainViewModel: mainPageViewModel)
                             .listRowSeparator(.hidden)
                             .listRowInsets(EdgeInsets())
                             .listRowBackground(Color.gray.opacity(0.01))
@@ -85,21 +57,14 @@ struct HangarListView: View {
                 .padding(.horizontal, 0)
                 .padding(.bottom, 0)
                 .onChange(of: searchString) { newValue in
-                    mainPageViewModel.hangarItems = repository.items.filter { item in
-                        isHangarItemMatchedString(hangarItem: item, searchString: newValue)
+                    mainPageViewModel.buybackItems = buybackRepo.items.filter { item in
+                        isBuybackItemMatchedString(hangarItem: item, searchString: newValue)
                     }
                 }
                 .refreshable {
                     searchString = ""
-                    await repository.refreshHangar()
-                    mainPageViewModel.hangarItems = repository.items
-                    let newUser = calUserHangarPrice(user: mainPageViewModel.currentUser!)
-                    userRepo.setCurrentUser(user: newUser)
-                    userRepo.saveSync(users: userRepo.users)
-                    mainPageViewModel.currentUser = newUser
-                }
-                .sheet(isPresented: $isBottomSheetPresented) {
-                    ShipDetailBottomSheet(mainPageViewModel: mainPageViewModel, isBottomSheetPresented: $isBottomSheetPresented)
+                    await buybackRepo.refresh()
+                    mainPageViewModel.buybackItems = buybackRepo.items
                 }
                 .padding(.all, 0)
                 Spacer()

@@ -15,7 +15,7 @@ func saveAsJSON<T: Encodable>(_ value: T, to filePath: URL) throws {
     do {
         let jsonData = try encoder.encode(value)
         try jsonData.write(to: filePath, options: .atomicWrite)
-        debugPrint("Data saved successfully to: \(filePath.absoluteString)")
+//        debugPrint("Data saved successfully to: \(filePath.absoluteString)")
     } catch {
         throw error
     }
@@ -39,7 +39,7 @@ func saveArrayAsJSON<T: Encodable>(_ array: [T], to filePath: URL) throws {
     do {
         let jsonData = try encoder.encode(array)
         try jsonData.write(to: filePath, options: .atomicWrite)
-        debugPrint("Data saved successfully to: \(filePath.absoluteString)")
+//        debugPrint("Data saved successfully to: \(filePath.absoluteString)")
     } catch {
         throw error
     }
@@ -52,7 +52,7 @@ func loadArrayFromJSON<T: Decodable>(_ type: T.Type, from filePath: URL) throws 
         let array = try decoder.decode([T].self, from: jsonData)
         return array
     } catch {
-        debugPrint(error)
+//        debugPrint(error)
         throw error
     }
 }
@@ -69,9 +69,9 @@ func saveDictionaryToPlist(_ dictionary: [String: String], dictName: String) {
         let plistURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("\(dictName).plist")
         let data = try PropertyListEncoder().encode(dictionary)
         try data.write(to: plistURL)
-        print("Dictionary saved to \(plistURL.absoluteString)")
+//        print("Dictionary saved to \(plistURL.absoluteString)")
     } catch {
-        print("Error encoding or writing dictionary: \(error)")
+//        print("Error encoding or writing dictionary: \(error)")
     }
 }
 
@@ -81,10 +81,10 @@ func loadDictionaryFromPlist(dictName: String) -> [String: String]? {
         let plistURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("\(dictName).plist")
         let data = try Data(contentsOf: plistURL)
         let decodedDictionary = try PropertyListDecoder().decode([String: String].self, from: data)
-        print("Dictionary loaded from \(plistURL.absoluteString)")
+//        print("Dictionary loaded from \(plistURL.absoluteString)")
         return decodedDictionary
     } catch {
-        print("Error reading or decoding dictionary: \(error)")
+//        print("Error reading or decoding dictionary: \(error)")
         return nil
     }
 }

@@ -18,8 +18,10 @@ struct UserInfoMenu: View {
                         Rectangle()
                             .frame(height: 250)
                             .foregroundColor(Color("ColorPrimary"))
+                        
                         makeUserCircleImage(url: URL(string: mainPageViewModel.currentUser!.profileImage))
                             .padding(.top, 50)
+                        
                     }
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets())

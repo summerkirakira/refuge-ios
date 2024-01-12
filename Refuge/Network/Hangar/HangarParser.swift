@@ -10,7 +10,7 @@ import Foundation
 import SwiftSoup
 
 enum ParserError: Error {
-    case customErrot(String)
+    case customError(String)
 }
 
 
@@ -46,12 +46,12 @@ func getHangarItems(content: String) throws -> [HangarItem] {
     let doc: Document? = try? SwiftSoup.parse(content)
     
     if doc == nil {
-        throw ParserError.customErrot("解析错误")
+        throw ParserError.customError("解析错误")
     }
     
     let pledgeList: Elements? = try? doc?.select(".list-items").first()?.select(".row")
     if pledgeList == nil {
-        throw ParserError.customErrot("未找到机库内容")
+        throw ParserError.customError("未找到机库内容")
     }
     do {
         for pledge in pledgeList! {
@@ -133,7 +133,7 @@ func getHangarItems(content: String) throws -> [HangarItem] {
             hangarItems.append(hangarItem)
         }
     } catch {
-        throw ParserError.customErrot("机库解析错误")
+        throw ParserError.customError("机库解析错误")
     }
     return hangarItems
 }
